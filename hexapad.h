@@ -4,7 +4,7 @@
 #include "Adafruit_ZeroTimer.h" // Optimize analogRead for piezo
 
 // initialize VL53L0X objects
-distancePB Distance(5);               // filter default amount = 5 
+distancePB Distance;                
 const byte VL53LOX_InterruptPin = 2;  // digital input for VL53LOX GPIO pin
 long distanceTimer;                   
 volatile byte VL53LOX_State = LOW;
@@ -102,20 +102,20 @@ void TimerCallback0(){
           Piezo.noteOn(tableauQtouch[i].note);
           tableauQtouch[i].state = QT_PLAYED;
           tableauQtouch[i].noteState = 1;
-          Serial.print("keyboard_note");
+//          Serial.print("keyboard_note");
         }
       }
       else if (tableauQtouch[i].trigMode == QT_TRIG_PERCUSSION) {
         if (tableauQtouch[i].state == QT_TOUCHED) {
           Piezo.piezoNote(tableauQtouch[i].note);
-          Serial.print("percu_note");
+//          Serial.print("percu_note");
         }
       }
     }    
   } else {
     VL53LOX_State = digitalRead(VL53LOX_InterruptPin);
     if (VL53LOX_State == LOW) {
-      Distance.sendMeasure();
+      if (Distance.RangeStatus != 4) Distance.sendMeasure();
     }
   }
 }

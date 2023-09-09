@@ -1,17 +1,17 @@
 #include "distance.hpp"
 
-distancePB::distancePB(byte channel) : filter(filterAmount) {
+distancePB::distancePB()  {
   Adafruit_VL53L0X distance = Adafruit_VL53L0X();
-  _channel = channel;
 };
 
 void distancePB::sendMeasure() {
       VL53L0X_RangingMeasurementData_t measure;
+      RangeStatus = measure.RangeStatus;
       uint16_t Value = 0;
 //    Serial.print("Reading a measurement... ");
     distance.getRangingMeasurement(
         &measure, false); // pass in 'true' to get debug data printout!
-    if (measure.RangeStatus != 4) { // phase failures have incorrect data
+    if (RangeStatus != 4) { // phase failures have incorrect data
       double test = measure.RangeMilliMeter;
       if(test < LOWEST_RANGE_MM ) test = LOWEST_RANGE_MM;
       if(test > HIGHEST_RANGE_MM ) test = HIGHEST_RANGE_MM;
@@ -74,8 +74,8 @@ void distancePB::sendController() {
 //  uint16_t filteredValue = filter.addSample(ControllerValue);
     byte lowValue = ControllerValue & 0x7F;
     byte highValue = ControllerValue >> 7;
-    midiEventPacket_t event_lsb = {0x0B, 0xB0 |  _channel, CONTROLER_LSB, lowValue};
+    midiEventPacket_t event_lsb = {0x0B, 0xB0 |  channel, CONTROLER_LSB, lowValue};
     MidiUSB.sendMIDI(event_lsb);
-    midiEventPacket_t event_msb = {0x0B, 0xB0 |  _channel, CONTROLER_MSB, highValue};
+    midiEventPacket_t event_msb = {0x0B, 0xB0 |  channel, CONTROLER_MSB, highValue};
     MidiUSB.sendMIDI(event_msb);
 }

@@ -5,7 +5,7 @@
 
 // initialize VL53L0X objects
 distancePB Distance;                
-const byte VL53LOX_InterruptPin = 2;  // digital input for VL53LOX GPIO pin
+const byte VL53LOX_InterruptPin = 2;  // SAMD21 digital input for VL53LOX GPIO pin
 long distanceTimer;                   
 volatile byte VL53LOX_State = LOW;
 

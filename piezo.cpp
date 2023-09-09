@@ -47,6 +47,8 @@ void piezo::update(uint8_t memoNote) {
       // Serial.println(millis() - piezoTimer);
       }
       break;
+    default:
+      break;
   }
 
   // switch case for actions in each piezo.state 
@@ -75,6 +77,8 @@ void piezo::update(uint8_t memoNote) {
       break;
     case FALLING:
      
+      break;
+    default:
       break;
   }
   prevpiezoRead = piezoRead;

@@ -11,7 +11,7 @@ void distancePB::sendMeasure() {
 //    Serial.print("Reading a measurement... ");
     distance.getRangingMeasurement(
         &measure, false); // pass in 'true' to get debug data printout!
-    if (RangeStatus != 4) { // phase failures have incorrect data
+    if (measure.RangeStatus != 4) { // phase failures have incorrect data
       double test = measure.RangeMilliMeter;
       if(test < LOWEST_RANGE_MM ) test = LOWEST_RANGE_MM;
       if(test > HIGHEST_RANGE_MM ) test = HIGHEST_RANGE_MM;

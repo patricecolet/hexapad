@@ -72,7 +72,7 @@ void qTouchUpdate() {
   for (int i = 0; i < 7; i ++) {
     tableauQtouch[i].update();
 // On Qtouch keyboard mode, we need to send a MIDI note off when the pad is released
-    if (tableauQtouch[i].trigMode == QT_TRIG_KEYBOARD) {
+    if (padSettings[i][PAD_TRIG_MODE] == QT_TRIG_KEYBOARD) {
       if (tableauQtouch[i].noteState) {
         if (tableauQtouch[i].state == QT_OFF) {
           tableauQtouch[i].sendNoteOff();
@@ -98,7 +98,7 @@ void TimerCallback0(){
   Piezo.update((uint8_t)(48));
   if (Piezo.state == SENDNOTE) {
     for (int i = 0; i < 7 ; i++) {
-      if (tableauQtouch[i].trigMode == QT_TRIG_KEYBOARD) {
+      if (padSettings[i][PAD_TRIG_MODE] == QT_TRIG_KEYBOARD) {
         if (tableauQtouch[i].state == QT_TOUCHED) {       
           Piezo.noteOn(tableauQtouch[i].note);
           tableauQtouch[i].state = QT_PLAYED;
@@ -106,7 +106,7 @@ void TimerCallback0(){
 //          Serial.print("keyboard_note");
         }
       }
-      else if (tableauQtouch[i].trigMode == QT_TRIG_PERCUSSION) {
+      else if (padSettings[i][PAD_TRIG_MODE] == QT_TRIG_PERCUSSION) {
         if (tableauQtouch[i].state == QT_TOUCHED) {
           Piezo.piezoNote(tableauQtouch[i].note);
 //          Serial.print("percu_note");
@@ -140,34 +140,32 @@ void midiInMessages() {
   // read the midi note
   midirx = MidiUSB.read();
   char midiheader = midirx.header;
-  char channel = (midirx.byte1);
-  char midinote =  midirx.byte2;
-  char midivelocity =  midirx.byte3;
+  uint8_t channel = int(midirx.byte1 & 0XF);
+  
+
   switch(midiheader) {
-    case 0x0B : // On MIDI controller
-      // Serial.print("test ");
-      // Serial.print(int(channel & 0XF));
-      // Serial.print(", controller ");
-      // Serial.print(int(midirx.byte2));
-      // Serial.print(": ");
-      // Serial.println(int(midirx.byte3));
-      // delay(100);
+    case 0x0B : {// On MIDI controller
+      uint8_t controller =  int(midirx.byte2);
+      uint8_t value =  int(midirx.byte3);
+      if (channel < 8 && controller < 8) {
+        padSettings[channel][controller] = value;
+      Serial.print("test ");
+      Serial.println(padSettings[channel][controller]);
+      } 
+    }
       break;
-    case 0x08 : // On MIDI note off
+    case 0x08 : {// On MIDI note off
+      char midinote =  midirx.byte2;
+      char midivelocity =  midirx.byte3;
         if (midinote == 0x3c) {             // C4 to calibrate qtouch
           Serial.println("calibrating...");
           delay(100);
           qTouchCalibrate();
           Distance.restart();
         }
-        if (midinote == 0x30) {             // C3 to set keyboard mode
-          qTouchTrigMode(QT_TRIG_KEYBOARD);      // Serial.print(": ");
-       Serial.println("QT_TRIG_KEYBOARD");
-        }
-        if (midinote == 0x32) {             // D3 to set percussion mode
-          qTouchTrigMode(QT_TRIG_PERCUSSION);
-          Serial.println("QT_TRIG_PERCUSSION");
-        }
+    }
+      break;
+    default:
     break;
   }     
 }

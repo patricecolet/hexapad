@@ -18,8 +18,8 @@
 #define QT_PLAYED 2
 #define QT_OFF 0
 
-#define QT_TRIG_KEYBOARD 0
-#define QT_TRIG_PERCUSSION 1
+#define QT_TRIG_PERCUSSION 0
+#define QT_TRIG_KEYBOARD 1
 /*
 #define CHANNEL_1 0
 #define CHANNEL_2 1

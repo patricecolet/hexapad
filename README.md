@@ -54,7 +54,7 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 |MIDI controller| Description|
 |---|---|
 | Controleur 1 | MIDI channel (all)
-| Controleur 2 | Enable global channel
+| Controleur 2 | Enable global
 | Controleur 3 | Trig mode
 | Controleur 4 | Velocity curve
 | Controleur 5 | Aftertouch curve

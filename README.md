@@ -10,6 +10,7 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 #TODO
 
 ## MIDI MAP
+
 * Canal 1 -> Pad 1
 * Canal 2 -> Pad 2
 * Canal 3 -> Pad 3
@@ -20,13 +21,13 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 
 
 
-* Controleur 1 -> MIDI channel
-* Controleur 2 -> MIDI note
-* Controleur 3 -> trig mode (percu,key,button)
-* Controleur 4 -> velocity curve
-* Controleur 5 -> aftertouch curve
-* Controleur 6 -> disable piezo
-* Controleur 7 -> disable QTouch (MIDI note is QT1)
+| Controleur 1 | MIDI channel |
+| Controleur 2 | MIDI note |
+| Controleur 3 | trig mode (percu,key,button) |
+| Controleur 4 | velocity curve |
+| Controleur 5 | aftertouch curve |
+| Controleur 6 | disable piezo |
+| Controleur 7 | disable QTouch (MIDI note is QT1) |
 
 * Canal 15 -> réglages capteur distance
 

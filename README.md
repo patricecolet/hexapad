@@ -36,12 +36,12 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 * Controleur 4 -> curve
 * Controleur 6 -> disable sensor
 * Controleur 8 -> low threshold
-* Controleur 8 -> high threshold
-* Controleur 9 -> MIDI controller LSB
-* Controleur 10 -> MIDI controller MSB
-* Controleur 11 -> scale LSB
-* Controleur 12 -> scale MSB
-* Controleur 13 -> scale octaves
+* Controleur 9 -> high threshold
+* Controleur 10 -> MIDI controller LSB
+* Controleur 11 -> MIDI controller MSB
+* Controleur 12 -> scale LSB
+* Controleur 13 -> scale MSB
+* Controleur 14 -> scale octaves
 
 * Canal 16 -> réglages globaux
 

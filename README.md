@@ -38,13 +38,15 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 | Controleur 3 |  trig mode (range CTL, single note, button, note scale)
 | Controleur 4 | curve
 | Controleur 6 | disable sensor
-| Controleur 8 | low threshold
-| Controleur 9 | high threshold
-| Controleur 10 | MIDI controller LSB
-| Controleur 11 | MIDI controller MSB
-| Controleur 12 | scale LSB
-| Controleur 13 | scale MSB
-| Controleur 14 | scale octaves
+| Controleur 8 | low threshold(mm) LSB
+| Controleur 9 | low threshold(mm) MSB
+| Controleur 10 | high threshold(mm) LSB
+| Controleur 11 | high threshold(mm) MSB
+| Controleur 12 | MIDI controller LSB
+| Controleur 13 | MIDI controller MSB
+| Controleur 14 | scale LSB
+| Controleur 15 | scale MSB
+| Controleur 16 | scale octaves
 
 * Canal 16 -> réglages globaux
 

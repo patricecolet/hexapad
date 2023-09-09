@@ -2,6 +2,7 @@
 #include "qtouch.hpp"           // SAMD21 QTouch methods
 #include "piezo.hpp"            // Piezo disk methods
 #include "Adafruit_ZeroTimer.h" // Optimize analogRead for piezo
+#include "midimap.h"
 
 // initialize VL53L0X objects
 distancePB Distance;                

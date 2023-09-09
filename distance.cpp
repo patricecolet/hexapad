@@ -19,7 +19,7 @@ void distancePB::sendMeasure() {
       Serial.println(test);
       Value =  16384 * (test - LOWEST_RANGE_MM) / (HIGHEST_RANGE_MM - LOWEST_RANGE_MM);
       if (Value < 0) Value = 0;
-      line.go(Value, 1000);
+//      line.go(Value, 1000);
       testing = 1;
  //     sendController();
     }

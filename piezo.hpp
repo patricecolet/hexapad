@@ -3,7 +3,6 @@
 //#define COMPARE 48000
 #define PLOT 0 //plot piezo reading
 #include "MIDIUSB.h"
-#include "qtouch.h"
 #include "MovingAverage.h"
 #define UNDERTHRESHOLD 0
 #define SIGNAL 1

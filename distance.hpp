@@ -1,7 +1,7 @@
 #include "Adafruit_VL53L0X.h"
 #include "MIDIUSB.h"
 #include "MovingAverage.h"
-#include <Ramp.h> 
+//#include <Ramp.h> 
 #define HIGHEST_RANGE_MM 400
 #define LOWEST_RANGE_MM 50
 #define CONTROLER_LSB 46
@@ -21,7 +21,7 @@ class distancePB{
     Adafruit_VL53L0X distance;
     const int filterAmount = 5;
     MovingAverage filter;
-    rampInt line;
+//    rampInt line;
     byte _channel;
     VL53L0X_RangingMeasurementData_t measure;
     bool inRange;

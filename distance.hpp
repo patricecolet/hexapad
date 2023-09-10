@@ -1,3 +1,4 @@
+#pragma once
 #include "Adafruit_VL53L0X.h"
 #include "MIDIUSB.h"
 //#include "MovingAverage.h"

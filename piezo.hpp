@@ -1,3 +1,5 @@
+#pragma once
+
 //Use interrupt to optimize analogRead
 //#include "Adafruit_ZeroTimer.h"
 //#define COMPARE 48000

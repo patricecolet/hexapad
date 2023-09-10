@@ -33,11 +33,10 @@ void CCQtouch::sendController() {
       MidiUSB.sendMIDI(event);
 };
 
-NoteQtouch::NoteQtouch(int pin, MIDIAddress address) {
-  qt = Adafruit_FreeTouch(pin, OVERSAMPLE_64, RESISTOR_50K, FREQ_MODE_HOP);
-  _address = address;
+NoteQtouch::NoteQtouch(qtouch_pin pin, PadSettings &pad) {
+  qt = Adafruit_FreeTouch(static_cast<uint8_t>(pin), OVERSAMPLE_64, RESISTOR_50K, FREQ_MODE_HOP);
   _pin = pin;
-  note = address.address;
+  _pad = pad;
   //Hysteresis <uint8_t> hysteresis(10);
 };
 
@@ -63,13 +62,13 @@ void NoteQtouch::update() {
 //    sendNoteOn(velocity);
 //    Serial.print("Note On"); Serial.println(_pin);
 //    IgnoreNote = 0;
-    if (state == QT_OFF && state != QT_PLAYED) setState(QT_TOUCHED);
+    if (state == qtouch_state::off && state != qtouch_state::played) state = qtouch_state::touched;
   };
 //  if((qt_measure < (qt_floor + roundOff)) && qt_memory != 0) qt_memory = 0;
   if((qt_measure < (qt_floor + roundOff)) && qt_memory != 0) {
     qt_memory = 0;
 //    sendNoteOff();
-    setState(QT_OFF);
+    state = qtouch_state::off;
 //    sendAfterTouch();
   }
   if((qt_memory > 0) && (qt_memory != qt_measure)) {
@@ -77,16 +76,8 @@ void NoteQtouch::update() {
       afterTouch = velocity * 2;
       afterTouch = velocity;
       if (afterTouch > 127) afterTouch = 127;
-      if (getState() == QT_PLAYED) sendAfterTouch(afterTouch);
+      if (state == qtouch_state::played) sendAfterTouch(afterTouch);
     }
-};
-
-void NoteQtouch::setState(byte etat) {
-     state = etat;
-};
-
-uint8_t NoteQtouch::getState() {
-     return state;
 };
 
 int NoteQtouch::getTouch() {
@@ -100,16 +91,16 @@ int NoteQtouch::getTouch() {
 
 void NoteQtouch::sendNoteOn(uint8_t velo) {
       //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
-      midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velo};
+      midiEventPacket_t event = {0x09, 0x90 | _pad.channel, _pad.note, velo};
       MidiUSB.sendMIDI(event);
 };
 
 void NoteQtouch::sendNoteOff() {
-      midiEventPacket_t event = {0x08, 0x80 | _address.channel, _address.address, 0};
+      midiEventPacket_t event = {0x08, 0x80 | _pad.channel, _pad.note, 0};
       MidiUSB.sendMIDI(event);
 };
 
 void NoteQtouch::sendAfterTouch(uint8_t afterTouch) {
-      midiEventPacket_t event = {0x0A, 0xA0 | _address.channel, _address.address, afterTouch};
+      midiEventPacket_t event = {0x0A, 0xA0 | _pad.channel, _pad.note, afterTouch};
       MidiUSB.sendMIDI(event);
 };

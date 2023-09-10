@@ -1,28 +1,31 @@
-#define PAD_CHANNEL 0
-#define PAD_NOTE 1
-#define PAD_TRIG_MODE 2
-#define PAD_VELO_CURVE 3
-#define PAD_TOUCH_CURVE 4
-#define PAD_DISABLE_PIEZO 5
-#define PAD_DISABLE_TOUCH 2
+#pragma once
+#include <Arduino.h>
 
-uint8_t padSettings[7][7] = {
-  {
-  0,  // ctl 1 MIDI channel
-  62, // ctl 2  MIDI note
-  1,  // ctl 3  Trig mode (percu,key,button)
-  0,  // ctl 4  Velocity curve
-  0,  // ctl 5  Aftertouch curve
-  0,  // ctl 6  Disable piezo
-  0 }, // ctl 7 Disable QTouch (MIDI note is QT1)
-  { 0,64,1,0,0,0,0 },
-  { 0,65,1,0,0,0,0 },
-  { 0,69,1,0,0,0,0 },
-  { 0,67,1,0,0,0,0 },
-  { 0,60,1,0,0,0,0 },
-  { 0,71,1,0,0,0,0 }
+enum class qtouch_pin : uint8_t {
+  QT1 = A0, QT2 = A1, QT3 = A6, QT4 = A7, QT5 = A8, QT6 = A9, QT7 = A10
 };
 
+enum class trigType : uint8_t {
+  percussion = 0, keyboard = 1, button = 2
+};
+
+typedef uint8_t midi_channel;
+typedef uint8_t midi_note;
+typedef uint8_t midi_velocity_curve;
+typedef uint8_t midi_aftertouch_curve;
+
+struct PadSettings {
+  midi_channel channel;
+  midi_note note;
+  trigType trig_mode;
+  midi_velocity_curve velocity_curve;
+  midi_aftertouch_curve aftertouch_curve;
+  bool piezo_disabled;
+  bool qtouch_disabled;
+  };
+extern PadSettings padSettings[7];
+
+/*
 uint8_t rangeSettings[14] = {
   0,  // ctl 1   MIDI channel
   48, // ctl 2  MIDI note (mode single note or button or first scale note, modulate velocity)
@@ -39,4 +42,4 @@ uint8_t rangeSettings[14] = {
   0,  // ctl 13 Scale MSB
   1  //  ctl 14 SCale octaves
 };
-
+*/

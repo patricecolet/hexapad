@@ -8,8 +8,8 @@ void piezo::update(uint8_t memoNote) {
 
   int piezoRead = analogRead(_pin);
   int filteredValue = filter.addSample(piezoRead);
-//  Serial.println(piezoRead);
-//  delay(20);
+  Serial.println(piezoRead);
+  //delay(1000);
   switch(Piezo.state) {
     case UNDERTHRESHOLD:
       if(piezoRead > Piezo.threshold && piezoRead > prevpiezoRead)

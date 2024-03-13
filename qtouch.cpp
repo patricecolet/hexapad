@@ -8,8 +8,6 @@ CCQtouch::CCQtouch(int pin, MIDIAddress address) {
 void CCQtouch::begin() {
   qt.begin();
   qt_floor = qt.measure();
-  //IgnoreNote = 0;
-  //calibrate();
 };
 
 void CCQtouch::calibrate(){

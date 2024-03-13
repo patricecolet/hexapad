@@ -34,8 +34,8 @@ struct piezoState
 	T peak;
 	piezoState()
 	{
-		threshold = 17;
-    fallingThreshold = 50;     // falling threshold per cent
+		threshold = 35;
+    fallingThreshold = 40;     // falling threshold per cent
     state = UNDERTHRESHOLD;
     prevstate = UNDERTHRESHOLD;
 		debounceTime = 20;
@@ -64,9 +64,7 @@ class piezo {
     pin_t _pin;
     unsigned long piezoTimer;
     int prevpiezoRead;
-    //int SendVelo;
     piezoState<int> Piezo;
-
     MovingAverage filter;
     const int filterAmount = 2;
 };

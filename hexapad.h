@@ -1,9 +1,9 @@
 #pragma once
 #include "distance.hpp"         // VL53L0X methods
-#include "qtouch.hpp"           // SAMD21 QTouch methods
+#include "qtouch.hpp"           // QTouch methods
 #include "piezo.hpp"            // Piezo disk methods
 #include "Adafruit_ZeroTimer.h" // Optimize analogRead for piezo
-#include "midimap.h"
+#include "midimap.h"            // Types definitions
 
 // initialize VL53L0X objects
 distancePB Distance;                
@@ -63,12 +63,7 @@ void qTouchCalibrate() {
   tableauQtouch[i].calibrate();  
   }
 }
-/*
-void qTouchTrigMode(uint8_t mode) {
-  for (int i = 0; i < 7; i ++) {
-    tableauQtouch[i].trigMode = static_cast<trigType>(mode);   
-  }
-}*/
+
 // This method is trigged at each loop() cycle.
 void qTouchUpdate() {
   for (int i = 0; i < 7; i ++) {
@@ -107,6 +102,8 @@ void TimerCallback0(){
       else if (padSettings[i].trig_mode == trigType::percussion) {
         if (tableauQtouch[i].state == qtouch_state::touched) {
           Piezo.piezoNote(padSettings[i].note);
+          tableauQtouch[i].state = qtouch_state::played;
+          tableauQtouch[i].noteState = 1;
         }
       }
     }    
@@ -145,7 +142,6 @@ void midiInMessages() {
       uint8_t controller =  int(midirx.byte2);
       uint8_t value =  int(midirx.byte3);
       if (midi_channel < 8 && controller < 8) {
-//        padSettings[channel][controller] = value;
         if (controller == 1) padSettings[midi_channel].channel = value;
         else if (controller == 2) padSettings[midi_channel].note = value;
         else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value);

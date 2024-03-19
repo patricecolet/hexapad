@@ -52,8 +52,8 @@ class piezo {
 		};
 		piezo(pin_t, MIDIAddress);
 		void update(uint8_t);
-		void piezoNote(uint8_t);
-		void noteOn(uint8_t);
+		void piezoNote(uint8_t,uint8_t);
+		void noteOn(uint8_t,uint8_t);
 		void noteOff(uint8_t);
     void playnote(int);
     int state;

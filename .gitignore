@@ -33,3 +33,7 @@
 
 # IDE files
 *.idea
+*.pio
+
+# mac files
+*.DS_Store

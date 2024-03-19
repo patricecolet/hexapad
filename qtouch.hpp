@@ -10,31 +10,13 @@ enum class qtouch_state : uint8_t {
   off = 0, touched = 1, played = 2
 };
 
-class CCQtouch {    
-  public:
-    struct MIDIAddress {
-      uint8_t address : 7;
-      uint8_t channel : 4;
-    };   
-	  CCQtouch(int, MIDIAddress);
-    void sendController();
-    void loop(); 
-    void begin();
-    void calibrate();
-  private:   
-    Adafruit_FreeTouch qt;
-    uint8_t CCvalue;
-    MIDIAddress _address;
-    int qt_floor;
-};
-
 
 class NoteQtouch {    
   public:
    
 	  NoteQtouch(qtouch_pin pin, PadSettings &pad);
     void sendNoteOn(uint8_t);
-    void sendNoteOff();
+    void sendNoteOff(uint8_t, uint8_t);
     void sendAfterTouch(uint8_t);
     void update();
     void begin();

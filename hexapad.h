@@ -72,7 +72,7 @@ void qTouchUpdate() {
     if (padSettings[i].trig_mode == trigType::keyboard) {
       if (tableauQtouch[i].noteState) {
         if (tableauQtouch[i].state == qtouch_state::off) {
-          tableauQtouch[i].sendNoteOff();
+          tableauQtouch[i].sendNoteOff(padSettings[i].note,padSettings[i].channel);
           tableauQtouch[i].noteState = 0;
         }
       }
@@ -94,14 +94,14 @@ void TimerCallback0(){
     for (int i = 0; i < 7 ; i++) {
       if (padSettings[i].trig_mode == trigType::keyboard) {
         if (tableauQtouch[i].state == qtouch_state::touched) {       
-          Piezo.noteOn(padSettings[i].note);
+          Piezo.noteOn(padSettings[i].note,padSettings[i].channel);
           tableauQtouch[i].state = qtouch_state::played;
           tableauQtouch[i].noteState = 1;
         }
       }
       else if (padSettings[i].trig_mode == trigType::percussion) {
         if (tableauQtouch[i].state == qtouch_state::touched) {
-          Piezo.piezoNote(padSettings[i].note);
+          Piezo.piezoNote(padSettings[i].note,padSettings[i].channel);
           tableauQtouch[i].state = qtouch_state::played;
           tableauQtouch[i].noteState = 1;
         }

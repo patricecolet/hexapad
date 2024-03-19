@@ -1,35 +1,5 @@
 #include "qtouch.hpp"
 
-CCQtouch::CCQtouch(int pin, MIDIAddress address) {
-  qt = Adafruit_FreeTouch(pin, OVERSAMPLE_4, RESISTOR_50K, FREQ_MODE_NONE);
-  _address = address;
-}
-
-void CCQtouch::begin() {
-  qt.begin();
-  qt_floor = qt.measure();
-};
-
-void CCQtouch::calibrate(){
-  qt_floor = qt.measure();
-};
-
-void CCQtouch::loop() {
-  //int qt_measure = (( N * qt_measure ) + qt.measure() ) / ( N + 1 );
-  int qt_measure = qt.measure();
-  // set roundoff at instantiation
-  int roundOff = 25;
-  int range = 1014 - qt_floor + roundOff;
-  CCvalue = 127 * (qt_measure - qt_floor + roundOff) / range;
-  if(qt_measure > qt_floor + roundOff) {
-    sendController();
-  };
-};
-
-void CCQtouch::sendController() {
-      midiEventPacket_t event = {0x0B, 0xB0 | _address.channel, _address.address, CCvalue};
-      MidiUSB.sendMIDI(event);
-};
 
 NoteQtouch::NoteQtouch(qtouch_pin pin, PadSettings &pad) {
   qt = Adafruit_FreeTouch(static_cast<uint8_t>(pin), OVERSAMPLE_64, RESISTOR_50K, FREQ_MODE_HOP);
@@ -88,13 +58,19 @@ int NoteQtouch::getTouch() {
 
 
 void NoteQtouch::sendNoteOn(uint8_t velo) {
+
+          Serial.print("Note on Note: ");
+          Serial.println(_pad.note);
       //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
       midiEventPacket_t event = {0x09, 0x90 | _pad.channel, _pad.note, velo};
       MidiUSB.sendMIDI(event);
 };
 
-void NoteQtouch::sendNoteOff() {
-      midiEventPacket_t event = {0x08, 0x80 | _pad.channel, _pad.note, 0};
+void NoteQtouch::sendNoteOff(uint8_t note, uint8_t channel) {
+
+          Serial.print("Note Off Note:");
+          Serial.println(_pad.note);
+      midiEventPacket_t event = {0x08, 0x80 | channel, note, 0};
       MidiUSB.sendMIDI(event);
 };
 

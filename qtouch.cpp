@@ -57,20 +57,20 @@ int NoteQtouch::getTouch() {
 };
 
 
-void NoteQtouch::sendNoteOn(uint8_t velo) {
+void NoteQtouch::sendNoteOn(PadSettings pad, uint8_t velo) {
 
           Serial.print("Note on Note: ");
           Serial.println(_pad.note);
       //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
-      midiEventPacket_t event = {0x09, 0x90 | _pad.channel, _pad.note, velo};
+      midiEventPacket_t event = {0x09, 0x90 | pad.channel, pad.note, velo};
       MidiUSB.sendMIDI(event);
 };
 
-void NoteQtouch::sendNoteOff(uint8_t note, uint8_t channel) {
+void NoteQtouch::sendNoteOff(PadSettings pad) {
 
           Serial.print("Note Off Note:");
-          Serial.println(_pad.note);
-      midiEventPacket_t event = {0x08, 0x80 | channel, note, 0};
+          Serial.println(pad.note);
+      midiEventPacket_t event = {0x08, 0x80 | pad.channel, pad.note, 0};
       MidiUSB.sendMIDI(event);
 };
 

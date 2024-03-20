@@ -4,7 +4,7 @@ piezo::piezo(pin_t pin, MIDIAddress address) : filter(filterAmount) {
     _address = address;
     _pin = pin;  
 };
-void piezo::update(uint8_t memoNote) {
+void piezo::update() {
 
   int piezoRead = analogRead(_pin);
   int filteredValue = filter.addSample(piezoRead);
@@ -71,8 +71,6 @@ void piezo::update(uint8_t memoNote) {
       Piezo.state = SENDNOTE;
       break;
     case SENDNOTE:
-      // if(memoNote == 0) piezoNote(_address.address);
-      // else piezoNote(memoNote);
       sendNote = 0;
       break;
     case FALLING:
@@ -93,22 +91,22 @@ void piezo::playnote(int piezoRead) {
 }
 
 // Send note midi
-void piezo::piezoNote(uint8_t note, uint8_t channel) {  
+void piezo::piezoNote(PadSettings pad) {  
 //  if (note != 48){
-  midiEventPacket_t noteOn = {0x09, 0x90 | channel, note, Piezo.peak};
+  midiEventPacket_t noteOn = {0x09, 0x90 | pad.channel, pad.note, Piezo.peak};
   MidiUSB.sendMIDI(noteOn);
-  midiEventPacket_t noteOff = {0x08, 0x80 | channel, note, 0};
+  midiEventPacket_t noteOff = {0x08, 0x80 | pad.channel, pad.note, 0};
   MidiUSB.sendMIDI(noteOff);
 //  }
 };
-void piezo::noteOn(uint8_t note, uint8_t channel) { 
+void piezo::noteOn(PadSettings pad) { 
   Serial.print("Piezo Note On: ");
-  Serial.println(note);
-  midiEventPacket_t noteOn = {0x09, 0x90 | channel, note, Piezo.peak};
+  Serial.println(pad.note);
+  midiEventPacket_t noteOn = {0x09, 0x90 | pad.channel, pad.note, Piezo.peak};
   MidiUSB.sendMIDI(noteOn);
 };
-void piezo::noteOff(uint8_t note) {  
-  midiEventPacket_t noteOff = {0x08, 0x80 | _address.channel, note, 0};
+void piezo::noteOff(PadSettings pad) {  
+  midiEventPacket_t noteOff = {0x08, 0x80 | pad.channel, pad.note, 0};
   MidiUSB.sendMIDI(noteOff);
 
 };

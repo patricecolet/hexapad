@@ -1,9 +1,13 @@
 #pragma once
 
+#define USB_MANUFACTURER "YOUR_NAME"
+#define USB_PRODUCT "YOUR_PRODUCT"
+
 #include "Arduino.h"
 #include "Adafruit_FreeTouch.h"
 #include "MIDIUSB.h"
 #include "midimap.h"
+
 
 
 enum class qtouch_state : uint8_t {
@@ -15,8 +19,8 @@ class NoteQtouch {
   public:
    
 	  NoteQtouch(qtouch_pin pin, PadSettings &pad);
-    void sendNoteOn(uint8_t);
-    void sendNoteOff(uint8_t, uint8_t);
+    void sendNoteOn(PadSettings,uint8_t);
+    void sendNoteOff(PadSettings);
     void sendAfterTouch(uint8_t);
     void update();
     void begin();

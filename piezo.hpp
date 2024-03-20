@@ -6,6 +6,8 @@
 #define PLOT 0 //plot piezo reading
 #include "MIDIUSB.h"
 #include "MovingAverage.h"
+#include "midimap.h"
+
 #define UNDERTHRESHOLD 0
 #define SIGNAL 1
 #define RISING 2
@@ -51,10 +53,10 @@ class piezo {
 			uint8_t channel : 4;
 		};
 		piezo(pin_t, MIDIAddress);
-		void update(uint8_t);
-		void piezoNote(uint8_t,uint8_t);
-		void noteOn(uint8_t,uint8_t);
-		void noteOff(uint8_t);
+		void update();
+		void piezoNote(PadSettings);
+		void noteOn(PadSettings);
+		void noteOff(PadSettings);
     void playnote(int);
     int state;
     bool sendNote = 0;

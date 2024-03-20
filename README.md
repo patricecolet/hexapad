@@ -22,7 +22,7 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 
 |MIDI controller| Description|
 |---|---|
-| Controleur 1 | MIDI channel |
+| Controleur 1 | MIDI channel | (midi channel 1 value is 0, midi channel 2 value is 1 ...)
 | Controleur 2 | MIDI note |
 | Controleur 3 | Trig mode (percu,key,button) |
 | Controleur 4 | Velocity curve |

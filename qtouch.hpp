@@ -19,9 +19,6 @@ class NoteQtouch {
   public:
    
 	  NoteQtouch(qtouch_pin pin, PadSettings &pad);
-    void sendNoteOn(PadSettings,uint8_t);
-    void sendNoteOff(PadSettings);
-    void sendAfterTouch(PadSettings, uint8_t);
     void update(PadSettings);
     void begin();
     void calibrate();
@@ -29,6 +26,7 @@ class NoteQtouch {
     int getTouch();
     qtouch_state state;
     bool noteState = 0;
+    uint8_t afterTouch;
 
     enum class parameters : uint8_t {
       channel = 0,
@@ -45,7 +43,5 @@ class NoteQtouch {
     uint8_t velopiezo;
     qtouch_pin _pin;
     int qt_floor, qt_memory;
-    int afterTouch;
     PadSettings _pad;
-
 };

@@ -44,7 +44,6 @@ void NoteQtouch::update(PadSettings pad) {
       afterTouch = velocity * 2;
       afterTouch = velocity;
       if (afterTouch > 127) afterTouch = 127;
-      if (state == qtouch_state::played) sendAfterTouch(pad, afterTouch);
     }
 };
 
@@ -54,27 +53,4 @@ int NoteQtouch::getTouch() {
   int range = 1014 - qt_floor + roundOff;
   velocity = 127 * (qt_measure - qt_floor + roundOff) / range;
   return velocity;
-};
-
-
-void NoteQtouch::sendNoteOn(PadSettings pad, uint8_t velo) {
-
-          Serial.print("Note on Note: ");
-          Serial.println(_pad.note);
-      //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
-      midiEventPacket_t event = {0x09, 0x90 | pad.channel, pad.note, velo};
-      MidiUSB.sendMIDI(event);
-};
-
-void NoteQtouch::sendNoteOff(PadSettings pad) {
-
-          Serial.print("Note Off Note:");
-          Serial.println(pad.note);
-      midiEventPacket_t event = {0x08, 0x80 | pad.channel, pad.note, 0};
-      MidiUSB.sendMIDI(event);
-};
-
-void NoteQtouch::sendAfterTouch(PadSettings pad, uint8_t afterTouch) {
-      midiEventPacket_t event = {0x0A, 0xA0 | pad.channel, pad.note, afterTouch};
-      MidiUSB.sendMIDI(event);
 };

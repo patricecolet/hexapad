@@ -1,9 +1,6 @@
 #pragma once
 
-//Use interrupt to optimize analogRead
-//#include "Adafruit_ZeroTimer.h"
-//#define COMPARE 48000
-#define PLOT 0 //plot piezo reading
+//#define PLOT 0 //plot piezo reading
 #include "MIDIUSB.h"
 #include "MovingAverage.h"
 #include "midimap.h"
@@ -54,19 +51,15 @@ class piezo {
 		};
 		piezo(pin_t, MIDIAddress);
 		void update();
-		void piezoNote(PadSettings);
-		void noteOn(PadSettings);
-		void noteOff(PadSettings);
     void playnote(int);
     int state;
     bool sendNote = 0;
+    uint8_t velocity;
+    
 	private:
 		MIDIAddress _address;
-    uint8_t velocity;
     pin_t _pin;
     unsigned long piezoTimer;
     int prevpiezoRead;
     piezoState<int> Piezo;
-    MovingAverage filter;
-    const int filterAmount = 2;
 };

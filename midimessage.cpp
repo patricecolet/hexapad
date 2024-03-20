@@ -1,14 +1,27 @@
 #include "midimessage.hpp"
-/*
+
 midiMessage::midiMessage()  {
 };
-*/
-void midiMessage::sendNoteOn(PadSettings pad, uint8_t velo) {
 
+void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
+    /* 
+  uint8_t velo = 0
+  if(pad.velocity_curve == curveType::linear) {
+    //velo = 
+  }
+  else if(pad.velocity_curve == curveType::parabola) {
+
+  }
+  else if(pad.velocity_curve == curveType::hyperbola) {
+
+  }
+  else if(pad.velocity_curve == curveType::sigmoid) {
+
+  }*/
           Serial.print("Note on Note: ");
           Serial.println(pad.note);
       //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
-      midiEventPacket_t event = {0x09, 0x90 | pad.channel, pad.note, velo};
+      midiEventPacket_t event = {0x09, 0x90 | pad.channel, pad.note, velocity};
       MidiUSB.sendMIDI(event);
 };
 

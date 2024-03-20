@@ -4,6 +4,7 @@
 #include "piezo.hpp"            // Piezo disk methods
 #include "Adafruit_ZeroTimer.h" // Optimize analogRead for piezo
 #include "midimap.h"            // Types definitions
+#include "midimessage.hpp"        // function definitions for sending midi
 
 // initialize VL53L0X objects
 distancePB Distance;                
@@ -43,7 +44,7 @@ NoteQtouch tableauQtouch[] = {
     padSettings[6]
   }
 };
-
+midiMessage midi;
 // initialize piezo pin
 piezo Piezo {
   A3,            // Analog pin
@@ -67,12 +68,15 @@ void qTouchCalibrate() {
 // This method is trigged at each loop() cycle.
 void qTouchUpdate() {
   for (int i = 0; i < 7; i ++) {
+    if (tableauQtouch[i].state == qtouch_state::played) {
+      midi.sendAfterTouch(padSettings[i],tableauQtouch[i].afterTouch);
+    }
     tableauQtouch[i].update(padSettings[i]);
 // On Qtouch keyboard mode, we need to send a MIDI note off when the pad is released
     if (padSettings[i].trig_mode == trigType::keyboard) {
       if (tableauQtouch[i].noteState) {
         if (tableauQtouch[i].state == qtouch_state::off) {
-          tableauQtouch[i].sendNoteOff(padSettings[i]);
+          midi.sendNoteOff(padSettings[i]);
           tableauQtouch[i].noteState = 0;
         }
       }
@@ -94,14 +98,14 @@ void TimerCallback0(){
     for (int i = 0; i < 7 ; i++) {
       if (padSettings[i].trig_mode == trigType::keyboard) {
         if (tableauQtouch[i].state == qtouch_state::touched) {       
-          Piezo.noteOn(padSettings[i]);
+          midi.sendNoteOn(padSettings[i],Piezo.velocity);
           tableauQtouch[i].state = qtouch_state::played;
           tableauQtouch[i].noteState = 1;
         }
       }
       else if (padSettings[i].trig_mode == trigType::percussion) {
         if (tableauQtouch[i].state == qtouch_state::touched) {
-          Piezo.piezoNote(padSettings[i]);
+          midi.sendNoteOn(padSettings[i],Piezo.velocity);
           tableauQtouch[i].state = qtouch_state::played;
           tableauQtouch[i].noteState = 1;
         }

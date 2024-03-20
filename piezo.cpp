@@ -100,6 +100,20 @@ void piezo::piezoNote(PadSettings pad) {
 //  }
 };
 void piezo::noteOn(PadSettings pad) { 
+    /* 
+  uint8_t velo = 0
+  if(pad.velocity_curve == curveType::linear) {
+    //velo = 
+  }
+  else if(pad.velocity_curve == curveType::parabola) {
+
+  }
+  else if(pad.velocity_curve == curveType::hyperbola) {
+
+  }
+  else if(pad.velocity_curve == curveType::sigmoid) {
+
+  }*/
   Serial.print("Piezo Note On: ");
   Serial.println(pad.note);
   midiEventPacket_t noteOn = {0x09, 0x90 | pad.channel, pad.note, Piezo.peak};

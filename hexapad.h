@@ -67,7 +67,7 @@ void qTouchCalibrate() {
 // This method is trigged at each loop() cycle.
 void qTouchUpdate() {
   for (int i = 0; i < 7; i ++) {
-    tableauQtouch[i].update();
+    tableauQtouch[i].update(padSettings[i]);
 // On Qtouch keyboard mode, we need to send a MIDI note off when the pad is released
     if (padSettings[i].trig_mode == trigType::keyboard) {
       if (tableauQtouch[i].noteState) {
@@ -145,8 +145,8 @@ void midiInMessages() {
         if (controller == 1) padSettings[midi_channel].channel = value;
         else if (controller == 2) padSettings[midi_channel].note = value;
         else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value);
-        else if (controller == 4) padSettings[midi_channel].velocity_curve = value;
-        else if (controller == 5) padSettings[midi_channel].aftertouch_curve = value;
+        else if (controller == 4) padSettings[midi_channel].velocity_curve = static_cast<curveType>(value);
+        else if (controller == 5) padSettings[midi_channel].aftertouch_curve = static_cast<curveType>(value);
         else if (controller == 6) padSettings[midi_channel].piezo_disabled = value > 63;
         else if (controller == 7) padSettings[midi_channel].qtouch_disabled = value > 63;
       }

@@ -8,18 +8,19 @@ enum class qtouch_pin : uint8_t {
 enum class trigType : uint8_t {
   percussion = 0, keyboard = 1, button = 2
 };
+enum class curveType : uint8_t {
+  linear = 0, parabola = 1, hyperbola = 2, sigmoid = 3
+};
 
 typedef uint8_t midi_channel;
 typedef uint8_t midi_note;
-typedef uint8_t midi_velocity_curve;
-typedef uint8_t midi_aftertouch_curve;
 
 struct PadSettings {
   midi_channel channel;
   midi_note note;
   trigType trig_mode;
-  midi_velocity_curve velocity_curve;
-  midi_aftertouch_curve aftertouch_curve;
+  curveType velocity_curve;
+  curveType aftertouch_curve;
   bool piezo_disabled;
   bool qtouch_disabled;
   };

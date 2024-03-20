@@ -17,7 +17,7 @@ void NoteQtouch::calibrate() {
   qt_floor = qt.measure();
 };
 
-void NoteQtouch::update() {
+void NoteQtouch::update(PadSettings pad) {
   //int qt_measure = (( N * qt_measure ) + qt.measure() ) / ( N + 1 );
   int qt_measure = qt.measure();
   int roundOff = 10;
@@ -44,7 +44,7 @@ void NoteQtouch::update() {
       afterTouch = velocity * 2;
       afterTouch = velocity;
       if (afterTouch > 127) afterTouch = 127;
-      if (state == qtouch_state::played) sendAfterTouch(afterTouch);
+      if (state == qtouch_state::played) sendAfterTouch(pad, afterTouch);
     }
 };
 
@@ -74,7 +74,7 @@ void NoteQtouch::sendNoteOff(PadSettings pad) {
       MidiUSB.sendMIDI(event);
 };
 
-void NoteQtouch::sendAfterTouch(uint8_t afterTouch) {
-      midiEventPacket_t event = {0x0A, 0xA0 | _pad.channel, _pad.note, afterTouch};
+void NoteQtouch::sendAfterTouch(PadSettings pad, uint8_t afterTouch) {
+      midiEventPacket_t event = {0x0A, 0xA0 | pad.channel, pad.note, afterTouch};
       MidiUSB.sendMIDI(event);
 };

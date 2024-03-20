@@ -21,8 +21,8 @@ class NoteQtouch {
 	  NoteQtouch(qtouch_pin pin, PadSettings &pad);
     void sendNoteOn(PadSettings,uint8_t);
     void sendNoteOff(PadSettings);
-    void sendAfterTouch(uint8_t);
-    void update();
+    void sendAfterTouch(PadSettings, uint8_t);
+    void update(PadSettings);
     void begin();
     void calibrate();
     

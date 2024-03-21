@@ -11,7 +11,7 @@ distancePB Distance;
 const byte VL53LOX_InterruptPin = 2;  // SAMD21 digital input for VL53LOX GPIO pin
 long distanceTimer;                   
 volatile byte VL53LOX_State = LOW;
-
+int b = 1;
 
 // initialize Qtouch pins
 NoteQtouch tableauQtouch[] = {
@@ -45,11 +45,14 @@ NoteQtouch tableauQtouch[] = {
   }
 };
 midiMessage midi;
+
+
 // initialize piezo pin
 piezo Piezo {
   A3,            // Analog pin
   {48, 0 }      // Note Number 48 on MIDI channel 1
  };
+
 
 // Enable Qtouch pins
 void qTouchBegin() {
@@ -58,12 +61,14 @@ void qTouchBegin() {
   }
 }
 
+
 // Calibrate Qtouch pins
 void qTouchCalibrate() {
   for (int i = 0; i < 7; i ++){
   tableauQtouch[i].calibrate();  
   }
 }
+
 
 // This method is trigged at each loop() cycle.
 void qTouchUpdate() {
@@ -72,25 +77,32 @@ void qTouchUpdate() {
       midi.sendAfterTouch(padSettings[i],tableauQtouch[i].afterTouch);
     }
     tableauQtouch[i].update(padSettings[i]);
+    
 // On Qtouch keyboard mode, we need to send a MIDI note off when the pad is released
     if (padSettings[i].trig_mode == trigType::keyboard) {
       if (tableauQtouch[i].noteState) {
         if (tableauQtouch[i].state == qtouch_state::off) {
           midi.sendNoteOff(padSettings[i]);
           tableauQtouch[i].noteState = 0;
+          Serial.print("TouchUpgrade keyboard Off \n \n");
         }
       }
-    } else tableauQtouch[i].noteState = 0;
+    }
+    else tableauQtouch[i].noteState = 0;
+    }
   }
-}
+  
 //Use interrupt to optimize analogRead
 int COMPARE_P = 48000; // Set up the flexible divider/compare
+
 
 //initialize timer 3
 Adafruit_ZeroTimer zerotimerP = Adafruit_ZeroTimer(3);
 void TC3_Handler() {
   Adafruit_ZeroTimer::timerHandler(3);
 }
+
+
 // Methods called in timer's callback are prioritized
 void TimerCallback0(){
   Piezo.update();
@@ -101,6 +113,7 @@ void TimerCallback0(){
           midi.sendNoteOn(padSettings[i],Piezo.velocity);
           tableauQtouch[i].state = qtouch_state::played;
           tableauQtouch[i].noteState = 1;
+          Serial.print("Callback keyboard On \n \n");
         }
       }
       else if (padSettings[i].trig_mode == trigType::percussion) {
@@ -108,16 +121,34 @@ void TimerCallback0(){
           midi.sendNoteOn(padSettings[i],Piezo.velocity);
           tableauQtouch[i].state = qtouch_state::played;
           tableauQtouch[i].noteState = 1;
+          Serial.print("Callback percussion On \n \n");
         }
       }
-    }    
-  } else {
+      else if (padSettings[i].trig_mode == trigType::button){
+        if (tableauQtouch[i].state == qtouch_state::touched && b%2 == 1){
+          midi.sendNoteOn(padSettings[i],Piezo.velocity);
+          tableauQtouch[i].state = qtouch_state::played;
+          tableauQtouch[i].noteState = 1;
+          Serial.print("Callback button On \n \n");
+          Serial.println(b);
+        }
+        if (tableauQtouch[i].state == qtouch_state::touched && b%2 == 0){
+          midi.sendNoteOff(padSettings[i]);
+          tableauQtouch[i].noteState = 0;
+          Serial.print("Callback button Off \n \n");
+        }
+      }
+    }
+    b = b + 1;
+  }    
+    else {
     VL53LOX_State = digitalRead(VL53LOX_InterruptPin);
     if (VL53LOX_State == LOW) {
       if (Distance.RangeStatus != 4) Distance.sendMeasure();
     }
   }
 }
+
 
 // timer setup
 void timerPBegin(){ 
@@ -128,9 +159,10 @@ void timerPBegin(){
           TC_WAVE_GENERATION_MATCH_PWM // frequency or PWM mode
           );
   zerotimerP.setCompare(0, COMPARE_P);
-  zerotimerP.setCallback(true, TC_CALLBACK_CC_CHANNEL0, TimerCallback0);
+  zerotimerP.setCallback(true,  TC_CALLBACK_CC_CHANNEL0, TimerCallback0);
   zerotimerP.enable(true);
 }
+
 
 // hexapad settings can be done with MIDI messages:
 void midiInMessages() {
@@ -145,6 +177,14 @@ void midiInMessages() {
     case 0x0B : {// On MIDI controller
       uint8_t controller =  int(midirx.byte2);
       uint8_t value =  int(midirx.byte3);
+      /*
+      Serial.print("Value \n");
+      Serial.println(value);
+      Serial.print("Controller \n");
+      Serial.println(controller);
+      Serial.print("Midi Channel \n");
+      Serial.println(midi_channel);
+      */
       if (midi_channel < 8 && controller < 8) {
         if (controller == 1) padSettings[midi_channel].channel = value;
         else if (controller == 2) padSettings[midi_channel].note = value;

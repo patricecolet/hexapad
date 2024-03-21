@@ -8,14 +8,17 @@ NoteQtouch::NoteQtouch(qtouch_pin pin, PadSettings &pad) {
   //Hysteresis <uint8_t> hysteresis(10);
 };
 
+
 void NoteQtouch::begin() {
   qt.begin();
   qt_floor = qt.measure();
 };
 
+
 void NoteQtouch::calibrate() {
   qt_floor = qt.measure();
 };
+
 
 void NoteQtouch::update(PadSettings pad) {
   //int qt_measure = (( N * qt_measure ) + qt.measure() ) / ( N + 1 );

@@ -4,6 +4,8 @@ piezo::piezo(pin_t pin, MIDIAddress address) {
     _address = address;
     _pin = pin;  
 };
+
+
 void piezo::update() {
 
   int piezoRead = analogRead(_pin);
@@ -82,6 +84,7 @@ void piezo::update() {
   Piezo.prevstate = Piezo.state;
   state = Piezo.state;
 }
+
 
 void piezo::playnote(int piezoRead) {
   velocity = 127 * piezoRead / (Piezo.sensitivity - Piezo.threshold);

@@ -8,6 +8,7 @@ void distancePB::sendMeasure() {
       VL53L0X_RangingMeasurementData_t measure;
       RangeStatus = measure.RangeStatus;
       uint16_t Value = 0;
+      
 //    Serial.print("Reading a measurement... ");
     distance.getRangingMeasurement(
         &measure, false); // pass in 'true' to get debug data printout!
@@ -31,9 +32,9 @@ void distancePB::sendMeasure() {
 
           sendController();
               }
-
   distance.clearInterruptMask(false);
 }
+
 
 bool distancePB::begin() {
 
@@ -63,12 +64,15 @@ bool distancePB::begin() {
   return 1;
   }
 };
+
+
 void distancePB::restart()  {
   Serial.println("restart distance measurement");
   distance.stopMeasurement();
   delay(1000);
   distance.startMeasurement();
 }
+
 
 void distancePB::sendController() {
 //  uint16_t filteredValue = filter.addSample(ControllerValue);

@@ -11,7 +11,8 @@ distancePB Distance;
 const byte VL53LOX_InterruptPin = 2;  // SAMD21 digital input for VL53LOX GPIO pin
 long distanceTimer;                   
 volatile byte VL53LOX_State = LOW;
-int b = 1;
+
+bool buttonState[7] = {false, false, false, false, false, false, false};
 
 // initialize Qtouch pins
 NoteQtouch tableauQtouch[] = {
@@ -125,21 +126,22 @@ void TimerCallback0(){
         }
       }
       else if (padSettings[i].trig_mode == trigType::button){
-        if (tableauQtouch[i].state == qtouch_state::touched && b%2 == 1){
-          midi.sendNoteOn(padSettings[i],Piezo.velocity);
-          tableauQtouch[i].state = qtouch_state::played;
-          tableauQtouch[i].noteState = 1;
-          Serial.print("Callback button On \n \n");
-          Serial.println(b);
+        if (tableauQtouch[i].state == qtouch_state::touched){
+          if (buttonState[i] == true){
+            midi.sendNoteOff(padSettings[i]);
+            tableauQtouch[i].noteState = 0;
+            Serial.print("Callback button Off \n \n");
+          }
+          if (buttonState[i] == false){
+            midi.sendNoteOn(padSettings[i],Piezo.velocity);
+            tableauQtouch[i].state = qtouch_state::played;
+            tableauQtouch[i].noteState = 1;
+            Serial.print("Callback button On \n \n");
+          }
         }
-        if (tableauQtouch[i].state == qtouch_state::touched && b%2 == 0){
-          midi.sendNoteOff(padSettings[i]);
-          tableauQtouch[i].noteState = 0;
-          Serial.print("Callback button Off \n \n");
-        }
+        buttonState[i] = !buttonState[i];
       }
     }
-    b = b + 1;
   }    
     else {
     VL53LOX_State = digitalRead(VL53LOX_InterruptPin);

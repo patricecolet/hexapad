@@ -24,7 +24,9 @@ struct PadSettings {
   bool piezo_disabled;
   bool qtouch_disabled;
   };
+  
 extern PadSettings padSettings[7];
+
 
 /*
 uint8_t rangeSettings[14] = {

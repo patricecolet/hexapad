@@ -33,10 +33,6 @@ void midiMessage::sendNoteOff(PadSettings pad) {
 
           Serial.print("Note Off Note: \n");
           Serial.println(pad.note);
-          /*
-          Serial.print("Channel Off: \n");
-          Serial.println(pad.channel);
-          */
       midiEventPacket_t event = {0x08, 0x80 | pad.channel, pad.note, 0};
       MidiUSB.sendMIDI(event);
 };

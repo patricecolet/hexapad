@@ -85,7 +85,7 @@ void qTouchUpdate() {
         if (tableauQtouch[i].state == qtouch_state::off) {
           midi.sendNoteOff(padSettings[i]);
           tableauQtouch[i].noteState = 0;
-          Serial.print("TouchUpgrade keyboard Off \n \n");
+          // Serial.print("TouchUpgrade keyboard Off \n \n");
         }
       }
     }
@@ -114,32 +114,37 @@ void TimerCallback0(){
           midi.sendNoteOn(padSettings[i],Piezo.velocity);
           tableauQtouch[i].state = qtouch_state::played;
           tableauQtouch[i].noteState = 1;
-          Serial.print("Callback keyboard On \n \n");
+          // Serial.print("Callback keyboard On \n \n");
         }
       }
       else if (padSettings[i].trig_mode == trigType::percussion) {
         if (tableauQtouch[i].state == qtouch_state::touched) {
           midi.sendNoteOn(padSettings[i],Piezo.velocity);
-          tableauQtouch[i].state = qtouch_state::played;
-          tableauQtouch[i].noteState = 1;
-          Serial.print("Callback percussion On \n \n");
+          midi.sendNoteOff(padSettings[i]);
+          tableauQtouch[i].state = qtouch_state::off;
+          // Serial.print("Callback percussion On \n \n");
         }
       }
       else if (padSettings[i].trig_mode == trigType::button){
         if (tableauQtouch[i].state == qtouch_state::touched){
-          if (buttonState[i] == true){
+          if (buttonState[i] != false){
             midi.sendNoteOff(padSettings[i]);
             tableauQtouch[i].noteState = 0;
-            Serial.print("Callback button Off \n \n");
+            /*
+            Serial.print("Callback button Off \n");
+            Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
+            */
           }
           if (buttonState[i] == false){
             midi.sendNoteOn(padSettings[i],Piezo.velocity);
-            tableauQtouch[i].state = qtouch_state::played;
             tableauQtouch[i].noteState = 1;
-            Serial.print("Callback button On \n \n");
+            /*
+            Serial.print("Callback button On \n");
+            Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
+            */
           }
+          buttonState[i] = !buttonState[i];
         }
-        buttonState[i] = !buttonState[i];
       }
     }
   }    

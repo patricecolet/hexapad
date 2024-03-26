@@ -10,7 +10,7 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
     velo = velocity;
   }
   else if(pad.velocity_curve == curveType::parabola) {
-    velo = ((127*(velocity)^2)/127^2);
+    velo = (127*velocity*velocity)/(127*127);
   }
   else if(pad.velocity_curve == curveType::hyperbola) {
     velo = round(127*(1-exp(-1.5*velocity/40)));
@@ -18,11 +18,13 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
   else if(pad.velocity_curve == curveType::sigmoid) {
     velo = round(127/(1+exp(-0.08*(velocity-65))));
   }
-          Serial.print("Note on Note: \n");
-          Serial.println(pad.note);
-          /*
-          Serial.print("Channel On: \n");
-          Serial.println(pad.channel);*/
+          Serial.printf("Note on Note: %d \n", pad.note);
+          Serial.print("Velocity:");
+          Serial.println(velocity);
+          if (velo != velocity){
+            Serial.print("Velocity curve:");
+            Serial.println(velo);
+          }
       //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
       midiEventPacket_t event = {0x09, 0x90 | pad.channel, pad.note, velo};
       MidiUSB.sendMIDI(event);
@@ -31,8 +33,7 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
 
 void midiMessage::sendNoteOff(PadSettings pad) {
 
-          Serial.print("Note Off Note: \n");
-          Serial.println(pad.note);
+          Serial.printf("Note off Note: %d \n\n", pad.note);
       midiEventPacket_t event = {0x08, 0x80 | pad.channel, pad.note, 0};
       MidiUSB.sendMIDI(event);
 };

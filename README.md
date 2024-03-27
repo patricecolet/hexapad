@@ -62,7 +62,7 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 | Controleur 7 | Disable QTouch (MIDI note is QT1)
 
 ## DOCUMENTATION
-# Hexapad
+### Hexapad
 
 Nous travaillons sur un projet destiné aux enfants et aux malvoyants. Cet appareil est un pad doté de différents capteurs capacitifs sous des surfaces tactiles texturées qui, lorsqu'ils sont déclenchés, envoient du son via une communication midi. 
  
@@ -82,7 +82,7 @@ Il faut maintenant commencer à trouver les bonnes dimensions. Nous voulions que
 
 (image)
 
-# SCHEMATIQUE 
+### SCHEMATIQUE 
 
 A présent nous devons concevoir une carte électronique qui accueillerais nos capteurs capacitifs, le microcontrôleur, le capteur de vibration et le capteur de distance.  
 
@@ -94,7 +94,7 @@ Nous avons aussi mis des boutons poussoir permettant le reset du microcontrôleu
 
 (image)
 
-# PCB 
+### PCB 
 
 Pour la partie PCB, nous voulions que tous les composants soient tous grouper pour que la carte ne soit pas trop grande. 
 

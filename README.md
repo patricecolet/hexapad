@@ -60,3 +60,50 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 | Controleur 5 | Aftertouch curve
 | Controleur 6 | Disable piezo
 | Controleur 7 | Disable QTouch (MIDI note is QT1)
+
+## DOCUMENTATION
+# Hexapad
+
+Nous travaillons sur un projet destiné aux enfants et aux malvoyants. Cet appareil est un pad doté de différents capteurs capacitifs sous des surfaces tactiles texturées qui, lorsqu'ils sont déclenchés, envoient du son via une communication midi. 
+ 
+Il peut être utilisé comme instrument de musique ou outil pédagogique pour les enfants. 
+ 
+Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé avec l'IDE Arduino. Il dispose de 7 entrées capacitives Qtouch qui servent à déclencher des notes de musique, d'un capteur de vibrations piézoélectriques et d'un capteur de proximité infrarouge pour modifier les sons. 
+
+(image)
+
+Nous disposons de 7 broches pour nos capteurs capacitifs, il nous faut maintenant trouver une forme compacte pouvant être divisée en 7 parties toutes de même taille. 
+
+Nous nous sommes orientés vers l'idée d'une forme hexagonale qui serait divisée en 6 parties avec un hexagone plus petit au centre. 
+
+(image)
+
+Il faut maintenant commencer à trouver les bonnes dimensions. Nous voulions que notre hexagone fasse 15,5 cm de haut et que chaque pièce soit espacée de 2 mm pour éviter les perturbations. Nous avons résolu ce problème avec le logiciel geogebra et trouvé les dimensions parfaites.
+
+(image)
+
+# SCHEMATIQUE 
+
+A présent nous devons concevoir une carte électronique qui accueillerais nos capteurs capacitifs, le microcontrôleur, le capteur de vibration et le capteur de distance.  
+
+Comme conseillé sur la doc technique, nous avons mis des résistances de Pull Up sur chaque broche du capteur de distance (VL53l0X) et nous avons mis des condensateurs de découplage sur AVDD et AVDDVCSEL.
+
+(image)
+
+Nous avons aussi mis des boutons poussoir permettant le reset du microcontrôleur et du VL53L0X. Enfin pour le câblage du piezo, nous avons mis une résistance et une diode en parallèle. 
+
+(image)
+
+# PCB 
+
+Pour la partie PCB, nous voulions que tous les composants soient tous grouper pour que la carte ne soit pas trop grande. 
+
+Nous avons fait des tests au préalable pour savoir si la longueur des fils/pistes pouvait avoir une influence sur la sensibilité des capteurs. En effet, plus les pistes sont grandes, plus la variation du signal est petite. C’est pourquoi nous devons faire en sorte que les pistes soient les moins longues possibles. 
+
+Pour éviter toute perturbation, nous avons placer tout autour de l’hexagone un plan de masse qui nous protègera des parasites.  
+
+(image)
+
+De ce fait il y a moins de charges capacitives entre chaque capteur car elles sont entraînées vers le même potentiel. Il y aura un champ électrique plus fort entre le capteur et l'utilisateur, ce qui augmente la sensibilité des capteurs. 
+
+(image)

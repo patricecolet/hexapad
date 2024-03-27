@@ -70,7 +70,7 @@ Il peut être utilisé comme instrument de musique ou outil pédagogique pour le
  
 Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé avec l'IDE Arduino. Il dispose de 7 entrées capacitives Qtouch qui servent à déclencher des notes de musique, d'un capteur de vibrations piézoélectriques et d'un capteur de proximité infrarouge pour modifier les sons. 
 
-![Seeeduino broche](https://github.com/patricecolet/hexapad/issues/1#issue-2211002847)
+![Seeeduino broche](/patricecolet/hexapad/issues/1#issue-2211002847)
 
 Nous disposons de 7 broches pour nos capteurs capacitifs, il nous faut maintenant trouver une forme compacte pouvant être divisée en 7 parties toutes de même taille. 
 

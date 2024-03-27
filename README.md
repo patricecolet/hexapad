@@ -70,18 +70,18 @@ Il peut être utilisé comme instrument de musique ou outil pédagogique pour le
  
 Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé avec l'IDE Arduino. Il dispose de 7 entrées capacitives Qtouch qui servent à déclencher des notes de musique, d'un capteur de vibrations piézoélectriques et d'un capteur de proximité infrarouge pour modifier les sons. 
 
-![alt tag](https://github.com/patricecolet/hexapad/issues/1#issue-2211002847)
+<img src="https://github.com/patricecolet/hexapad/issues/1#issue-2211002847"
 
 Nous disposons de 7 broches pour nos capteurs capacitifs, il nous faut maintenant trouver une forme compacte pouvant être divisée en 7 parties toutes de même taille. 
 
 Nous nous sommes orientés vers l'idée d'une forme hexagonale qui serait divisée en 6 parties avec un hexagone plus petit au centre. 
 
-![alt tag](https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022974226)
+<img src="https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022974226"
 
 
 Il faut maintenant commencer à trouver les bonnes dimensions. Nous voulions que notre hexagone fasse 15,5 cm de haut et que chaque pièce soit espacée de 2 mm pour éviter les perturbations. Nous avons résolu ce problème avec le logiciel geogebra et trouvé les dimensions parfaites.
 
-![alt tag](https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022974555)
+<img src="https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022974555"
 
 
 ### SCHEMATIQUE 
@@ -90,11 +90,11 @@ A présent nous devons concevoir une carte électronique qui accueillerais nos c
 
 Comme conseillé sur la doc technique, nous avons mis des résistances de Pull Up sur chaque broche du capteur de distance (VL53l0X) et nous avons mis des condensateurs de découplage sur AVDD et AVDDVCSEL.
 
-![alt tag](https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022974999)
+<img src="https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022974999"
 
 Nous avons aussi mis des boutons poussoir permettant le reset du microcontrôleur et du VL53L0X. Enfin pour le câblage du piezo, nous avons mis une résistance et une diode en parallèle. 
 
-![alt tag](https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022984570)
+<img src="https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022984570"
 
 ### PCB 
 
@@ -104,8 +104,8 @@ Nous avons fait des tests au préalable pour savoir si la longueur des fils/pist
 
 Pour éviter toute perturbation, nous avons placer tout autour de l’hexagone un plan de masse qui nous protègera des parasites.  
 
-![alt tag](https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022975566)
+<img src="https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022975566"
 
 De ce fait il y a moins de charges capacitives entre chaque capteur car elles sont entraînées vers le même potentiel. Il y aura un champ électrique plus fort entre le capteur et l'utilisateur, ce qui augmente la sensibilité des capteurs. 
 
-![alt tag](https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022976134)
+<img src="https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022976134"

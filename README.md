@@ -61,8 +61,15 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 | Controleur 6 | Disable piezo
 | Controleur 7 | Disable QTouch (MIDI note is QT1)
 
-## DOCUMENTATION
-### Hexapad
+## Sommaire
+
+#### - Introduction
+#### - Hexapad
+#### - Schematique
+#### - PCB
+#### - Firmware
+  
+### Introduction
 
 Nous travaillons sur un projet destiné aux enfants et aux malvoyants. Cet appareil est un pad doté de différents capteurs capacitifs sous des surfaces tactiles texturées qui, lorsqu'ils sont déclenchés, envoient du son via une communication midi. 
  
@@ -71,6 +78,8 @@ Il peut être utilisé comme instrument de musique ou outil pédagogique pour le
 Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé avec l'IDE Arduino. Il dispose de 7 entrées capacitives Qtouch qui servent à déclencher des notes de musique, d'un capteur de vibrations piézoélectriques et d'un capteur de proximité infrarouge pour modifier les sons. 
 
 ![Seeeduino broche](https://github.com/patricecolet/hexapad/issues/1#issue-2211002847)
+
+### Hexapad
 
 Nous disposons de 7 broches pour nos capteurs capacitifs, il nous faut maintenant trouver une forme compacte pouvant être divisée en 7 parties toutes de même taille. 
 

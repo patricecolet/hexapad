@@ -1,10 +1,10 @@
-# hexapad
+# HEXAPAD
 MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a distance sensor
 
 
 
 #### [- Introduction](#Introduction)
-#### [- Hexapad](#Hexapad)
+#### [- Description](#Description)
 #### [- Schematique](#Schematique)
 #### [- PCB](#PCB)
 #### [- Firmware](#Introduction)
@@ -22,8 +22,8 @@ Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé 
 
 ![Seeeduino broche](https://github.com/patricecolet/hexapad/blob/stage/images/broche_xiao.png)
 
-### Hexapad
-<a id="Hexapad"></a>
+### Description
+<a id="Description"></a>
 
 Nous disposons de 7 broches pour nos capteurs capacitifs, il nous faut maintenant trouver une forme compacte pouvant être divisée en 7 parties toutes de même taille. 
 

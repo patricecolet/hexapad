@@ -35,7 +35,6 @@ class NoteQtouch {
       curve = 0,
       disable = 0 
 };
-
   private:   
     Adafruit_FreeTouch qt;
     uint8_t velocity;

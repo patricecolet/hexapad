@@ -8,7 +8,7 @@ piezo::piezo(pin_t pin, MIDIAddress address) {
 
 void piezo::update() {
 
-  int piezoRead = analogRead(_pin);
+  int piezoRead = analogRead(_pin); // reading pizeo value
   //Serial.println(piezoRead);
   //delay(1000);
   switch(Piezo.state) {
@@ -17,11 +17,11 @@ void piezo::update() {
         Piezo.state = SIGNAL;
       break;
     case SIGNAL:   
-      if (piezoRead > prevpiezoRead)
+      if (piezoRead > prevpiezoRead) // value increasing
         Piezo.state = RISING;
       break;
     case RISING:    
-      if (piezoRead < prevpiezoRead)
+      if (piezoRead < prevpiezoRead) // value at the max
         Piezo.state = PEAK;
 //        sendNote = 1;
       break;

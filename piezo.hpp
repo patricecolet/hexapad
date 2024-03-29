@@ -33,7 +33,7 @@ struct piezoState
 	T peak;
 	piezoState()
 	{
-		threshold = 35;
+		threshold = 15;
     fallingThreshold = 40;     // falling threshold per cent
     state = UNDERTHRESHOLD;
     prevstate = UNDERTHRESHOLD;

@@ -21,7 +21,7 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
           Serial.printf("Note on Note: %d \n", pad.note);
           Serial.print("Velocity:");
           Serial.println(velocity);
-          if (velo != velocity){
+          if (pad.velocity_curve != curveType::linear){
             Serial.print("Velocity curve:");
             Serial.println(velo);
           }

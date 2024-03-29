@@ -22,8 +22,14 @@ void NoteQtouch::calibrate() {
 
 void NoteQtouch::update(PadSettings pad) {
   //int qt_measure = (( N * qt_measure ) + qt.measure() ) / ( N + 1 );
-  int qt_measure = qt.measure();
-  int roundOff = 10;
+  int qt_measure = qt.measure(); 
+  int roundOff;
+  if (pad.piezo_disabled == 0){
+    roundOff = 10;
+  }
+  if (pad.piezo_disabled == 1){
+    roundOff = 20;
+  }
   // int range = 1014 - qt_floor + roundOff;
   // velocity = 127 * (qt_measure - qt_floor + roundOff) / range;
   int range = 1014 - qt_floor;
@@ -52,7 +58,7 @@ void NoteQtouch::update(PadSettings pad) {
 
 int NoteQtouch::getTouch() {
   int qt_measure = qt.measure();
-  int roundOff = 10;
+  int roundOff = 20;
   int range = 1014 - qt_floor + roundOff;
   velocity = 127 * (qt_measure - qt_floor + roundOff) / range;
   return velocity;

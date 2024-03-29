@@ -103,56 +103,66 @@ void TC3_Handler() {
   Adafruit_ZeroTimer::timerHandler(3);
 }
 
+void Note(int velo){
+  for (int i = 0; i < 7 ; i++) {
+    if (padSettings[i].trig_mode == trigType::keyboard) {
+      if (tableauQtouch[i].state == qtouch_state::touched) {       
+        midi.sendNoteOn(padSettings[i],velo);
+        tableauQtouch[i].state = qtouch_state::played;
+        tableauQtouch[i].noteState = 1;
+        // Serial.print("Callback keyboard On \n \n");
+      }
+    }
+    else if (padSettings[i].trig_mode == trigType::percussion) {
+      if (tableauQtouch[i].state == qtouch_state::touched) {
+        midi.sendNoteOn(padSettings[i],velo);
+        midi.sendNoteOff(padSettings[i]);
+        tableauQtouch[i].state = qtouch_state::off;
+        // Serial.print("Callback percussion On \n \n");
+      }
+    }
+    else if (padSettings[i].trig_mode == trigType::button){
+      if (tableauQtouch[i].state == qtouch_state::touched){
+        if (buttonState[i] != false){
+          midi.sendNoteOff(padSettings[i]);
+          tableauQtouch[i].noteState = 0;
+          /*
+          Serial.print("Callback button Off \n");
+          Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
+          */
+        }
+        if (buttonState[i] == false){
+          midi.sendNoteOn(padSettings[i],velo);
+          tableauQtouch[i].noteState = 1;
+          /*
+          Serial.print("Callback button On \n");
+          Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
+          */
+        }
+        buttonState[i] = !buttonState[i];
+      }
+    }
+  }  
+}
 
 // Methods called in timer's callback are prioritized
 void TimerCallback0(){
-  Piezo.update();
-  if (Piezo.state == SENDNOTE) {
-    for (int i = 0; i < 7 ; i++) {
-      if (padSettings[i].trig_mode == trigType::keyboard) {
-        if (tableauQtouch[i].state == qtouch_state::touched) {       
-          midi.sendNoteOn(padSettings[i],Piezo.velocity);
-          tableauQtouch[i].state = qtouch_state::played;
-          tableauQtouch[i].noteState = 1;
-          // Serial.print("Callback keyboard On \n \n");
-        }
-      }
-      else if (padSettings[i].trig_mode == trigType::percussion) {
-        if (tableauQtouch[i].state == qtouch_state::touched) {
-          midi.sendNoteOn(padSettings[i],Piezo.velocity);
-          midi.sendNoteOff(padSettings[i]);
-          tableauQtouch[i].state = qtouch_state::off;
-          // Serial.print("Callback percussion On \n \n");
-        }
-      }
-      else if (padSettings[i].trig_mode == trigType::button){
-        if (tableauQtouch[i].state == qtouch_state::touched){
-          if (buttonState[i] != false){
-            midi.sendNoteOff(padSettings[i]);
-            tableauQtouch[i].noteState = 0;
-            /*
-            Serial.print("Callback button Off \n");
-            Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
-            */
-          }
-          if (buttonState[i] == false){
-            midi.sendNoteOn(padSettings[i],Piezo.velocity);
-            tableauQtouch[i].noteState = 1;
-            /*
-            Serial.print("Callback button On \n");
-            Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
-            */
-          }
-          buttonState[i] = !buttonState[i];
+  for (int i = 0; i < 7 ; i++) {
+    if (padSettings[i].piezo_disabled == 0){
+      Piezo.update();
+      if (Piezo.state == SENDNOTE) {
+        Note(Piezo.velocity);
+      }    
+      else {
+        VL53LOX_State = digitalRead(VL53LOX_InterruptPin);
+        if (VL53LOX_State == LOW) {
+          if (Distance.RangeStatus != 4) Distance.sendMeasure();
         }
       }
     }
-  }    
-    else {
-    VL53LOX_State = digitalRead(VL53LOX_InterruptPin);
-    if (VL53LOX_State == LOW) {
-      if (Distance.RangeStatus != 4) Distance.sendMeasure();
-    }
+    if (padSettings[i].piezo_disabled == 1){
+      Note(tableauQtouch[i].afterTouch);
+    } 
   }
 }
 

@@ -9,7 +9,7 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 #### [- PCB](#PCB)
 #### [- Firmware](#Introduction)
 #### [- Dependences](#Dependences)
-#### [- MIDI implementation](#MIDI-implementation)
+#### [- MIDI implementation](#implementation)
   
 ### Introduction
 <a id="Introduction"></a>
@@ -76,7 +76,7 @@ De ce fait il y a moins de charges capacitives entre chaque capteur car elles so
 
 
 ## MIDI implémentation
-<a id="MIDI-implémentation"></a>
+<a id="implementation"></a>
 
 * Canal 1 -> Pad 1
 * Canal 2 -> Pad 2

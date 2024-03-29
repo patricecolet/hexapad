@@ -12,7 +12,7 @@ const byte VL53LOX_InterruptPin = 2;  // SAMD21 digital input for VL53LOX GPIO p
 long distanceTimer;                   
 volatile byte VL53LOX_State = LOW;
 
-bool buttonState[7] = {false, false, false, false, false, false, false};
+bool buttonState[7] = {false, false, false, false, false, false, false}; // Déclaration des pads off lors du mode button
 
 // initialize Qtouch pins
 NoteQtouch tableauQtouch[] = {
@@ -66,7 +66,7 @@ void qTouchBegin() {
 // Calibrate Qtouch pins
 void qTouchCalibrate() {
   for (int i = 0; i < 7; i ++){
-  tableauQtouch[i].calibrate();  
+  tableauQtouch[i].calibrate();  // Calibration des pad
   }
 }
 
@@ -74,22 +74,22 @@ void qTouchCalibrate() {
 // This method is trigged at each loop() cycle.
 void qTouchUpdate() {
   for (int i = 0; i < 7; i ++) {
-    if (tableauQtouch[i].state == qtouch_state::played) {
-      midi.sendAfterTouch(padSettings[i],tableauQtouch[i].afterTouch);
+    if (tableauQtouch[i].state == qtouch_state::played) { // Pad en train de jouer
+      midi.sendAfterTouch(padSettings[i],tableauQtouch[i].afterTouch); // Application de l'AfterTouch
     }
-    tableauQtouch[i].update(padSettings[i]);
+    tableauQtouch[i].update(padSettings[i]); // Mise a jour de l'état des pads
     
 // On Qtouch keyboard mode, we need to send a MIDI note off when the pad is released
-    if (padSettings[i].trig_mode == trigType::keyboard) {
+    if (padSettings[i].trig_mode == trigType::keyboard) { // Pad en mode Keyboard
       if (tableauQtouch[i].noteState) {
-        if (tableauQtouch[i].state == qtouch_state::off) {
-          midi.sendNoteOff(padSettings[i]);
-          tableauQtouch[i].noteState = 0;
+        if (tableauQtouch[i].state == qtouch_state::off) { // Pad off
+          midi.sendNoteOff(padSettings[i]); // Envoie NoteOff
+          tableauQtouch[i].noteState = 0; // Etat Off
           // Serial.print("TouchUpgrade keyboard Off \n \n");
         }
       }
     }
-    else tableauQtouch[i].noteState = 0;
+    else tableauQtouch[i].noteState = 0; // Etat Off
     }
   }
   
@@ -103,43 +103,43 @@ void TC3_Handler() {
   Adafruit_ZeroTimer::timerHandler(3);
 }
 
-void Note(int velo){
+void hexapadSendNote(int velo){
   for (int i = 0; i < 7 ; i++) {
-    if (padSettings[i].trig_mode == trigType::keyboard) {
-      if (tableauQtouch[i].state == qtouch_state::touched) {       
-        midi.sendNoteOn(padSettings[i],velo);
-        tableauQtouch[i].state = qtouch_state::played;
+    if (padSettings[i].trig_mode == trigType::keyboard) { // Mode Keyboard
+      if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
+        midi.sendNoteOn(padSettings[i],velo); // Envoie velocité
+        tableauQtouch[i].state = qtouch_state::played;  // Statue jouer
         tableauQtouch[i].noteState = 1;
         // Serial.print("Callback keyboard On \n \n");
       }
     }
-    else if (padSettings[i].trig_mode == trigType::percussion) {
-      if (tableauQtouch[i].state == qtouch_state::touched) {
-        midi.sendNoteOn(padSettings[i],velo);
-        midi.sendNoteOff(padSettings[i]);
-        tableauQtouch[i].state = qtouch_state::off;
+    else if (padSettings[i].trig_mode == trigType::percussion) {  // Mode Percussion
+      if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
+        midi.sendNoteOn(padSettings[i],velo); // Envoie Note On et Velocité
+        midi.sendNoteOff(padSettings[i]); // Envoie Note Off
+        tableauQtouch[i].state = qtouch_state::off; // Statue off
         // Serial.print("Callback percussion On \n \n");
       }
     }
-    else if (padSettings[i].trig_mode == trigType::button){
-      if (tableauQtouch[i].state == qtouch_state::touched){
-        if (buttonState[i] != false){
-          midi.sendNoteOff(padSettings[i]);
+    else if (padSettings[i].trig_mode == trigType::button){ // Mode Button
+      if (tableauQtouch[i].state == qtouch_state::touched){ // Pad touché
+        if (buttonState[i] != false){ // Pad joue
+          midi.sendNoteOff(padSettings[i]); // Envoie Note Off
           tableauQtouch[i].noteState = 0;
           /*
           Serial.print("Callback button Off \n");
           Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
           */
         }
-        if (buttonState[i] == false){
-          midi.sendNoteOn(padSettings[i],velo);
+        if (buttonState[i] == false){ // Pad ne joue pas
+          midi.sendNoteOn(padSettings[i],velo); // Envoie Note On
           tableauQtouch[i].noteState = 1;
           /*
           Serial.print("Callback button On \n");
           Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
           */
         }
-        buttonState[i] = !buttonState[i];
+        buttonState[i] = !buttonState[i]; // Changing pad status
       }
     }
   }  
@@ -148,10 +148,10 @@ void Note(int velo){
 // Methods called in timer's callback are prioritized
 void TimerCallback0(){
   for (int i = 0; i < 7 ; i++) {
-    if (padSettings[i].piezo_disabled == 0){
+    if (padSettings[i].piezo_disabled == 0){ // Piezo activé 
       Piezo.update();
       if (Piezo.state == SENDNOTE) {
-        Note(Piezo.velocity);
+        hexapadSendNote(Piezo.velocity); // Envoie velocité grace au Piezo
       }    
       else {
         VL53LOX_State = digitalRead(VL53LOX_InterruptPin);
@@ -160,8 +160,8 @@ void TimerCallback0(){
         }
       }
     }
-    if (padSettings[i].piezo_disabled == 1){
-      Note(tableauQtouch[i].afterTouch);
+    if (padSettings[i].piezo_disabled == 1){ // Piezo désactivé
+      hexapadSendNote(tableauQtouch[i].afterTouch); // Envoie velocité grace au Qtouch
     } 
   }
 }
@@ -204,12 +204,12 @@ void midiInMessages() {
       */
       if (midi_channel < 8 && controller < 8) {
         if (controller == 1) padSettings[midi_channel].channel = value;
-        else if (controller == 2) padSettings[midi_channel].note = value;
-        else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value);
-        else if (controller == 4) padSettings[midi_channel].velocity_curve = static_cast<curveType>(value);
-        else if (controller == 5) padSettings[midi_channel].aftertouch_curve = static_cast<curveType>(value);
-        else if (controller == 6) padSettings[midi_channel].piezo_disabled = value > 63;
-        else if (controller == 7) padSettings[midi_channel].qtouch_disabled = value > 63;
+        else if (controller == 2) padSettings[midi_channel].note = value; // Paramétrage de la courbe de vélocité
+        else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value); // Paramétrage du mode des pads
+        else if (controller == 4) padSettings[midi_channel].velocity_curve = static_cast<curveType>(value); // Paramétrage de la courbe de vélocité
+        else if (controller == 5) padSettings[midi_channel].aftertouch_curve = static_cast<curveType>(value); // Paramétrage de la courbe d'AfterTouch
+        else if (controller == 6) padSettings[midi_channel].piezo_disabled = value > 63; // Paramétrage du Piezo
+        else if (controller == 7) padSettings[midi_channel].qtouch_disabled = value > 63; // Paramétrage des Qtouch
       }
     }
       break;

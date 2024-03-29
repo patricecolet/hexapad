@@ -6,10 +6,10 @@ enum class qtouch_pin : uint8_t {
 };
 
 enum class trigType : uint8_t {
-  percussion = 0, keyboard = 1, button = 2
+  percussion = 0, keyboard = 1, button = 2 // Mode des pads
 };
 enum class curveType : uint8_t {
-  linear = 0, parabola = 1, hyperbola = 2, sigmoid = 3
+  linear = 0, parabola = 1, hyperbola = 2, sigmoid = 3 // Forme de la vélocité
 };
 
 typedef uint8_t midi_channel;

@@ -6,16 +6,16 @@ midiMessage::midiMessage()  {
 void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
  
   uint8_t velo = 0;
-  if(pad.velocity_curve == curveType::linear) {
+  if(pad.velocity_curve == curveType::linear) { // Type de courbe linéaire
     velo = velocity;
   }
-  else if(pad.velocity_curve == curveType::parabola) {
+  else if(pad.velocity_curve == curveType::parabola) { // Type de courbe parabolique
     velo = (127*velocity*velocity)/(127*127);
   }
-  else if(pad.velocity_curve == curveType::hyperbola) {
+  else if(pad.velocity_curve == curveType::hyperbola) { // Type de courbe hyoerbolique
     velo = round(127*(1-exp(-1.5*velocity/40)));
   }
-  else if(pad.velocity_curve == curveType::sigmoid) {
+  else if(pad.velocity_curve == curveType::sigmoid) { // Type de courbe sigmoide
     velo = round(127/(1+exp(-0.08*(velocity-65))));
   }
           Serial.printf("Note on Note: %d \n", pad.note);

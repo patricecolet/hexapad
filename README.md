@@ -41,11 +41,11 @@ A présent nous devons concevoir une carte électronique qui accueillerais nos c
 
 Comme conseillé sur la doc technique, nous avons mis des résistances de Pull Up sur chaque broche du capteur de distance (VL53l0X) et nous avons mis des condensateurs de découplage sur AVDD et AVDDVCSEL.
 
-![data sheet VL53L0X](https://github.com/patricecolet/hexapad/blob/stage/images/schematique.png)
+![data sheet VL53L0X](https://github.com/patricecolet/hexapad/blob/stage/images/broche_vl53l0x.png)
 
 Nous avons aussi mis des boutons poussoir permettant le reset du microcontrôleur et du VL53L0X. Enfin pour le câblage du piezo, nous avons mis une résistance et une diode en parallèle. 
 
-![Schematique final](https://github.com/patricecolet/hexapad/issues/1#issuecomment-2022984570)
+![Schematique final](https://github.com/patricecolet/hexapad/blob/stage/images/schematique.png)
 
 ### PCB 
 

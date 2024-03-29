@@ -7,7 +7,7 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 #### [- Hexapad](#Hexapad)
 #### [- Schematique](#Schematique)
 #### [- PCB](#PCB)
-#### [- Firmware]
+#### [- Firmware](#Introduction)
 #### [- Dependences](#Dependences)
 #### [- MIDI implementation](#MIDI-implementation)
   

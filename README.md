@@ -3,15 +3,16 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 
 
 
-#### - Introduction
-#### - Hexapad
-#### - Schematique
-#### - PCB
-#### - Firmware
-#### - Dependences
-#### - MIDI implementation
+#### [- Introduction](#Introduction)
+#### [- Hexapad](#Hexapad)
+#### [- Schematique](#Schematique)
+#### [- PCB](#PCB)
+#### [- Firmware]
+#### [- Dependences](#Dependences)
+#### [- MIDI implementation](#MIDI-implementation)
   
 ### Introduction
+<a id="Introduction"></a>
 
 Nous travaillons sur un projet destiné aux enfants et aux malvoyants. Cet appareil est un pad doté de différents capteurs capacitifs sous des surfaces tactiles texturées qui, lorsqu'ils sont déclenchés, envoient du son via une communication midi. 
  
@@ -22,6 +23,7 @@ Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé 
 ![Seeeduino broche](https://github.com/patricecolet/hexapad/blob/stage/images/broche_xiao.png)
 
 ### Hexapad
+<a id="Hexapad"></a>
 
 Nous disposons de 7 broches pour nos capteurs capacitifs, il nous faut maintenant trouver une forme compacte pouvant être divisée en 7 parties toutes de même taille. 
 
@@ -36,6 +38,7 @@ Il faut maintenant commencer à trouver les bonnes dimensions. Nous voulions que
 
 
 ### SCHEMATIQUE 
+<a id="SCHEMATIQUE"></a>
 
 A présent nous devons concevoir une carte électronique qui accueillerais nos capteurs capacitifs, le microcontrôleur, le capteur de vibration et le capteur de distance.  
 
@@ -48,6 +51,7 @@ Nous avons aussi mis des boutons poussoir permettant le reset du microcontrôleu
 ![Schematique final](https://github.com/patricecolet/hexapad/blob/stage/images/schematique.png)
 
 ### PCB 
+<a id="PCB"></a>
 
 Pour la partie PCB, nous voulions que tous les composants soient tous grouper pour que la carte ne soit pas trop grande. 
 
@@ -63,6 +67,7 @@ De ce fait il y a moins de charges capacitives entre chaque capteur car elles so
 
 
 ## Dependences
+<a id="Dependences"></a>
 
 * MIDIUSB
 * Adafruit_FreeTouch
@@ -71,6 +76,7 @@ De ce fait il y a moins de charges capacitives entre chaque capteur car elles so
 
 
 ## MIDI implémentation
+<a id="MIDI-implémentation"></a>
 
 * Canal 1 -> Pad 1
 * Canal 2 -> Pad 2

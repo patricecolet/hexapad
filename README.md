@@ -20,7 +20,7 @@ Il peut être utilisé comme instrument de musique ou outil pédagogique pour le
  
 Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé avec l'IDE Arduino. Il dispose de 7 entrées capacitives Qtouch qui servent à déclencher des notes de musique, d'un capteur de vibrations piézoélectriques et d'un capteur de proximité infrarouge pour modifier les sons. 
 
-![Seeeduino broche](https://github.com/patricecolet/hexapad/blob/stage/images/broche_xiao.png)
+![Seeeduino broche](broche_xiao.png)
 
 ### Description
 <a id="Description"></a>
@@ -29,12 +29,12 @@ Nous disposons de 7 broches pour nos capteurs capacitifs, il nous faut maintenan
 
 Nous nous sommes orientés vers une forme hexagonale qui serait divisée en 6 parties avec un hexagone plus petit au centre. 
 
-![hexagone prototype](https://github.com/patricecolet/hexapad/blob/stage/images/hexagone1.png)
+![hexagone prototype](hexagone1.png)
 
 
 Il faut maintenant commencer à trouver les bonnes dimensions. Nous voulions que notre hexagone fasse 15,5 cm de haut et que chaque pièce soit espacée de 2 mm pour éviter les perturbations. Nous avons résolu ce problème avec le logiciel geogebra et trouvé les dimensions parfaites.
 
-![hexagone final](https://github.com/patricecolet/hexapad/blob/stage/images/hexagone2.png)
+![hexagone final](hexagone2.png)
 
 
 ### SCHEMATIQUE 
@@ -44,11 +44,11 @@ A présent nous devons concevoir une carte électronique qui accueillera nos cap
 
 Comme conseillé sur la doc technique, nous avons mis des résistances de Pull Up sur chaque broche du capteur de distance (VL53l0X) et nous avons mis des condensateurs de découplage sur AVDD et AVDDVCSEL.
 
-![data sheet VL53L0X](https://github.com/patricecolet/hexapad/blob/stage/images/broche_vl53l0x.png)
+![data sheet VL53L0X](broche_vl53l0x.png)
 
 Nous avons aussi mis des boutons poussoir permettant le reset du microcontrôleur et du VL53L0X. Enfin pour le câblage du piezo, nous avons mis une résistance et une diode en parallèle. 
 
-![Schematique final](https://github.com/patricecolet/hexapad/blob/stage/images/schematique.png)
+![Schematique final](schematique.png)
 
 ### PCB 
 <a id="PCB"></a>
@@ -59,11 +59,11 @@ Nous avons fait des tests au préalable pour savoir si la longueur des fils/pist
 
 Pour éviter toute perturbation, nous avons placer tout autour de l’hexagone un plan de masse qui nous protègera des parasites.  
 
-![Exemple plan de masse](https://github.com/patricecolet/hexapad/blob/stage/images/plan_de_masse_ex.png)
+![Exemple plan de masse](plan_de_masse_ex.png)
 
 De ce fait il y a moins de charges capacitives entre chaque capteur car elles sont entraînées vers le même potentiel. Il y aura un champ électrique plus fort entre le capteur et l'utilisateur, ce qui augmente la sensibilité des capteurs. 
 
-![Shield](https://github.com/patricecolet/hexapad/blob/stage/images/driven_shield_plus.png)
+![Shield](driven_shield_plus.png)
 
 
 ## Dependences

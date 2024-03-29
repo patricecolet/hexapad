@@ -27,7 +27,7 @@ Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé 
 
 Nous disposons de 7 broches pour nos capteurs capacitifs, il nous faut maintenant trouver une forme compacte pouvant être divisée en 7 parties toutes de même taille. 
 
-Nous nous sommes orientés vers l'idée d'une forme hexagonale qui serait divisée en 6 parties avec un hexagone plus petit au centre. 
+Nous nous sommes orientés vers une forme hexagonale qui serait divisée en 6 parties avec un hexagone plus petit au centre. 
 
 ![hexagone prototype](https://github.com/patricecolet/hexapad/blob/stage/images/hexagone1.png)
 
@@ -40,7 +40,7 @@ Il faut maintenant commencer à trouver les bonnes dimensions. Nous voulions que
 ### SCHEMATIQUE 
 <a id="SCHEMATIQUE"></a>
 
-A présent nous devons concevoir une carte électronique qui accueillerais nos capteurs capacitifs, le microcontrôleur, le capteur de vibration et le capteur de distance.  
+A présent nous devons concevoir une carte électronique qui accueillera nos capteurs capacitifs, le microcontrôleur, le capteur de vibration et le capteur de distance.  
 
 Comme conseillé sur la doc technique, nous avons mis des résistances de Pull Up sur chaque broche du capteur de distance (VL53l0X) et nous avons mis des condensateurs de découplage sur AVDD et AVDDVCSEL.
 

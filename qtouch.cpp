@@ -25,10 +25,10 @@ void NoteQtouch::update(PadSettings pad) {
   int qt_measure = qt.measure(); 
   int roundOff; // Initialisation 
   if (pad.piezo_disabled == 0){
-    roundOff = 10;
+    roundOff = 15;
   }
   if (pad.piezo_disabled == 1){
-    roundOff = 20;
+    roundOff = 24;
   }
   // int range = 1014 - qt_floor + roundOff;
   // velocity = 127 * (qt_measure - qt_floor + roundOff) / range;
@@ -58,7 +58,7 @@ void NoteQtouch::update(PadSettings pad) {
 
 int NoteQtouch::getTouch() {
   int qt_measure = qt.measure();
-  int roundOff = 10;
+  int roundOff = 15;
   int range = 1014 - qt_floor + roundOff; // Calcul seuil
   velocity = 127 * (qt_measure - qt_floor + roundOff) / range;
   return velocity; // Renvoie de la vélocité

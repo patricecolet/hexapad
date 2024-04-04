@@ -12,6 +12,8 @@ enum class curveType : uint8_t {
   linear = 0, parabola = 1, hyperbola = 2, sigmoid = 3
 };
 
+
+
 typedef uint8_t midi_channel;
 typedef uint8_t midi_note;
 

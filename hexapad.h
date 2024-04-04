@@ -68,10 +68,11 @@ void qTouchCalibrate() {
 // This method is trigged at each loop() cycle.
 void qTouchUpdate() {
   for (int i = 0; i < 7; i ++) {
-    if (tableauQtouch[i].state == qtouch_state::played) {
+    else if (tableauQtouch[i].state == qtouch_state::played) {
       midi.sendAfterTouch(padSettings[i],tableauQtouch[i].afterTouch);
     }
     tableauQtouch[i].update(padSettings[i]);
+    }
 // On Qtouch keyboard mode, we need to send a MIDI note off when the pad is released
     if (padSettings[i].trig_mode == trigType::keyboard) {
       if (tableauQtouch[i].noteState) {

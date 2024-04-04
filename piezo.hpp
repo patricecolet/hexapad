@@ -34,7 +34,7 @@ struct piezoState
 	piezoState()
 	{
 		threshold = 15;   // Initialisation du seuil
-    fallingThreshold = 40;     // falling threshold per cent
+    fallingThreshold = 35;     // falling threshold per cent
     state = UNDERTHRESHOLD; // Initialisation de l'état inférieur a seuil
     prevstate = UNDERTHRESHOLD; // Valeur précédente de l'état inférieur a seuil
 		debounceTime = 20; // Initialisation des rebons

@@ -9,8 +9,8 @@ piezo::piezo(pin_t pin, MIDIAddress address) {
 void piezo::update() {
 
   int piezoRead = analogRead(_pin); // reading pizeo value
-//   Serial.println(piezoRead);
- //  delay(5000);
+  // Serial.println(piezoRead);
+  // delay(5000);
   switch(Piezo.state) {
     case UNDERTHRESHOLD:
       if(piezoRead > Piezo.threshold && piezoRead > prevpiezoRead)
@@ -25,11 +25,13 @@ void piezo::update() {
         Piezo.state = PEAK;
 //        sendNote = 1;
       break;
-    case PEAK:     
+    case PEAK: 
+    /*    
       Serial.print("PEAK1:");
       Serial.print(Piezo.peak);
       Serial.print("->");
       Serial.println(millis() - piezoTimer);
+      */
       break;
     case WINDOWING:
       if (millis() - piezoTimer > 7)  

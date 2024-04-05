@@ -22,9 +22,9 @@ class distancePB{
   private:
     Adafruit_VL53L0X distance;
     VL53L0X_RangingMeasurementData_t measure;
-//    const int filterAmount = 5;
-//    MovingAverage filter;
-//    rampInt line;
+    const int filterAmount = 5;
+    // MovingAverage filter;
+    // rampInt line;
     byte channel = 0;
     bool inRange;
 };

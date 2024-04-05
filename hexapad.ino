@@ -9,12 +9,10 @@ void setup() {
   qTouchCalibrate();
 
   pinMode(VL53LOX_InterruptPin, INPUT_PULLUP);
-/*
   if (!Distance.begin()) {
     Serial.println(F("Failed to boot VL53L0X"));
     delay(100);
   }
-  */
   timerPBegin();
 }
 

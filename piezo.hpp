@@ -33,7 +33,7 @@ struct piezoState
 	T peak;
 	piezoState()
 	{
-		threshold = 10;   // Initialisation du seuil
+		threshold = 20;   // Initialisation du seuil
     fallingThreshold = 35;     // falling threshold per cent
     state = UNDERTHRESHOLD; // Initialisation de l'état inférieur a seuil
     prevstate = UNDERTHRESHOLD; // Valeur précédente de l'état inférieur a seuil

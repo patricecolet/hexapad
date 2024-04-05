@@ -18,9 +18,9 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
   else if(pad.velocity_curve == curveType::sigmoid) { // Type de courbe sigmoide
     velo = round(127/(1+exp(-0.08*(velocity-65))));
   }
-          // Serial.printf("Note on Note: %d \n", pad.note);
-          // Serial.print("Velocity:");
-          // Serial.println(velocity);
+          Serial.printf("Note on Note: %d \n", pad.note);
+          Serial.print("Velocity:");
+          Serial.println(velocity);
           if (pad.velocity_curve != curveType::linear){
             Serial.print("Velocity curve:");
             Serial.println(velo);
@@ -33,7 +33,7 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
 
 void midiMessage::sendNoteOff(PadSettings pad) {
 
-          // Serial.printf("Note off Note: %d \n", pad.note);
+          Serial.printf("Note off Note: %d \n", pad.note);
       midiEventPacket_t event = {0x08, 0x80 | pad.channel, pad.note, 0};
       MidiUSB.sendMIDI(event);
 };

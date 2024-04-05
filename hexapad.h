@@ -111,13 +111,13 @@ void hexapadSendNote(int velo){
         midi.sendNoteOn(padSettings[i],velo); // Envoie velocité
         tableauQtouch[i].state = qtouch_state::played;  // Statue jouer
         tableauQtouch[i].noteState = 1;
-        // Serial.print("Keyboard On \n");
+        Serial.print("Keyboard On \n");
       }
     }
     else if (padSettings[i].trig_mode == trigType::percussion) {  // Mode Percussion
       // Serial.printf("Qtouch state %d \n", tableauQtouch[i].state);
       if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
-        // Serial.print("Percussion On \n");
+        Serial.print("Percussion On \n");
         midi.sendNoteOn(padSettings[i],velo); // Envoie Note On et Velocité
         midi.sendNoteOff(padSettings[i]); // Envoie Note Off
       }
@@ -127,14 +127,14 @@ void hexapadSendNote(int velo){
         if (buttonState[i] != false){ // Pad joue
           midi.sendNoteOff(padSettings[i]); // Envoie Note Off
           tableauQtouch[i].noteState = 0;
-          // Serial.print("Button Off \n");
-          // Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
+          Serial.print("Button Off \n");
+          Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
         }
         if (buttonState[i] == false){ // Pad ne joue pas
           midi.sendNoteOn(padSettings[i],velo); // Envoie Note On
           tableauQtouch[i].noteState = 1;
-          // Serial.print("Button On \n");
-          // Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
+          Serial.print("Button On \n");
+          Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
         }
         buttonState[i] = !buttonState[i]; // Changing pad status
       }
@@ -149,7 +149,7 @@ void TimerCallback0(){
       Piezo.update();
       if (Piezo.state == SENDNOTE) {
         hexapadSendNote(Piezo.velocity); // Envoie velocité grace au Piezo
-        // Serial.print("Available Piezo \n\n");
+        Serial.print("Available Piezo \n\n");
       }    
       else {
         VL53LOX_State = digitalRead(VL53LOX_InterruptPin);
@@ -160,7 +160,7 @@ void TimerCallback0(){
     }
     if (padSettings[i].piezo_disabled == 1){ // Piezo désactivé
       hexapadSendNote(tableauQtouch[i].afterTouch); // Envoie velocité grace au Qtouch
-      // Serial.print("Disable Piezo \n\n");
+      Serial.print("Disable Piezo \n\n");
     } 
   }
 }

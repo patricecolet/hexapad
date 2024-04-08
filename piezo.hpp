@@ -35,9 +35,9 @@ struct piezoState
 	{
 		threshold = 20;   // Initialisation du seuil
     fallingThreshold = 35;     // falling threshold per cent
-    state = UNDERTHRESHOLD; // Initialisation de l'état inférieur a seuil
-    prevstate = UNDERTHRESHOLD; // Valeur précédente de l'état inférieur a seuil
-		debounceTime = 20; // Initialisation des rebons
+    state = UNDERTHRESHOLD; // Initialisation de l'état initale
+    prevstate = UNDERTHRESHOLD; // Initialisation de la valeur précédente
+		debounceTime = 40; // Initialisation de la période des rebons
 		sensitivity = 1023; // Initialisation de la sensibilité
 		peak = 0;
 	}
@@ -51,10 +51,11 @@ class piezo {
 		};
 		piezo(pin_t, MIDIAddress);
 		void update();
-    void playnote(int);
+    void updateNote(int);
     int state;
     bool sendNote = 0;
     uint8_t velocity;
+    int level;
     
 	private:
 		MIDIAddress _address;

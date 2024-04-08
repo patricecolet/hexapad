@@ -5,7 +5,6 @@ piezo::piezo(pin_t pin, MIDIAddress address) {
     _pin = pin;  
 };
 
-
 void piezo::update() {
 
   int piezoRead = analogRead(_pin); // reading pizeo value
@@ -66,7 +65,8 @@ void piezo::update() {
       break;
     case PEAK:
       if (Piezo.peak < piezoRead)
-        playnote(piezoRead);
+        updateNote(piezoRead);
+        Piezo.peak = piezoRead;
       Piezo.state = WINDOWING;
       break;
     case WINDOWING:
@@ -88,8 +88,9 @@ void piezo::update() {
 }
 
 
-void piezo::playnote(int piezoRead) {
+void piezo::updateNote(int piezoRead) {
+  Serial.printf("Piezo Read = %d \n", piezoRead);
   velocity = 127 * piezoRead / (Piezo.sensitivity - Piezo.threshold);
   if (velocity > 127) velocity = 127;
-  if (velocity > Piezo.peak) Piezo.peak = velocity;
+  // if (velocity > Piezo.peak) Piezo.peak = velocity;
 }

@@ -33,7 +33,7 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
 
 void midiMessage::sendNoteOff(PadSettings pad) {
 
-          Serial.printf("Note off Note: %d \n", pad.note);
+          Serial.printf("Note off Note: %d \n \n", pad.note);
       midiEventPacket_t event = {0x08, 0x80 | pad.channel, pad.note, 0};
       MidiUSB.sendMIDI(event);
 };

@@ -84,9 +84,8 @@ void qTouchUpdate() {
       if (tableauQtouch[i].noteState) {
         if (tableauQtouch[i].state == qtouch_state::off) { // Pad off
           midi.sendNoteOff(padSettings[i]); // Envoie NoteOff
-          //Serial.print("Keyboard Off \n \n");
           tableauQtouch[i].noteState = 0; // Etat Off
-          // Serial.print("TouchUpgrade keyboard Off \n \n");
+          //Serial.print("Keyboard Off \n \n");
         }
       }
     }
@@ -111,7 +110,7 @@ void hexapadSendNote(int velo){
         midi.sendNoteOn(padSettings[i],velo); // Envoie velocité
         tableauQtouch[i].state = qtouch_state::played;  // Statue jouer
         tableauQtouch[i].noteState = 1;
-        //Serial.print("Keyboard On \n");
+        Serial.print("Keyboard On \n");
       }
     }
     else if (padSettings[i].trig_mode == trigType::percussion) {  // Mode Percussion
@@ -127,14 +126,14 @@ void hexapadSendNote(int velo){
         if (buttonState[i] != false){ // Pad joue
           midi.sendNoteOff(padSettings[i]); // Envoie Note Off
           tableauQtouch[i].noteState = 0;
-          //Serial.print("Button Off \n");
-          //Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
+          Serial.print("Button Off \n");
+          Serial.printf("Pad %d , state = %d \n \n", i+1, buttonState[i]);
         }
         if (buttonState[i] == false){ // Pad ne joue pas
           midi.sendNoteOn(padSettings[i],velo); // Envoie Note On
           tableauQtouch[i].noteState = 1;
-          //Serial.print("Button On \n");
-          //Serial.printf("Pad %d , state = %d \n \n", i, buttonState[i]);
+          Serial.print("Button On \n");
+          Serial.printf("Pad %d , state = %d \n \n", i+1, buttonState[i]);
         }
         buttonState[i] = !buttonState[i]; // Changing pad status
       }
@@ -215,7 +214,7 @@ void midiInMessages() {
       Serial.println(midi_channel);
       */
       if (midi_channel >= 15 && controller < 8) {
-        for (int i = 0; i <= 7; i++){
+        for (int i = 0; i <= 6; i++){
           SendMidi(i, controller, value);
         }
       }

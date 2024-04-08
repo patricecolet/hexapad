@@ -62,11 +62,16 @@ void piezo::update() {
       piezoTimer = millis();
       break;
     case RISING:
+      Piezo.peak = prevpiezoRead;
       break;
     case PEAK:
-      if (Piezo.peak < piezoRead)
+      if (Piezo.peak < piezoRead){
         updateNote(piezoRead);
         Piezo.peak = piezoRead;
+        if (Piezo.peak == 1023){
+          sendNote = 1;
+        }
+      }
       Piezo.state = WINDOWING;
       break;
     case WINDOWING:

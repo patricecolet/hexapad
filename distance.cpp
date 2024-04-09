@@ -1,4 +1,5 @@
 #include "distance.hpp"
+#include "midimap.h"
 
 distancePB::distancePB()  {
   Adafruit_VL53L0X distance = Adafruit_VL53L0X();
@@ -16,8 +17,10 @@ void distancePB::sendMeasure() {
       double test = measure.RangeMilliMeter;
       if(test < LOWEST_RANGE_MM ) test = LOWEST_RANGE_MM;
       if(test > HIGHEST_RANGE_MM ) test = HIGHEST_RANGE_MM;
-      Serial.print("Distance (mm): ");
-      Serial.println(test);
+      if (DEBUG == 1){
+        Serial.print("Distance (mm): ");
+        Serial.println(test);
+      }
       Value =  16384 * (test - LOWEST_RANGE_MM) / (HIGHEST_RANGE_MM - LOWEST_RANGE_MM);
       if (Value < 0) Value = 0;
 //      line.go(Value, 1000);
@@ -56,7 +59,7 @@ bool distancePB::begin() {
 
   distance.setDeviceMode(VL53L0X_DEVICEMODE_CONTINUOUS_RANGING, false);
   //distance.configSensor(Adafruit_VL53L0X::VL53L0X_SENSE_HIGH_ACCURACY);
-  Serial.println("StartMeasurement... ");
+  if (DEBUG == 1) Serial.println("StartMeasurement... ");
   distance.startMeasurement();
 
   ControllerValue = 16383;

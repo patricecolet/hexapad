@@ -25,7 +25,7 @@ void NoteQtouch::update(PadSettings pad) {
   int qt_measure = qt.measure(); 
   int roundOff; // Initialisation 
   if (pad.piezo_disabled == 0){
-    roundOff = 15;
+    roundOff = 10;
   }
   if (pad.piezo_disabled == 1){
     roundOff = 24;

@@ -25,7 +25,6 @@ template<typename T>
 struct piezoState 
 { 
 	T threshold;
-  T fallingThreshold;
 	T state;
 	T prevstate;
 	T debounceTime;
@@ -33,11 +32,10 @@ struct piezoState
 	T peak;
 	piezoState()
 	{
-		threshold = 20;   // Initialisation du seuil
-    fallingThreshold = 35;     // falling threshold per cent
-    state = UNDERTHRESHOLD; // Initialisation de l'état initale
+		threshold = 40;   // Initialisation du seuil
+    state = UNDERTHRESHOLD; // Initialisation de l'état initial
     prevstate = UNDERTHRESHOLD; // Initialisation de la valeur précédente
-		debounceTime = 40; // Initialisation de la période des rebons
+		debounceTime = 40; // Initialisation de la période des rebonds
 		sensitivity = 1023; // Initialisation de la sensibilité
 		peak = 0;
 	}

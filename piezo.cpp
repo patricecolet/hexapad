@@ -14,6 +14,9 @@ void piezo::update() {
     case UNDERTHRESHOLD:
       if(piezoRead > Piezo.threshold && piezoRead > prevpiezoRead)
         Piezo.state = SIGNAL;
+      if (Piezo.threshold > 40){
+        Piezo.threshold = Piezo.threshold - 2;
+      }
       break;
     case SIGNAL:   
       if (piezoRead > prevpiezoRead) // value increasing
@@ -43,6 +46,7 @@ void piezo::update() {
       break;
     case FALLING:  
       if (piezoRead < Piezo.threshold && (millis() - piezoTimer)> Piezo.debounceTime) {
+        Piezo.threshold = Piezo.peak /3;
         Piezo.state = UNDERTHRESHOLD;
 
       // Serial.print("underthreshold: ");
@@ -70,6 +74,7 @@ void piezo::update() {
         Piezo.peak = piezoRead;
         if (Piezo.peak == 1023){
           sendNote = 1;
+          Piezo.state = SENDNOTE;
         }
       }
       Piezo.state = WINDOWING;
@@ -94,8 +99,9 @@ void piezo::update() {
 
 
 void piezo::updateNote(int piezoRead) {
-  Serial.printf("Piezo Read = %d \n", piezoRead);
-  velocity = 127 * piezoRead / (Piezo.sensitivity - Piezo.threshold);
+  if (DEBUG == 1)
+    // Serial.printf("Piezo Read = %d \n", piezoRead);
+  velocity = (127 * piezoRead )/(Piezo.sensitivity - Piezo.threshold) + (127 - ((127 * Piezo.sensitivity)/(Piezo.sensitivity - Piezo.threshold))) ;
   if (velocity > 127) velocity = 127;
   // if (velocity > Piezo.peak) Piezo.peak = velocity;
 }

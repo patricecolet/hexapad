@@ -1,5 +1,6 @@
 #pragma once
 #include <Arduino.h>
+#define DEBUG true
 
 enum class qtouch_pin : uint8_t {
   QT1 = A0, QT2 = A1, QT3 = A6, QT4 = A8, QT5 = A7, QT6 = A9, QT7 = A10

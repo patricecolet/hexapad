@@ -38,7 +38,6 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 | Controleur 2 | Piezo Sensitivity
 | Controleur 3 | Piezo Debounce Time
 | Controleur 4 | Qtouch RoudOff
-| Controleur 5 | Qtouch Floor
 
 * Canal 15 -> réglages capteur distance
 

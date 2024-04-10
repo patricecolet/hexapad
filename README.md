@@ -3,13 +3,13 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 
 
 
-#### [- Introduction](#Introduction)
-#### [- Description](#Description)
-#### [- Schematique](#Schematique)
-#### [- PCB](#PCB)
-#### [- Firmware](#Introduction)
-#### [- Dependences](#Dependences)
-#### [- MIDI implementation](#implementation)
+### [- Introduction](#Introduction)
+### [- Description](#Description)
+### [- Schematique](#Schematique)
+### [- PCB](#PCB)
+### [- Firmware](#Firmware)
+### [- Dependences](#Dependences)
+### [- MIDI implementation](#implementation)
   
 ### Introduction
 <a id="Introduction"></a>
@@ -65,6 +65,32 @@ De ce fait il y a moins de charges capacitives entre chaque capteur car elles so
 
 ![Shield](https://github.com/patricecolet/hexapad/blob/stage/images/driven_shield_plus.png?raw=true)
 
+
+### Firmware
+<a id="Firmware"></a>
+
+Nous allons maintenant attaqué la partie programmation de notre projet, c'est notement a ce moment que nous rencontrons le plus de problème.
+Le programme est composé de 4 grande partie que nous allons détails ensemble:
+
+#### [-Capteur de distance](#distance)
+#### [-Capteur Piezoelectrique](#Piezoelectrique)
+#### [-Capteur capacitif Qtouch](#Qtouch)
+#### [-Message Midi](#Midi)
+
+##### Capteur de distance 
+<a id="distance"></a>
+
+##### Capteur Piezoelectrique
+<a id="Piezoelectrique"></a>
+
+Le capteur piezoelectrique est un capteur de vibration, il va donc nous permettre de détecté l'intensié de nos appuie sur l'hexapad. Nous allons faire appelle a notre capteur piezo grace a la fonction TimerCallBack, celle ci va faire appelle au piezo quand elle va détécté un changement d'état de sa part. Nous avons décidé de structuré le code du piezo grace a un Switch case qui va déterminé l'état de notre piezo.
+
+
+##### Capteur capacitif Qtouch
+<a id="Qtouch"></a>
+
+##### Message Midi
+<a id="Midi"></a>
 
 ## Dependences
 <a id="Dependences"></a>

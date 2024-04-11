@@ -85,6 +85,8 @@ Le programme est composé de 4 grande partie que nous allons détails ensemble:
 
 Le capteur piezoelectrique est un capteur de vibration, il va donc nous permettre de détecté l'intensié de nos appuie sur l'hexapad. Nous allons faire appelle a notre capteur piezo grace a la fonction TimerCallBack, celle ci va faire appelle au piezo quand elle va détécté un changement d'état de sa part. Nous avons décidé de structuré le code du piezo grace a un Switch case qui va déterminé l'état de notre piezo.
 
+![Machine_Piezo](https://github.com/patricecolet/hexapad/blob/stage/images/machine_piezo.png?raw=true)
+
 
 ##### Capteur capacitif Qtouch
 <a id="Qtouch"></a>

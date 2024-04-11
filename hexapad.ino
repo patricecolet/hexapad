@@ -1,7 +1,7 @@
 #include "hexapad.h"
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println(F("HEXAPAD SETUP"));
   delay(1000);
   qTouchBegin();

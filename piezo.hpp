@@ -45,9 +45,8 @@ class piezo {
     };
     piezo(pin_t, MIDIAddress);
     void update();
-    void updateNote(int);
     int state;
-    bool sendNote = 0;
+//    bool sendNote = 0;
     uint8_t velocity;
     int level;
     int MSB, LSB, sensitivity;
@@ -58,4 +57,6 @@ class piezo {
     unsigned long piezoTimer;
     int prevpiezoRead;
     piezoState<int> Piezo;
+    int piezoRead;
+    void updateNote();
 };

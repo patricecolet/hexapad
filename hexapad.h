@@ -155,8 +155,8 @@ void TimerCallback0(){
       Piezo.update();
       if (Piezo.state == SENDNOTE) {
         hexapadSendNote(Piezo.velocity); // Envoie velocité grace au Piezo
-        if (DEBUG == 1){
-          Serial.print("Available Piezo \n\n");
+        if (DEBUG == 2){
+          Serial.printf("Available Piezo %d \n\n", Piezo.velocity);
         }
       }    
       else {

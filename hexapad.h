@@ -226,14 +226,14 @@ void midiInMessages() {
       if (midi_channel < 8 && controller < 8) {
         SendMidi(midi_channel, controller, value);
       }
-      if (midi_channel == 14 && controller < 5) {
+      if (midi_channel >= 14 && controller < 5) {
         if (controller == 1) advancedSettings.threshold = value;
         else if (controller == 2) advancedSettings.sensitivityM = value;
         else if (controller == 3) advancedSettings.sensitivityL = value;
         else if (controller == 4) advancedSettings.debounceTime = value;
         else if (controller == 5) advancedSettings.roundOff = value;
       }
-      if (midi_channel == 15 && controller < 8) {
+      if (midi_channel >= 15 && controller < 8) {
         for (int i = 0; i <= 6; i++){
           SendMidi(i, controller, value);
         }

@@ -46,7 +46,7 @@ void piezo::update() {
       break;
     case FALLING:  
       if (piezoRead < Piezo.fallingThreshold && (millis() - piezoTimer)> advancedSettings.debounceTime) {
-        Piezo.fallingThreshold = Piezo.peak /4;
+        Piezo.fallingThreshold = Piezo.peak /3;
         Piezo.state = UNDERTHRESHOLD;
 
       // Serial.print("underthreshold: ");
@@ -101,6 +101,7 @@ void piezo::update() {
 void piezo::updateNote(int piezoRead) {
   if (DEBUG == 1)
     // Serial.printf("Piezo Read = %d \n", piezoRead);
+  // Serial.printf("Sensitivity = %d \n",sensitivity);
   velocity = ((127 * piezoRead )/(sensitivity - advancedSettings.threshold) + (127 - ((127 * sensitivity)/(sensitivity - advancedSettings.threshold)))) ;
   if (velocity > 127) velocity = 127;
   // if (velocity > Piezo.peak) Piezo.peak = velocity;

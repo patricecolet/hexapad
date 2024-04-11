@@ -13,5 +13,5 @@ extern PadSettings padSettings[7] =
 
 extern AdvancedSettings advancedSettings =
 {
-  AdvancedSettings{ .threshold = 40, .sensitivityM = 31, .sensitivityL = 31, .debounceTime = 40, .roundOff = 15}
+  AdvancedSettings{ .threshold = 40, .sensitivityM = 31, .sensitivityL = 31, .debounceTime = 30, .roundOff = 15}
 };

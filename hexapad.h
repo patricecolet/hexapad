@@ -226,7 +226,7 @@ void midiInMessages() {
       if (midi_channel < 8 && controller < 8) {
         SendMidi(midi_channel, controller, value);
       }
-      if (midi_channel >= 14 && controller < 5) {
+      if (midi_channel >= 13 && controller < 5) {
         if (controller == 1) advancedSettings.threshold = value;
         else if (controller == 2) advancedSettings.sensitivityM = value;
         else if (controller == 3) advancedSettings.sensitivityL = value;

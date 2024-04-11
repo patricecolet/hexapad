@@ -50,9 +50,7 @@ class piezo {
     bool sendNote = 0;
     uint8_t velocity;
     int level;
-    int MSB = (advancedSettings.sensitivityM << 5) | 31;
-    int LSB = (advancedSettings.sensitivityL) | 992;
-    int sensitivity = MSB & LSB;
+    int MSB, LSB, sensitivity;
     
   private:
     MIDIAddress _address;

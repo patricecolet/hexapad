@@ -6,13 +6,15 @@ piezo::piezo(pin_t pin, MIDIAddress address) {
 };
 
 void piezo::update() {
-
+  MSB = (advancedSettings.sensitivityM << 5) | 31;
+  LSB = (advancedSettings.sensitivityL) | 992;
+  sensitivity = MSB & LSB;
   int piezoRead = analogRead(_pin); // reading pizeo value
   // Serial.println(piezoRead);
   // delay(5000);
   switch(Piezo.state) {
     case UNDERTHRESHOLD:
-      if(piezoRead > advancedSettings.threshold && piezoRead > prevpiezoRead)
+      if(piezoRead > Piezo.fallingThreshold && piezoRead > prevpiezoRead)
         Piezo.state = SIGNAL;
       if (Piezo.fallingThreshold > advancedSettings.threshold){
         Piezo.fallingThreshold = Piezo.fallingThreshold - 1.5;
@@ -101,7 +103,6 @@ void piezo::update() {
 void piezo::updateNote(int piezoRead) {
   if (DEBUG == 1)
     // Serial.printf("Piezo Read = %d \n", piezoRead);
-  // Serial.printf("Sensitivity = %d \n",sensitivity);
   velocity = ((127 * piezoRead )/(sensitivity - advancedSettings.threshold) + (127 - ((127 * sensitivity)/(sensitivity - advancedSettings.threshold)))) ;
   if (velocity > 127) velocity = 127;
   // if (velocity > Piezo.peak) Piezo.peak = velocity;

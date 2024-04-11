@@ -87,6 +87,8 @@ Le capteur piezoelectrique est un capteur de vibration, il va donc nous permettr
 
 ![Machine_Piezo](https://github.com/patricecolet/hexapad/blob/stage/images/machine_piezo.png?raw=true)
 
+Cependant, nous constations que les double rebons persisté toujours, nous ne pouvions cepandant augmenté le temps de rebons car cela rendrait notre système beaucoup plus lents. Nous avons donc eu l'idée d'implématé un seuil glissant qui varirait en fonction de la valeur peak du piezo.
+
 
 ##### Capteur capacitif Qtouch
 <a id="Qtouch"></a>

@@ -126,6 +126,16 @@ Cependant, nous constations que les double rebons persisté toujours, nous ne po
 | Controleur 6 | Disable piezo (> 0 = disable)| 
 | Controleur 7 | Disable QTouch (MIDI note is QT1) |
 
+* Canal 14 -> Advanced Settings
+
+|MIDI controller| Description|
+|---|---|
+| Controleur 1 | Piezo Threshold
+| Controleur 2 | Piezo Sensibility MSB
+| Controleur 3 | Piezo Sensibility LSB
+| Controleur 4 | Piezo Debounce Time
+| Controleur 5 | Qtouch roundOff
+
 * Canal 15 -> réglages capteur distance
 
 |MIDI controller| Description|

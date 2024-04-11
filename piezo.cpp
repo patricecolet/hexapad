@@ -12,10 +12,10 @@ void piezo::update() {
   // delay(5000);
   switch(Piezo.state) {
     case UNDERTHRESHOLD:
-      if(piezoRead > Piezo.threshold && piezoRead > prevpiezoRead)
+      if(piezoRead > advancedSettings.threshold && piezoRead > prevpiezoRead)
         Piezo.state = SIGNAL;
-      if (Piezo.threshold > 40){
-        Piezo.threshold = Piezo.threshold - 2;
+      if (Piezo.fallingThreshold > advancedSettings.threshold){
+        Piezo.fallingThreshold = Piezo.fallingThreshold - 1.5;
       }
       break;
     case SIGNAL:   
@@ -45,8 +45,8 @@ void piezo::update() {
         Piezo.state = FALLING;
       break;
     case FALLING:  
-      if (piezoRead < Piezo.threshold && (millis() - piezoTimer)> Piezo.debounceTime) {
-        Piezo.threshold = Piezo.peak /3;
+      if (piezoRead < Piezo.fallingThreshold && (millis() - piezoTimer)> advancedSettings.debounceTime) {
+        Piezo.fallingThreshold = Piezo.peak /4;
         Piezo.state = UNDERTHRESHOLD;
 
       // Serial.print("underthreshold: ");
@@ -66,13 +66,13 @@ void piezo::update() {
       piezoTimer = millis();
       break;
     case RISING:
-      Piezo.peak = prevpiezoRead;
+      Piezo.peak = piezoRead;
       break;
     case PEAK:
       if (Piezo.peak < piezoRead){
-        updateNote(piezoRead);
         Piezo.peak = piezoRead;
-        if (Piezo.peak == 1023){
+        updateNote(piezoRead);
+        if (Piezo.peak == sensitivity){
           sendNote = 1;
           Piezo.state = SENDNOTE;
         }
@@ -101,7 +101,7 @@ void piezo::update() {
 void piezo::updateNote(int piezoRead) {
   if (DEBUG == 1)
     // Serial.printf("Piezo Read = %d \n", piezoRead);
-  velocity = (127 * piezoRead )/(Piezo.sensitivity - Piezo.threshold) + (127 - ((127 * Piezo.sensitivity)/(Piezo.sensitivity - Piezo.threshold))) ;
+  velocity = ((127 * piezoRead )/(sensitivity - advancedSettings.threshold) + (127 - ((127 * sensitivity)/(sensitivity - advancedSettings.threshold)))) ;
   if (velocity > 127) velocity = 127;
   // if (velocity > Piezo.peak) Piezo.peak = velocity;
 }

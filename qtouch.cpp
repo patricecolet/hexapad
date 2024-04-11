@@ -23,26 +23,19 @@ void NoteQtouch::calibrate() {
 void NoteQtouch::update(PadSettings pad) {
   //int qt_measure = (( N * qt_measure ) + qt.measure() ) / ( N + 1 );
   int qt_measure = qt.measure(); 
-  int roundOff; // Initialisation 
-  if (pad.piezo_disabled == 0){
-    roundOff = 10;
-  }
-  if (pad.piezo_disabled == 1){
-    roundOff = 24;
-  }
   // int range = 1014 - qt_floor + roundOff;
-  // velocity = 127 * (qt_measure - qt_floor + roundOff) / range;
+  // velocity = 127 * (qt_measure - qt_floor + advancedSettings.roundOff) / range;
   int range = 1014 - qt_floor;
   velocity = 127 * (qt_measure - qt_floor) / range; // Calcul vélocité
-  if((qt_measure > qt_floor + roundOff) && qt_memory == 0) { // Si la valeur est suppérieur au seuil
+  if((qt_measure > qt_floor + advancedSettings.roundOff) && qt_memory == 0) { // Si la valeur est suppérieur au seuil
     qt_memory = qt_measure; // Memorisation de la mesure
 //    sendNoteOn(velocity);
 //    Serial.print("Note On"); Serial.println(_pin);
 //    IgnoreNote = 0;
     if (state == qtouch_state::off && state != qtouch_state::played) state = qtouch_state::touched;
   };
-//  if((qt_measure < (qt_floor + roundOff)) && qt_memory != 0) qt_memory = 0;
-  if((qt_measure < (qt_floor + roundOff)) && qt_memory != 0) {  // Si la valeur est inférieur au seuil
+//  if((qt_measure < (qt_floor + advancedSettings.roundOff)) && qt_memory != 0) qt_memory = 0;
+  if((qt_measure < (qt_floor + advancedSettings.roundOff)) && qt_memory != 0) {  // Si la valeur est inférieur au seuil
     qt_memory = 0; // Aucune mémorisation
 //    sendNoteOff();
     state = qtouch_state::off; // Statue du pad off
@@ -58,8 +51,8 @@ void NoteQtouch::update(PadSettings pad) {
 
 int NoteQtouch::getTouch() {
   int qt_measure = qt.measure();
-  int roundOff = 15;
-  int range = 1014 - qt_floor + roundOff; // Calcul seuil
-  velocity = 127 * (qt_measure - qt_floor + roundOff) / range;
+  int range = 1014 - qt_floor + advancedSettings.roundOff; // Calcul seuil
+  velocity = 127 * (qt_measure - qt_floor + advancedSettings.roundOff) / range;
+  Serial.printf("Velocity Qtouch %d \n", velocity);
   return velocity; // Renvoie de la vélocité
 };

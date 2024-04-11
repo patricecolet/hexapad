@@ -15,9 +15,11 @@ enum class curveType : uint8_t {
 
 typedef uint8_t midi_channel;
 typedef uint8_t midi_note;
-typedef uint8_t midi_sensitivity;
 typedef uint8_t midi_threshold;
+typedef uint8_t midi_sensitivityM;
+typedef uint8_t midi_sensitivityL;
 typedef uint8_t midi_debounceTime;
+typedef uint8_t midi_roundOff;
 
 struct PadSettings {
   midi_channel channel;
@@ -29,14 +31,16 @@ struct PadSettings {
   bool qtouch_disabled;
   };
 
-struct AdvencedSettings {
-  midi_sensitivity sensitivity;
+struct AdvancedSettings {
   midi_threshold threshold;
+  midi_sensitivityM sensitivityM;
+  midi_sensitivityL sensitivityL;
   midi_debounceTime debounceTime;
+  midi_roundOff roundOff;
 };
   
 extern PadSettings padSettings[7];
-extern AdvencedSettings advencedSettings;
+extern AdvancedSettings advancedSettings;
 
 
 /*

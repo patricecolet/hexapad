@@ -24,39 +24,38 @@ extern bool DoneSendNote[];
 template<typename T> 
 struct piezoState 
 { 
-	T threshold;
-	T state;
-	T prevstate;
-	T debounceTime;
-	T sensitivity;
-	T peak;
-	piezoState()
-	{
-		threshold = 40;   // Initialisation du seuil
+  T state;
+  T prevstate;
+  T peak;
+  T fallingThreshold;
+  piezoState()
+  {
+    fallingThreshold = advancedSettings.threshold;
     state = UNDERTHRESHOLD; // Initialisation de l'état initial
     prevstate = UNDERTHRESHOLD; // Initialisation de la valeur précédente
-		debounceTime = 40; // Initialisation de la période des rebonds
-		sensitivity = 1023; // Initialisation de la sensibilité
-		peak = 0;
-	}
+    peak = 0;
+  }
 };
 
 class piezo {
-	public:
-		struct MIDIAddress {
-			uint8_t address : 7;
-			uint8_t channel : 4;
-		};
-		piezo(pin_t, MIDIAddress);
-		void update();
+  public:
+    struct MIDIAddress {
+      uint8_t address : 7;
+      uint8_t channel : 4;
+    };
+    piezo(pin_t, MIDIAddress);
+    void update();
     void updateNote(int);
     int state;
     bool sendNote = 0;
     uint8_t velocity;
     int level;
+    int MSB = (advancedSettings.sensitivityM << 5) | 31;
+    int LSB = (advancedSettings.sensitivityL) | 992;
+    int sensitivity = MSB & LSB;
     
-	private:
-		MIDIAddress _address;
+  private:
+    MIDIAddress _address;
     pin_t _pin;
     unsigned long piezoTimer;
     int prevpiezoRead;

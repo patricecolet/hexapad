@@ -155,8 +155,9 @@ void TimerCallback0(){
       Piezo.update();
       if (Piezo.state == SENDNOTE) {
         hexapadSendNote(Piezo.velocity); // Envoie velocité grace au Piezo
-        if (DEBUG == 1)
+        if (DEBUG == 1){
           Serial.print("Available Piezo \n\n");
+        }
       }    
       else {
         VL53LOX_State = digitalRead(VL53LOX_InterruptPin);
@@ -222,13 +223,20 @@ void midiInMessages() {
       Serial.print("Midi Channel \n");
       Serial.println(midi_channel);
       */
-      if (midi_channel >= 15 && controller < 8) {
+      if (midi_channel < 8 && controller < 8) {
+        SendMidi(midi_channel, controller, value);
+      }
+      if (midi_channel == 14 && controller < 5) {
+        if (controller == 1) advancedSettings.threshold = value;
+        else if (controller == 2) advancedSettings.sensitivityM = value;
+        else if (controller == 3) advancedSettings.sensitivityL = value;
+        else if (controller == 4) advancedSettings.debounceTime = value;
+        else if (controller == 5) advancedSettings.roundOff = value;
+      }
+      if (midi_channel == 15 && controller < 8) {
         for (int i = 0; i <= 6; i++){
           SendMidi(i, controller, value);
         }
-      }
-      if (midi_channel < 8 && controller < 8) {
-        SendMidi(midi_channel, controller, value);
       }
     }
       break;

@@ -18,7 +18,7 @@ enum class qtouch_state : uint8_t {
 class NoteQtouch {    
   public:
    
-	  NoteQtouch(qtouch_pin pin, PadSettings &pad);
+    NoteQtouch(qtouch_pin pin, PadSettings &pad);
     void update(PadSettings);// Déclaration de la fonction de l'état des pads
     void begin();
     void calibrate(); // Déclaration de la fonction de calibration

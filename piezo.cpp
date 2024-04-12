@@ -107,8 +107,8 @@ void piezo::update() {
 void piezo::updateNote() {
   //if (DEBUG == 1)
     // Serial.printf("Piezo Read = %d \n", piezoRead);
-  //velocity = ((127 * piezoRead )/(sensitivity - advancedSettings.threshold) + (127 - ((127 * sensitivity)/(sensitivity - advancedSettings.threshold)))) ;
-  velocity = 127 * piezoRead /(sensitivity - advancedSettings.threshold);
+  velocity = ((127 * piezoRead )/(sensitivity - advancedSettings.threshold) + (127 - ((127 * sensitivity)/(sensitivity - advancedSettings.threshold)))) ;
+  // velocity = 127 * piezoRead /(sensitivity - advancedSettings.threshold);
   if (velocity > 127) velocity = 127;
   if (velocity < 1) velocity = 1;
   // if (velocity > Piezo.peak) Piezo.peak = velocity;

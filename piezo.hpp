@@ -47,7 +47,7 @@ class piezo {
     void update();
     int state;
 //    bool sendNote = 0;
-    uint8_t velocity;
+    double velocity;
     int level;
     int MSB, LSB, sensitivity;
     

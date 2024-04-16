@@ -17,7 +17,7 @@ void distancePB::sendMeasure() {
       double test = measure.RangeMilliMeter;
       if(test < LOWEST_RANGE_MM ) test = LOWEST_RANGE_MM;
       if(test > HIGHEST_RANGE_MM ) test = HIGHEST_RANGE_MM;
-      if (DEBUG == 1){
+      if (DEBUG == 2){
         Serial.print("Distance (mm): ");
         Serial.println(test);
       }
@@ -33,7 +33,7 @@ void distancePB::sendMeasure() {
           // Serial.println(ControllerValue);
 //           ControllerValue = filter.addSample(Value);
 
-          sendController();
+//          sendController();
               }
   distance.clearInterruptMask(false);
 }
@@ -63,7 +63,7 @@ bool distancePB::begin() {
   distance.startMeasurement();
 
   ControllerValue = 16383;
-  sendController();
+  // sendController();
   return 1;
   }
 };
@@ -76,7 +76,7 @@ void distancePB::restart()  {
   distance.startMeasurement();
 }
 
-
+/*
 void distancePB::sendController() {
 //  uint16_t filteredValue = filter.addSample(ControllerValue);
     byte lowValue = ControllerValue & 0x7F;
@@ -86,3 +86,4 @@ void distancePB::sendController() {
     midiEventPacket_t event_msb = {0x0B, 0xB0 |  channel, CONTROLER_MSB, highValue};
     MidiUSB.sendMIDI(event_msb);
 }
+*/

@@ -45,7 +45,7 @@ NoteQtouch tableauQtouch[] = {
     padSettings[6]
   }
 };
-midiMessage midi;
+midiMessage MidiMessage;
 
 
 // initialize piezo pin
@@ -75,7 +75,7 @@ void qTouchCalibrate() {
 void qTouchUpdate() {
   for (int i = 0; i < 7; i ++) {
     if (tableauQtouch[i].state == qtouch_state::played) { // Pad en train de jouer
-      midi.sendAfterTouch(padSettings[i],tableauQtouch[i].afterTouch); // Application de l'AfterTouch
+      MidiMessage.sendAfterTouch(padSettings[i],tableauQtouch[i].afterTouch); // Application de l'AfterTouch
     }
     tableauQtouch[i].update(padSettings[i]); // Mise a jour de l'état des pads
     
@@ -83,7 +83,7 @@ void qTouchUpdate() {
     if (padSettings[i].trig_mode == trigType::keyboard) { // Pad en mode Keyboard
       if (tableauQtouch[i].noteState) {
         if (tableauQtouch[i].state == qtouch_state::off) { // Pad off
-          midi.sendNoteOff(padSettings[i]); // Envoie NoteOff
+          MidiMessage.sendNoteOff(padSettings[i]); // Envoie NoteOff
           tableauQtouch[i].noteState = 0; // Etat Off
           if (DEBUG == 1)
             Serial.print("Keyboard Off \n \n");
@@ -108,7 +108,7 @@ void hexapadSendNote(int velo){
   for (int i = 0; i < 7 ; i++) {
     if (padSettings[i].trig_mode == trigType::keyboard) { // Mode Keyboard
       if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
-        midi.sendNoteOn(padSettings[i],velo); // Envoie velocité
+        MidiMessage.sendNoteOn(padSettings[i],velo); // Envoie velocité
         tableauQtouch[i].state = qtouch_state::played;  // Statue jouer
         tableauQtouch[i].noteState = 1;
         if (DEBUG == 1)
@@ -120,14 +120,14 @@ void hexapadSendNote(int velo){
       if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
         if (DEBUG == 1)
           Serial.print("Percussion On \n");
-        midi.sendNoteOn(padSettings[i],velo); // Envoie Note On et Velocité
-        midi.sendNoteOff(padSettings[i]); // Envoie Note Off
+        MidiMessage.sendNoteOn(padSettings[i],velo); // Envoie Note On et Velocité
+        MidiMessage.sendNoteOff(padSettings[i]); // Envoie Note Off
       }
     }
     else if (padSettings[i].trig_mode == trigType::button){ // Mode Button
       if (tableauQtouch[i].state == qtouch_state::touched){ // Pad touché
         if (buttonState[i] != false){ // Pad joue
-          midi.sendNoteOff(padSettings[i]); // Envoie Note Off
+          MidiMessage.sendNoteOff(padSettings[i]); // Envoie Note Off
           tableauQtouch[i].noteState = 0;
           if (DEBUG == 1){
             Serial.print("Button Off \n");
@@ -135,7 +135,7 @@ void hexapadSendNote(int velo){
           }
         }
         if (buttonState[i] == false){ // Pad ne joue pas
-          midi.sendNoteOn(padSettings[i],velo); // Envoie Note On
+          MidiMessage.sendNoteOn(padSettings[i],velo); // Envoie Note On
           tableauQtouch[i].noteState = 1;
           if (DEBUG == 1){
             Serial.print("Button On \n");
@@ -185,73 +185,4 @@ void timerPBegin(){
   zerotimerP.setCompare(0, COMPARE_P);
   zerotimerP.setCallback(true,  TC_CALLBACK_CC_CHANNEL0, TimerCallback0);
   zerotimerP.enable(true);
-}
-
-void SendMidi(uint8_t midi_channel, uint8_t controller, uint8_t value){
-  if (controller == 1) {
-    if (value > 0 && value < 17){
-       value = value -1;
-       padSettings[midi_channel].channel = value;
-    }
-  }
-  else if (controller == 2) padSettings[midi_channel].note = value; // Paramétrage de la courbe de vélocité
-  else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value); // Paramétrage du mode des pads
-  else if (controller == 4) padSettings[midi_channel].velocity_curve = static_cast<curveType>(value); // Paramétrage de la courbe de vélocité
-  else if (controller == 5) padSettings[midi_channel].aftertouch_curve = static_cast<curveType>(value); // Paramétrage de la courbe d'AfterTouch
-  else if (controller == 6) padSettings[midi_channel].piezo_disabled = value > 63; // Paramétrage du Piezo
-  else if (controller == 7) padSettings[midi_channel].qtouch_disabled = value > 63; // Paramétrage des Qtouch
-}
-
-// hexapad settings can be done with MIDI messages:
-void midiInMessages() {
-    midiEventPacket_t midirx;
-  // read the midi note
-  midirx = MidiUSB.read();
-  char midiheader = midirx.header;
-  uint8_t midi_channel = int(midirx.byte1 & 0XF);
-  
-
-  switch(midiheader) {
-    case 0x0B : {// On MIDI controller
-      uint8_t controller =  int(midirx.byte2);
-      uint8_t value =  int(midirx.byte3);
-      /*
-      Serial.print("Value \n");
-      Serial.println(value);
-      Serial.print("Controller \n");
-      Serial.println(controller);
-      Serial.print("Midi Channel \n");
-      Serial.println(midi_channel);
-      */
-      if (midi_channel < 8 && controller < 8) {
-        SendMidi(midi_channel, controller, value);
-      }
-      if (midi_channel >= 13 && controller < 5) {
-        if (controller == 1) advancedSettings.threshold = value;
-        else if (controller == 2) advancedSettings.sensitivityM = value;
-        else if (controller == 3) advancedSettings.sensitivityL = value;
-        else if (controller == 4) advancedSettings.debounceTime = value;
-        else if (controller == 5) advancedSettings.roundOff = value;
-      }
-      if (midi_channel >= 15 && controller < 8) {
-        for (int i = 0; i <= 6; i++){
-          SendMidi(i, controller, value);
-        }
-      }
-    }
-      break;
-    case 0x08 : {// On MIDI note off
-      char midinote =  midirx.byte2;
-      char midivelocity =  midirx.byte3;
-        if (midinote == 0x3c) {             // C4 to calibrate qtouch
-          //Serial.println("calibrating...");
-          delay(100);
-          qTouchCalibrate();
-          Distance.restart();
-        }
-    }
-      break;
-    default:
-    break;
-  }     
 }

@@ -1,8 +1,8 @@
 #pragma once
 
 //#define PLOT 0 //plot piezo reading
-#include "MIDIUSB.h"
-#include "MovingAverage.h"
+// #include "MIDIUSB.h"
+// #include "MovingAverage.h"
 #include "midimap.h"
 
 #define UNDERTHRESHOLD 0

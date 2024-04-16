@@ -1,7 +1,7 @@
 #pragma once
 #include "Adafruit_VL53L0X.h"
-#include "MIDIUSB.h"
-#include "MovingAverage.h"
+// #include "MIDIUSB.h"
+// #include "MovingAverage.h"
 //#include <Ramp.h> 
 #define HIGHEST_RANGE_MM 400
 #define LOWEST_RANGE_MM 50
@@ -13,7 +13,7 @@ class distancePB{
     distancePB();
     bool begin();
     void update();
-    void sendController();
+    // void sendController();
     void sendMeasure();
     void restart();
     uint16_t ControllerValue;

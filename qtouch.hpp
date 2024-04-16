@@ -5,7 +5,7 @@
 
 #include "Arduino.h"
 #include "Adafruit_FreeTouch.h"
-#include "MIDIUSB.h"
+// #include "MIDIUSB.h"
 #include "midimap.h"
 
 

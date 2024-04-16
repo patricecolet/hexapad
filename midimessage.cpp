@@ -1,4 +1,9 @@
 #include "midimessage.hpp"
+#include "USB-MIDI.h"
+#include <string>
+USBMIDI_CREATE_DEFAULT_INSTANCE();
+
+const char *midiMessage::SysexHeader = "HEXAPAD0SET10";
 
 midiMessage::midiMessage()  {
 };
@@ -28,9 +33,11 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
             Serial.println(velo);
           }
   }
+      
       //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
       midiEventPacket_t event = {0x09, 0x90 | pad.channel, pad.note, velo};
       MidiUSB.sendMIDI(event);
+      
 };
 
 
@@ -46,3 +53,103 @@ void midiMessage::sendAfterTouch(PadSettings pad, uint8_t afterTouch) {
       midiEventPacket_t event = {0x0A, 0xA0 | pad.channel, pad.note, afterTouch};
       MidiUSB.sendMIDI(event);
 };
+
+void midiMessage::begin() {
+    Serial.println("MidiMessage begin");
+    MIDI.begin();
+    MIDI.setHandleSystemExclusive(OnMidiSysEx);
+}
+
+void midiMessage::update() {
+  // Listen to incoming notes
+  MIDI.read();
+}
+
+void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
+  Serial.print(F("SYSEX: ("));
+  Serial.print(length);
+  Serial.print(F(" bytes) "));
+  for (int i = 1; i <= length - 2; i++){
+    if ((char)data[i] == SysexHeader[i-1]){
+      Serial.printf("%c", data[i]);
+  }
+    else{
+      Serial.printf("ERREUR \n");
+    }
+  }
+  Serial.printf("\n");
+}
+
+void midiMessage::SendMidi(uint8_t midi_channel, uint8_t controller, uint8_t value){
+  if (controller == 1) {
+    if (value > 0 && value < 17){
+       value = value -1;
+       padSettings[midi_channel].channel = value;
+    }
+  }
+  else if (controller == 2) padSettings[midi_channel].note = value; // Paramétrage de la courbe de vélocité
+  else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value); // Paramétrage du mode des pads
+  else if (controller == 4) padSettings[midi_channel].velocity_curve = static_cast<curveType>(value); // Paramétrage de la courbe de vélocité
+  else if (controller == 5) padSettings[midi_channel].aftertouch_curve = static_cast<curveType>(value); // Paramétrage de la courbe d'AfterTouch
+  else if (controller == 6) padSettings[midi_channel].piezo_disabled = value > 63; // Paramétrage du Piezo
+  else if (controller == 7) padSettings[midi_channel].qtouch_disabled = value > 63; // Paramétrage des Qtouch
+}
+
+// hexapad settings can be done with MIDI messages:
+void midiMessage::midiInMessages() {
+    midiEventPacket_t midirx;
+  // read the midi note
+  midirx = MidiUSB.read();
+  char midiheader = midirx.header;
+  uint8_t midi_channel = int(midirx.byte1 & 0XF);
+
+  switch(midiheader) {
+    case 0x0B : {// On MIDI controller
+      uint8_t controller =  int(midirx.byte2);
+      uint8_t value =  int(midirx.byte3);
+      /*
+      Serial.print("Value \n");
+      Serial.println(value);
+      Serial.print("Controller \n");
+      Serial.println(controller);
+      Serial.print("Midi Channel \n");
+      Serial.println(midi_channel);
+      */
+      if (midi_channel < 8 && controller < 8) {
+        SendMidi(midi_channel, controller, value);
+      }
+      if (midi_channel >= 13 && controller < 5) {
+        if (controller == 1) advancedSettings.threshold = value;
+        else if (controller == 2) advancedSettings.sensitivityM = value;
+        else if (controller == 3) advancedSettings.sensitivityL = value;
+        else if (controller == 4) advancedSettings.debounceTime = value;
+        else if (controller == 5) advancedSettings.roundOff = value;
+      }
+      if (midi_channel >= 15 && controller < 8) {
+        for (int i = 0; i <= 6; i++){
+          SendMidi(i, controller, value);
+        }
+      }
+    }
+      break;
+    case 0x08 : {// On MIDI note off
+      char midinote =  midirx.byte2;
+      char midivelocity =  midirx.byte3;
+        if (midinote == 0x3c) {             // C4 to calibrate qtouch
+          //Serial.println("calibrating...");
+          delay(100);
+          //qTouchCalibrate();
+          //Distance.restart();
+        }
+    }
+      break;
+    default:
+    break;
+  }     
+}
+
+
+
+
+
+

@@ -1,5 +1,10 @@
 #pragma once
 #include <Arduino.h>
+
+// #include "MIDIUSB.h"
+
+
+
 #define DEBUG 1
 
 enum class qtouch_pin : uint8_t {

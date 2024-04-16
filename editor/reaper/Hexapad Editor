@@ -1,0 +1,264 @@
+desc:HEXAPAD EDITOR
+
+
+@init
+
+function alloc(sz) ( (this.top+=sz)-sz; );
+gfx_clear=(0);
+mouse_click = 0;
+//gfx_showmenu("str");
+sysex_buf = 100000;
+sysex_buf[0] = $xf0;
+sysex_buf[1] = $x48;
+sysex_buf[2] = $x45;
+sysex_buf[3] = $x58;
+sysex_buf[4] = $x41;
+sysex_buf[5] = $x50;
+sysex_buf[6] = $x41;
+sysex_buf[7] = $x44;
+sysex_buf[8] = $x30;
+sysex_buf[9] = $x53;
+sysex_buf[10] = $x45;
+sysex_buf[11] = $x54;
+sysex_buf[12] = $x31;
+sysex_buf[13] = $x30;
+
+sysex_size = 14;
+
+
+PAD1_SETTINGS =  alloc(7);
+PAD1_SETTINGS[0] =  0;
+PAD1_SETTINGS[1] =  60;
+PAD1_SETTINGS[2] =  1;
+PAD1_SETTINGS[3] =  0;
+PAD1_SETTINGS[4] =  0;
+PAD1_SETTINGS[5] =  0;
+PAD1_SETTINGS[6] =  0;
+PAD2_SETTINGS =  alloc(7);
+PAD2_SETTINGS[0] =  0;
+PAD2_SETTINGS[1] =  60;
+PAD2_SETTINGS[2] =  1;
+PAD2_SETTINGS[3] =  0;
+PAD2_SETTINGS[4] =  0;
+PAD2_SETTINGS[5] =  0;
+PAD2_SETTINGS[6] =  0;
+PAD3_SETTINGS =  alloc(7);
+PAD3_SETTINGS[0] =  0;
+PAD3_SETTINGS[1] =  60;
+PAD3_SETTINGS[2] =  1;
+PAD3_SETTINGS[3] =  0;
+PAD3_SETTINGS[4] =  0;
+PAD3_SETTINGS[5] =  0;
+PAD3_SETTINGS[6] =  0;
+PAD4_SETTINGS =  alloc(7);
+PAD4_SETTINGS[0] =  0;
+PAD4_SETTINGS[1] =  60;
+PAD4_SETTINGS[2] =  1;
+PAD4_SETTINGS[3] =  0;
+PAD4_SETTINGS[4] =  0;
+PAD4_SETTINGS[5] =  0;
+PAD4_SETTINGS[6] =  0;
+PAD5_SETTINGS =  alloc(7);
+PAD5_SETTINGS[0] =  0;
+PAD5_SETTINGS[1] =  60;
+PAD5_SETTINGS[2] =  1;
+PAD5_SETTINGS[3] =  0;
+PAD5_SETTINGS[4] =  0;
+PAD5_SETTINGS[5] =  0;
+PAD5_SETTINGS[6] =  0;
+PAD6_SETTINGS =  alloc(7);
+PAD6_SETTINGS[0] =  0;
+PAD6_SETTINGS[1] =  60;
+PAD6_SETTINGS[2] =  1;
+PAD6_SETTINGS[3] =  0;
+PAD6_SETTINGS[4] =  0;
+PAD6_SETTINGS[5] =  0;
+PAD6_SETTINGS[6] =  0;
+PAD7_SETTINGS =  alloc(7);
+PAD7_SETTINGS[0] =  0;
+PAD7_SETTINGS[1] =  60;
+PAD7_SETTINGS[2] =  1;
+PAD7_SETTINGS[3] =  0;
+PAD7_SETTINGS[4] =  0;
+PAD7_SETTINGS[5] =  0;
+PAD7_SETTINGS[6] =  0;
+
+
+pad_channel = PAD1_SETTINGS[(current_pad - 1) * 6] + 1;
+
+pad.scale = 5;
+pad.y.offset = 300;
+pad.x.offset = 200;
+
+PAD_X = alloc(4);
+PAD_Y = alloc(4);
+PAD_X[0] = 344/pad.scale;
+PAD_Y[0] = 10/pad.scale;
+PAD_X[1] = 881/pad.scale;
+PAD_Y[1] = 10/pad.scale;
+PAD_X[2] = 449/pad.scale;
+PAD_Y[2] = 758/pad.scale;
+PAD_X[3] = 180/pad.scale;
+PAD_Y[3] = 293/pad.scale;
+
+HEXAGONE_X = alloc(6);
+HEXAGONE_Y = alloc(6);
+HEXAGONE_X[0] = -163/pad.scale;
+HEXAGONE_Y[0] = -283/pad.scale;
+HEXAGONE_X[1] = 163/pad.scale;
+HEXAGONE_Y[1] = -283/pad.scale;
+HEXAGONE_X[2] = 326/pad.scale;
+HEXAGONE_Y[2] = 0/pad.scale;
+HEXAGONE_X[3] = 163/pad.scale;
+HEXAGONE_Y[3] = 283/pad.scale;
+HEXAGONE_X[4] = -163/pad.scale;
+HEXAGONE_Y[4] = 283/pad.scale;
+HEXAGONE_X[5] = -326/pad.scale;
+HEXAGONE_Y[5] = 0/pad.scale;
+
+
+TRAPEZE_X = alloc(24);
+TRAPEZE_Y = alloc(24);
+
+function draw_pad(angle_deg,pad.num) (
+  angle = angle_deg * $pi /180;
+  i = 0;
+  loop(4,
+    X1 = cos(angle) * PAD_X[i] - sin(angle) * PAD_Y[i] + pad.x.offset;
+    Y1 = cos(angle) * PAD_Y[i] + sin(angle) * PAD_X[i] + pad.y.offset;
+    X2 = cos(angle) * PAD_X[(i+1)%4] - sin(angle) * PAD_Y[(i+1)%4] + pad.x.offset;
+    Y2 = cos(angle) * PAD_Y[(i+1)%4] + sin(angle) * PAD_X[(i+1)%4] + pad.y.offset;
+    gfx_line(X1, Y1, X2, Y2);
+    TRAPEZE_X[i + pad.num * 4] = X1;
+    TRAPEZE_Y[i + pad.num * 4] = Y1;
+    TRAPEZE_X[((i+1)%4) + pad.num * 4] = X2;
+    TRAPEZE_Y[((i+1)%4) + pad.num * 4] = Y2;
+    i += 1;
+  );
+  
+);
+
+function draw_all_pads(selected) (
+  rotation_deg = 0;
+  selected == 2 ? gfx_g = 1 : gfx_g = 0;
+  draw_pad(rotation_deg,1);
+  rotation_deg += 60;
+  selected == 1 ? gfx_g = 1 : gfx_g = 0;
+  draw_pad(rotation_deg,0);  
+  rotation_deg += 60;
+  selected == 6 ? gfx_g = 1 : gfx_g = 0;
+  draw_pad(rotation_deg,5);
+  rotation_deg = -59.99;
+  selected == 3 ? gfx_g = 1 : gfx_g = 0;
+  draw_pad(rotation_deg,2);
+  rotation_deg += -60;
+  selected == 4 ? gfx_g = 1 : gfx_g = 0;
+  draw_pad(rotation_deg,3);  
+  rotation_deg += -60;
+  selected == 5 ? gfx_g = 1 : gfx_g = 0;
+  draw_pad(rotation_deg,4);
+  selected == 7 ? gfx_g = 1 : gfx_g = 0;
+  i = 0;
+  loop(6,
+    gfx_line(HEXAGONE_X[i] + pad.x.offset,
+      HEXAGONE_Y[i] + pad.y.offset,
+      HEXAGONE_X[(i+1)%6] + pad.x.offset,
+      HEXAGONE_Y[(i+1)%6] + pad.y.offset);
+    i += 1;
+  );
+);
+
+i = 0;
+@slider
+
+
+PadMidiNote_current=60
+
+@block
+(send_sysex == 1) ? ( 
+  test_sysex = midisend_buf(0,sysex_buf,sysex_size);
+  send_sysex = 0;
+);
+while (PadMidiNote_current != PadMidiNote) (
+
+  midisend(offset, $xB0, 1 , PadMidiNote);
+  PadMidiNote_current = PadMidiNote;
+)
+
+@gfx 400 500
+
+function mouse_in(xpos,ypos,w,h) (
+  mouse_x>=xpos && mouse_x <= xpos+w && 
+    mouse_y>=ypos && mouse_y <= ypos+h;
+);
+
+function test_pad(nvert, array_x, array_y, testx, testy,offset) (
+  i = offset;
+  c = 0;
+  j = offset + nvert - 1;
+   loop(nvert,
+  (((array_y[i] > testy) != (array_y[j] > testy)) 
+  && (testx < (array_x[j] - array_x[i])
+  * (testy - array_y[i])
+  / (array_y[j] - array_y[i])
+  + array_x[i]))
+  ? c = !c;
+  j = i;
+  i += 1;
+  );
+  c
+);
+
+(mouse_cap&1) && !(mouse_cap&2) ? (
+  posx = mouse_x - pad.x.offset;
+  posy = mouse_y - pad.y.offset;
+  current_pad = test_pad(6, HEXAGONE_X, HEXAGONE_Y, posx, posy, 0) ? 7 :
+  test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 0) ? 1 :
+  test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 4) ? 2 :
+  test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 8) ? 3 :
+  test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 12) ? 4 :
+  test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 16) ? 5 :
+  test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 20) ? 6 : current_pad;
+  test_mouse_x = mouse_x;
+  test_mouse_y = mouse_y;
+  
+);
+
+gfx_r = 1;
+gfx_g = 0;
+gfx_g = 1;
+draw_all_pads(current_pad);
+
+// pad channel
+gfx_r = 0.6;
+gfx_g = 0.6;
+gfx_b = 1;
+gfx_rect(10,10,95,15,0);
+
+gfx_r = 1;
+gfx_g = 1;
+gfx_b = 1;
+gfx_x = 12;
+gfx_y = 13;
+gfx_drawstr("channel:");
+gfx_r = 0.5;
+gfx_x = 80;
+gfx_y = 13;
+gfx_drawnumber(pad_channel,0);
+
+(mouse_cap & 1)  &&  mouse_in(10,10,100,20) ? (
+  mouse_click == 0 ? (
+    pad_channel += 1;
+    pad_channel = pad_channel % 16;
+    sysex_buf[sysex_size] = $x01;
+    sysex_buf[sysex_size + 1] = current_pad;
+    sysex_buf[sysex_size + 2] = pad_channel;
+    sysex_buf[sysex_size + 3] = $xf7;
+    sysex_size += 4;
+    send_sysex = 1;
+    mouse_click = 1;
+  );
+  mouse_value = mouse_y - mouse_cap_start;
+): mouse_click = 0;
+
+

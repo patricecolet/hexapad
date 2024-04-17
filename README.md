@@ -85,7 +85,7 @@ Le programme est composé de 4 grandes parties que nous allons détailler ensemb
 
 Le capteur piézoélectrique est un capteur de vibration, il va donc nous permettre de détecter l'intensité de nos appuis sur l'hexapad. Nous allons utiliser la fonction TimerCallBack pour faire appel à notre capteur piézo lorsqu'il détectera un changement d'état de sa part. Nous avons choisi de structurer le code du piézo en utilisant un Switch case pour évaluer l'état de notre piezo.
 
-![Machine_Piezo3](https://github.com/patricecolet/hexapad/blob/stage/images/machine_piezo3.png?raw=true)
+![Machine_Piezo3](https://github.com/patricecolet/hexapad/blob/sysex/images/machine_piezo3.png?raw=true)
 
 Néanmoins, nous étions constamment confrontés à la persistance des doubles rebonds. Cependant, nous ne pouvions pas augmenter la durée des rebonds, car cela rendrait notre système beaucoup plus lent. Nous avons donc eu l'idée d'implanter un seuil glissant qui varirait en fonction de la valeur peak du piézo.
 

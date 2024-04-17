@@ -151,7 +151,7 @@ void hexapadSendNote(int velo){
 // Methods called in timer's callback are prioritized
 void TimerCallback0(){
   for (int i = 0; i < 7 ; i++) {
-    if (padSettings[i].piezo_disabled == 0){ // Piezo activé 
+    if (padSettings[i].piezo == 1){ // Piezo activé 
       Piezo.update();
       if (Piezo.state == SENDNOTE) {
         hexapadSendNote(Piezo.velocity); // Envoie velocité grace au Piezo
@@ -166,7 +166,7 @@ void TimerCallback0(){
         }
       }
     }
-    if (padSettings[i].piezo_disabled == 1){ // Piezo désactivé
+    if (padSettings[i].piezo == 0){ // Piezo désactivé
       hexapadSendNote(tableauQtouch[i].afterTouch); // Envoie velocité grace au Qtouch
       if (DEBUG == 1)
         Serial.print("Disable Piezo \n\n");

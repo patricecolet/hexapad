@@ -19,5 +19,5 @@ void setup() {
 void loop() {
   qTouchUpdate();
   MidiMessage.update();
-  MidiMessage.midiInMessages();
+  // MidiMessage.midiInMessages();
 }

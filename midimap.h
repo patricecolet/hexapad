@@ -32,8 +32,8 @@ struct PadSettings {
   trigType trig_mode;
   curveType velocity_curve;
   curveType aftertouch_curve;
-  bool piezo_disabled;
-  bool qtouch_disabled;
+  bool piezo;
+  bool qtouch;
   };
 
 struct AdvancedSettings {

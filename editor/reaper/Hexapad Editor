@@ -3,93 +3,53 @@ desc:HEXAPAD EDITOR
 
 @init
 
+// allocate array memory
 function alloc(sz) ( (this.top+=sz)-sz; );
 gfx_clear=(0);
 mouse_click = 0;
 //gfx_showmenu("str");
 sysex_buf = 100000;
 sysex_buf[0] = $xf0;
-sysex_buf[1] = $x48;
-sysex_buf[2] = $x45;
-sysex_buf[3] = $x58;
-sysex_buf[4] = $x41;
-sysex_buf[5] = $x50;
-sysex_buf[6] = $x41;
-sysex_buf[7] = $x44;
-sysex_buf[8] = $x30;
-sysex_buf[9] = $x53;
-sysex_buf[10] = $x45;
-sysex_buf[11] = $x54;
-sysex_buf[12] = $x31;
-sysex_buf[13] = $x30;
+sysex_buf[1] = $x48;// H
+sysex_buf[2] = $x45;// E
+sysex_buf[3] = $x58;// X
+sysex_buf[4] = $x41;// A
+sysex_buf[5] = $x50;// P
+sysex_buf[6] = $x41;// A
+sysex_buf[7] = $x44;// D
+sysex_buf[8] = $x00;// 0
+sysex_buf[9] = $x01;// Set command
+sysex_buf[10] = $x01;// version 1
+sysex_buf[11] = $x00;// revision 0
 
-sysex_size = 14;
+sysex_header_size = 12;
+sysex_size = sysex_header_size;
 
+PAD_SETTINGS =  alloc(49);
+i = 0;j = 0;
+loop(7,
+  (i == 1) ? j = 2;
+  (i == 2) ? j = 4;
+  (i == 3) ? j = 5;
+  (i == 4) ? j = 7;
+  (i == 5) ? j = 9;
+  (i == 6) ? j = 11;
+  PAD_SETTINGS[0 + (i * 7)] = 0;
+  PAD_SETTINGS[1 + (i * 7)] = 60 + j;
+  PAD_SETTINGS[2 + (i * 7)] = 1;
+  PAD_SETTINGS[3 + (i * 7)] = 0;
+  PAD_SETTINGS[4 + (i * 7)] = 0;
+  PAD_SETTINGS[5 + (i * 7)] = 0;
+  PAD_SETTINGS[6 + (i * 7)] = 0;
+  i += 1;
+);
 
-PAD1_SETTINGS =  alloc(7);
-PAD1_SETTINGS[0] =  0;
-PAD1_SETTINGS[1] =  60;
-PAD1_SETTINGS[2] =  1;
-PAD1_SETTINGS[3] =  0;
-PAD1_SETTINGS[4] =  0;
-PAD1_SETTINGS[5] =  0;
-PAD1_SETTINGS[6] =  0;
-PAD2_SETTINGS =  alloc(7);
-PAD2_SETTINGS[0] =  0;
-PAD2_SETTINGS[1] =  60;
-PAD2_SETTINGS[2] =  1;
-PAD2_SETTINGS[3] =  0;
-PAD2_SETTINGS[4] =  0;
-PAD2_SETTINGS[5] =  0;
-PAD2_SETTINGS[6] =  0;
-PAD3_SETTINGS =  alloc(7);
-PAD3_SETTINGS[0] =  0;
-PAD3_SETTINGS[1] =  60;
-PAD3_SETTINGS[2] =  1;
-PAD3_SETTINGS[3] =  0;
-PAD3_SETTINGS[4] =  0;
-PAD3_SETTINGS[5] =  0;
-PAD3_SETTINGS[6] =  0;
-PAD4_SETTINGS =  alloc(7);
-PAD4_SETTINGS[0] =  0;
-PAD4_SETTINGS[1] =  60;
-PAD4_SETTINGS[2] =  1;
-PAD4_SETTINGS[3] =  0;
-PAD4_SETTINGS[4] =  0;
-PAD4_SETTINGS[5] =  0;
-PAD4_SETTINGS[6] =  0;
-PAD5_SETTINGS =  alloc(7);
-PAD5_SETTINGS[0] =  0;
-PAD5_SETTINGS[1] =  60;
-PAD5_SETTINGS[2] =  1;
-PAD5_SETTINGS[3] =  0;
-PAD5_SETTINGS[4] =  0;
-PAD5_SETTINGS[5] =  0;
-PAD5_SETTINGS[6] =  0;
-PAD6_SETTINGS =  alloc(7);
-PAD6_SETTINGS[0] =  0;
-PAD6_SETTINGS[1] =  60;
-PAD6_SETTINGS[2] =  1;
-PAD6_SETTINGS[3] =  0;
-PAD6_SETTINGS[4] =  0;
-PAD6_SETTINGS[5] =  0;
-PAD6_SETTINGS[6] =  0;
-PAD7_SETTINGS =  alloc(7);
-PAD7_SETTINGS[0] =  0;
-PAD7_SETTINGS[1] =  60;
-PAD7_SETTINGS[2] =  1;
-PAD7_SETTINGS[3] =  0;
-PAD7_SETTINGS[4] =  0;
-PAD7_SETTINGS[5] =  0;
-PAD7_SETTINGS[6] =  0;
-
-
-pad_channel = PAD1_SETTINGS[(current_pad - 1) * 6] + 1;
 
 pad.scale = 5;
 pad.y.offset = 300;
 pad.x.offset = 200;
-
+current_pad = 7;
+//one pad coordinates
 PAD_X = alloc(4);
 PAD_Y = alloc(4);
 PAD_X[0] = 344/pad.scale;
@@ -101,6 +61,7 @@ PAD_Y[2] = 758/pad.scale;
 PAD_X[3] = 180/pad.scale;
 PAD_Y[3] = 293/pad.scale;
 
+//central pad
 HEXAGONE_X = alloc(6);
 HEXAGONE_Y = alloc(6);
 HEXAGONE_X[0] = -163/pad.scale;
@@ -116,10 +77,11 @@ HEXAGONE_Y[4] = 283/pad.scale;
 HEXAGONE_X[5] = -326/pad.scale;
 HEXAGONE_Y[5] = 0/pad.scale;
 
-
+//peripheric pads
 TRAPEZE_X = alloc(24);
 TRAPEZE_Y = alloc(24);
 
+// Draw peripheric pads by rotating one pad coordinates
 function draw_pad(angle_deg,pad.num) (
   angle = angle_deg * $pi /180;
   i = 0;
@@ -135,7 +97,6 @@ function draw_pad(angle_deg,pad.num) (
     TRAPEZE_Y[((i+1)%4) + pad.num * 4] = Y2;
     i += 1;
   );
-  
 );
 
 function draw_all_pads(selected) (
@@ -168,7 +129,6 @@ function draw_all_pads(selected) (
   );
 );
 
-i = 0;
 @slider
 
 
@@ -178,25 +138,26 @@ PadMidiNote_current=60
 (send_sysex == 1) ? ( 
   test_sysex = midisend_buf(0,sysex_buf,sysex_size);
   send_sysex = 0;
+  sysex_size = sysex_header_size;
 );
 while (PadMidiNote_current != PadMidiNote) (
-
   midisend(offset, $xB0, 1 , PadMidiNote);
   PadMidiNote_current = PadMidiNote;
-)
+);
 
 @gfx 400 500
-
+// detect mouse click inside rectangle
 function mouse_in(xpos,ypos,w,h) (
   mouse_x>=xpos && mouse_x <= xpos+w && 
     mouse_y>=ypos && mouse_y <= ypos+h;
 );
 
+// detect mouse click (textx testy) inside polygone coordinates (nvert,array_x array_y,offeset)
 function test_pad(nvert, array_x, array_y, testx, testy,offset) (
   i = offset;
   c = 0;
   j = offset + nvert - 1;
-   loop(nvert,
+  loop(nvert,
   (((array_y[i] > testy) != (array_y[j] > testy)) 
   && (testx < (array_x[j] - array_x[i])
   * (testy - array_y[i])
@@ -219,46 +180,58 @@ function test_pad(nvert, array_x, array_y, testx, testy,offset) (
   test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 12) ? 4 :
   test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 16) ? 5 :
   test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 20) ? 6 : current_pad;
-  test_mouse_x = mouse_x;
-  test_mouse_y = mouse_y;
-  
 );
 
+// draw hexapad
 gfx_r = 1;
 gfx_g = 0;
 gfx_g = 1;
 draw_all_pads(current_pad);
 
-// pad channel
-gfx_r = 0.6;
-gfx_g = 0.6;
-gfx_b = 1;
-gfx_rect(10,10,95,15,0);
+//draw pad settings buttons
 
-gfx_r = 1;
-gfx_g = 1;
-gfx_b = 1;
-gfx_x = 12;
-gfx_y = 13;
-gfx_drawstr("channel:");
-gfx_r = 0.5;
-gfx_x = 80;
-gfx_y = 13;
-gfx_drawnumber(pad_channel,0);
+function drawButton(xpos,ypos,width,height,length,array.offset,name,displayOffset)(
+  setting.id = (current_pad - 1) * 7 + array.offset;
+  setting = PAD_SETTINGS[setting.id];
+  gfx_r = 0.6;
+  gfx_g = 0.1;
+  gfx_b = 0.6;
+  gfx_rect(xpos,ypos,width,height,0);
+  gfx_r = 1;
+  gfx_g = 0.5;
+  gfx_b = 1;
+  gfx_x = xpos + 2;
+  gfx_y = ypos + 3;
+  gfx_drawstr(name);
+  gfx_r = 0.5;
+  gfx_drawnumber(setting + displayOffset, 0);
+  
+  (mouse_cap & 1) ? ( 
+    mouse_in(xpos,ypos,width,height) ? (
+      mouse_click == 0 ? (
+        setting += 1;
+        setting = setting % length;
+        sysex_buf[sysex_size] = $x01;
+        sysex_buf[sysex_size + 1] = current_pad;
+        sysex_buf[sysex_size + 2] = setting;
+        sysex_buf[sysex_size + 3] = $xf7;
+        sysex_size += 4;
+        send_sysex = 1;
+        mouse_click = 1;
+        PAD_SETTINGS[setting.id] = setting;
+      );
+      mouse_value = mouse_y - mouse_cap_start;
+    );
+  ): mouse_click = 0;
+);
 
-(mouse_cap & 1)  &&  mouse_in(10,10,100,20) ? (
-  mouse_click == 0 ? (
-    pad_channel += 1;
-    pad_channel = pad_channel % 16;
-    sysex_buf[sysex_size] = $x01;
-    sysex_buf[sysex_size + 1] = current_pad;
-    sysex_buf[sysex_size + 2] = pad_channel;
-    sysex_buf[sysex_size + 3] = $xf7;
-    sysex_size += 4;
-    send_sysex = 1;
-    mouse_click = 1;
-  );
-  mouse_value = mouse_y - mouse_cap_start;
-): mouse_click = 0;
+//xpos,ypos,width,height,modulo,array offset,name,displayOffset
+drawButton(10,10,85,15,16,0,"channel:",1);
+drawButton(100,10,70,15,127,1,"note:",0);
+drawButton(175,10,60,15,3,2,"trig:",0);
+drawButton(240,10,95,15,3,3,"vel.curve:",0);
+drawButton(10,30,110,15,3,4,"touch.curve:",0);
+drawButton(125,30,100,15,2,5,"piezo.off:",0);
+drawButton(230,30,100,15,2,6,"touch.off:",0);
 
 

@@ -89,7 +89,7 @@ Le capteur piézoélectrique est un capteur de vibration, il va donc nous permet
 
 Néanmoins, nous étions constamment confrontés à la persistance des doubles rebonds. Cependant, nous ne pouvions pas augmenter la durée des rebonds, car cela rendrait notre système beaucoup plus lent. Nous avons donc eu l'idée d'implanter un seuil glissant qui varirait en fonction de la valeur peak du piézo.
 
-![Machine_Piezo3](https://github.com/patricecolet/hexapad/blob/stage/images/machine_piezo2.png?raw=true)
+![Machine_Piezo2](https://github.com/patricecolet/hexapad/blob/stage/images/machine_piezo2.png?raw=true)
 
 ![Allure_Piezo](https://github.com/patricecolet/hexapad/blob/stage/images/allure_piezo.png?raw=true)
 

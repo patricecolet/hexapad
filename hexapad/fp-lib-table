@@ -1,4 +1,0 @@
-(fp_lib_table
-  (lib (name "Seeeduino_XIAO")(type "KiCad")(uri "/home/guest/Documents/kicad/composants/Seeeduino_XIAO")(options "")(descr ""))
-  (lib (name "VL53L0X")(type "KiCad")(uri "/home/guest/Documents/kicad/composants/VL53L0X")(options "")(descr ""))
-)

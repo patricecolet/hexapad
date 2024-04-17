@@ -87,6 +87,7 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
     }
   }
   commandeSysex = data[9];
+
   if (commandeSysex == 1){
     Serial.printf("\nCommande = SET \n");
   }
@@ -102,10 +103,16 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
   controllerSysex = data[13];
   Serial.printf("Controller = %d \n", controllerSysex);
   valueSysex = data[14];
-  Serial.printf("Value = %d \n", valueSysex);
-
+  Serial.printf("Value = %d \n \n", valueSysex);
+  /*
+  if (controllerSysex == 0){
+    for (int i = 0; i <= 6; i++){
+      MIDI.sendSysEx(sizeof(PadSettings), PadSettings, true);
+    }
+  }
+  */
   if (channelSysex < 7 && controllerSysex < 8) {
-    SendMidi(channelSysex, controllerSysex, valueSysex);
+    SendMidi(channelSysex - 1, controllerSysex, valueSysex);
   }
   if (channelSysex == 14 && controllerSysex < 5) {
     if (controllerSysex == 1) advancedSettings.threshold = valueSysex;
@@ -125,10 +132,7 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
 
 void SendMidi(int midi_channel, int controller, int value){
   if (controller == 1) {
-    if (value > 0 && value < 17){
-       value = value -1;
        padSettings[midi_channel].channel = value;
-    }
   }
   else if (controller == 2) padSettings[midi_channel].note = value; // Paramétrage de la courbe de vélocité
   else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value); // Paramétrage du mode des pads
@@ -138,7 +142,7 @@ void SendMidi(int midi_channel, int controller, int value){
   else if (controller == 7) padSettings[midi_channel].qtouch = value > 63; // Paramétrage des Qtouch
 }
 
-
+/*
 // hexapad settings can be done with MIDI messages:
 void midiMessage::midiInMessages() {
     midiEventPacket_t midirx;
@@ -158,7 +162,7 @@ void midiMessage::midiInMessages() {
       Serial.println(controller);
       Serial.print("Midi Channel \n");
       Serial.println(midi_channel);
-      */
+    
       if (midi_channel < 8 && controller < 8) {
         SendMidi(midi_channel, controller, value);
       }
@@ -191,4 +195,4 @@ void midiMessage::midiInMessages() {
     break;
   }     
 }
-
+*/

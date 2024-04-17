@@ -19,7 +19,7 @@ void piezo::update() {
       if(piezoRead > Piezo.fallingThreshold && piezoRead > prevpiezoRead)
         Piezo.state = SIGNAL;
       if (Piezo.fallingThreshold > advancedSettings.threshold){
-        Piezo.fallingThreshold = Piezo.fallingThreshold - 1.5;
+        Piezo.fallingThreshold = Piezo.fallingThreshold - 0.5;
       }
       break;
     case SIGNAL:   

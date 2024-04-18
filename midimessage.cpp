@@ -157,7 +157,8 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
 void SendMidi(int midi_channel, int controller, int value) {
   if (controller == 1) {
     padSettings[midi_channel].channel = value;
-  } else if (controller == 2) padSettings[midi_channel].note = value;                                    // Paramétrage de la courbe de vélocité
+  }
+  else if (controller == 2) padSettings[midi_channel].note = value;                                      // Paramétrage de la courbe de vélocité
   else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value);          // Paramétrage du mode des pads
   else if (controller == 4) padSettings[midi_channel].velocity_curve = static_cast<curveType>(value);    // Paramétrage de la courbe de vélocité
   else if (controller == 5) padSettings[midi_channel].aftertouch_curve = static_cast<curveType>(value);  // Paramétrage de la courbe d'AfterTouch

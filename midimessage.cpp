@@ -105,15 +105,15 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
     }
     if (channelSysex <= 7 && (controllerSysex < 8 || controllerSysex == 0)) {
       if (controllerSysex == 0 && commandeSysex == 2) {
-        padSettingsBytes[0] = 0xF0;
-        memcpy(&padSettingsBytes[1], padSettings, sizeof(PadSettings) * 7);
-        padSettingsBytes[sizeof(padSettingsBytes) - 1] = 0xF7;
-        MIDI.sendSysEx(sizeof(padSettingsBytes), padSettingsBytes, true);
+        padSettingsBytes[0] = 0xF0;                                                                      // Début du message Sysex  
+        memcpy(&padSettingsBytes[1], padSettings, sizeof(PadSettings) * 7);                              // Création du tableau AdvancedSettings en Bytes
+        padSettingsBytes[sizeof(padSettingsBytes) - 1] = 0xF7;                                           // Fin du message Sysex
+        MIDI.sendSysEx(sizeof(padSettingsBytes), padSettingsBytes, true);                                // Envoie du tableau PadSettings en Sysex
         if (DEBUG == 1) {
           Serial.printf("Taille du tableau PadSettingsBytes = %d \n", sizeof(padSettingsBytes));
           Serial.printf("%d \n", padSettingsBytes[0]);
           for (int i = 2; i <= sizeof(padSettingsBytes); i++) {
-            Serial.printf("%d, ", padSettingsBytes[i - 1]);
+            Serial.printf("%d, ", padSettingsBytes[i - 1]);                                              // Affichage du tableau PadSettings
             if ((i - 1) % 7 == 0) {
               Serial.printf("\n");
             }
@@ -121,32 +121,32 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
         }
       }
       if (controllerSysex < 8 && commandeSysex == 1) {
-        SendMidi(channelSysex - 1, controllerSysex, valueSysex);
+        SendMidi(channelSysex - 1, controllerSysex, valueSysex);                                         // Appelle a la fonction SendMidi
       }
     }
 
     if (channelSysex == 14 && (controllerSysex < 6 || controllerSysex == 0)) {
       if (controllerSysex == 0 && commandeSysex == 2) {
-        advancedSettingsBytes[0] = 0xF0;
-        memcpy(&advancedSettingsBytes[1], &advancedSettings, sizeof(AdvancedSettings));
-        advancedSettingsBytes[sizeof(advancedSettingsBytes) - 1] = 0xF7;
-        MIDI.sendSysEx(sizeof(advancedSettingsBytes), advancedSettingsBytes, true);
+        advancedSettingsBytes[0] = 0xF0;                                                                 // Début du message Sysex
+        memcpy(&advancedSettingsBytes[1], &advancedSettings, sizeof(AdvancedSettings));                  // Création du tableau AdvancedSettings en Bytes
+        advancedSettingsBytes[sizeof(advancedSettingsBytes) - 1] = 0xF7;                                 // Fin du message Sysex
+        MIDI.sendSysEx(sizeof(advancedSettingsBytes), advancedSettingsBytes, true);                      // Envoie du tableau AdvancedSettings en Sysex
         if (DEBUG == 1) {
           Serial.printf("Taille du tableau advancedSettingsBytes = %d \n", sizeof(advancedSettingsBytes));
           for (int i = 1; i <= sizeof(advancedSettingsBytes); i++) {
-            Serial.printf("%d, ", advancedSettingsBytes[i - 1]);
+            Serial.printf("%d, ", advancedSettingsBytes[i - 1]);                                         // Affichage du tableau AdvancedSettings
           }
         }
-      } else if (controllerSysex == 1 && commandeSysex == 1) advancedSettings.threshold = valueSysex;
-      else if (controllerSysex == 2 && commandeSysex == 1) advancedSettings.sensitivityM = valueSysex;
-      else if (controllerSysex == 3 && commandeSysex == 1) advancedSettings.sensitivityL = valueSysex;
-      else if (controllerSysex == 4 && commandeSysex == 1) advancedSettings.debounceTime = valueSysex;
-      else if (controllerSysex == 5 && commandeSysex == 1) advancedSettings.roundOff = valueSysex;
+      } else if (controllerSysex == 1 && commandeSysex == 1) advancedSettings.threshold = valueSysex;    // Paramétrage du seuil
+      else if (controllerSysex == 2 && commandeSysex == 1) advancedSettings.sensitivityM = valueSysex;   // Paramétrage de la sensitivity
+      else if (controllerSysex == 3 && commandeSysex == 1) advancedSettings.sensitivityL = valueSysex;   // Paramétrage de la sensitivity
+      else if (controllerSysex == 4 && commandeSysex == 1) advancedSettings.debounceTime = valueSysex;   // Paramétrage de la periode des doubles rebons
+      else if (controllerSysex == 5 && commandeSysex == 1) advancedSettings.roundOff = valueSysex;       // Paramétrage du roundOff
     }
 
     if (channelSysex == 16 && controllerSysex < 8 && commandeSysex == 1) {
       for (int i = 0; i <= 6; i++) {
-        SendMidi(i, controllerSysex, valueSysex);
+        SendMidi(i, controllerSysex, valueSysex); // Appelle a la fonction SendMidi
       }
     }
   }

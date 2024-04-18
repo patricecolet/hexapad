@@ -73,49 +73,50 @@ void midiMessage::update() {
 void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
   int commandeSysex, versionSysex, revisionSysex, channelSysex, controllerSysex, valueSysex;
   bool status = 1;
-  Serial.print(F("SYSEX: ("));
-  Serial.print(length);
-  Serial.print(F(" bytes) \n"));
-  for (uint16_t i = 1; i <= 8; i++) {
-    if (status == 1 && (char)data[i] == SysexHeader[i - 1]) {
-      Serial.printf("%c", data[i]);
-    }
-    if ((char)data[i] != SysexHeader[i - 1]) {
-      Serial.printf("\nERREUR \n");
-      status =  0;
+  if (DEBUG == 1) {
+    Serial.print(F("SYSEX: ("));
+    Serial.print(length);
+    Serial.print(F(" bytes) \n"));
+    for (uint16_t i = 1; i <= 8; i++) {
+      if (status == 1 && (char)data[i] == SysexHeader[i - 1]) {
+        Serial.printf("%c", data[i]);
+      }
+      if ((char)data[i] != SysexHeader[i - 1]) {
+        Serial.printf("\nERREUR \n");
+        status = 0;
+      }
     }
   }
   if (status != 0) {
     commandeSysex = data[9];
-    if (commandeSysex == 1) {
+    if (commandeSysex == 1 && DEBUG == 1) {
       Serial.printf("\nCommande = SET \n");
     }
-    if (commandeSysex == 2) {
+    if (commandeSysex == 2 && DEBUG == 1) {
       Serial.printf("\nCommande = GET \n");
     }
     versionSysex = data[10];
-    Serial.printf("Version = %d \n", versionSysex);
     revisionSysex = data[11];
-    Serial.printf("Revision = %d \n", revisionSysex);
     channelSysex = data[12];
-    Serial.printf("Channel = %d \n", channelSysex);
     controllerSysex = data[13];
-    Serial.printf("Controller = %d \n", controllerSysex);
     valueSysex = data[14];
-    Serial.printf("Value = %d \n \n", valueSysex);
-
-
+    if (DEBUG == 1) {
+      Serial.printf("Version = %d \nRevision = %d \nChannel = %d \nController = %d \nValue = % d \n \n", versionSysex, revisionSysex, channelSysex, controllerSysex, valueSysex);
+    }
     if (channelSysex <= 7 && (controllerSysex < 8 || controllerSysex == 0)) {
       if (controllerSysex == 0 && commandeSysex == 2) {
         padSettingsBytes[0] = 0xF0;
         memcpy(&padSettingsBytes[1], padSettings, sizeof(PadSettings) * 7);
         padSettingsBytes[sizeof(padSettingsBytes) - 1] = 0xF7;
         MIDI.sendSysEx(sizeof(padSettingsBytes), padSettingsBytes, true);
-        Serial.printf("Taille du tableau PadSettingsBytes = %d \n", sizeof(padSettingsBytes));
-        for (int i = 1; i <= sizeof(padSettingsBytes); i++) {
-          Serial.printf("%d, ", padSettingsBytes[i - 1]);
-          if (i % 7 == 0) {
-            Serial.printf("\n");
+        if (DEBUG == 1) {
+          Serial.printf("Taille du tableau PadSettingsBytes = %d \n", sizeof(padSettingsBytes));
+          Serial.printf("%d \n", padSettingsBytes[0]);
+          for (int i = 2; i <= sizeof(padSettingsBytes); i++) {
+            Serial.printf("%d, ", padSettingsBytes[i - 1]);
+            if ((i - 1) % 7 == 0) {
+              Serial.printf("\n");
+            }
           }
         }
       }
@@ -130,9 +131,11 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
         memcpy(&advancedSettingsBytes[1], &advancedSettings, sizeof(AdvancedSettings));
         advancedSettingsBytes[sizeof(advancedSettingsBytes) - 1] = 0xF7;
         MIDI.sendSysEx(sizeof(advancedSettingsBytes), advancedSettingsBytes, true);
-        Serial.printf("Taille du tableau advancedSettingsBytes = %d \n", sizeof(advancedSettingsBytes));
-        for (int i = 1; i <= sizeof(advancedSettingsBytes); i++) {
-          Serial.printf("%d, ", advancedSettingsBytes[i - 1]);
+        if (DEBUG == 1) {
+          Serial.printf("Taille du tableau advancedSettingsBytes = %d \n", sizeof(advancedSettingsBytes));
+          for (int i = 1; i <= sizeof(advancedSettingsBytes); i++) {
+            Serial.printf("%d, ", advancedSettingsBytes[i - 1]);
+          }
         }
       } else if (controllerSysex == 1 && commandeSysex == 1) advancedSettings.threshold = valueSysex;
       else if (controllerSysex == 2 && commandeSysex == 1) advancedSettings.sensitivityM = valueSysex;

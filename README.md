@@ -122,6 +122,7 @@ Néanmoins, nous étions constamment confrontés à la persistance des doubles r
 
 |MIDI controller| Description|
 |---|---|
+| Controleur 0 | Buffer | (Envoie PadSettings en sysex)
 | Controleur 1 | MIDI channel | (midi channel 1 value is 0, midi channel 2 value is 1 ...)
 | Controleur 2 | MIDI note |
 | Controleur 3 | Trig mode (percu,key,button) |
@@ -134,6 +135,7 @@ Néanmoins, nous étions constamment confrontés à la persistance des doubles r
 
 |MIDI controller| Description|
 |---|---|
+| Controleur 0 | Buffer | (Envoie AdvancedSettings en sysex)
 | Controleur 1 | Piezo Threshold
 | Controleur 2 | Piezo Sensibility MSB
 | Controleur 3 | Piezo Sensibility LSB

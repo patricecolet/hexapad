@@ -3,8 +3,6 @@
 
 // #include "MIDIUSB.h"
 
-
-
 #define DEBUG 1
 
 enum class qtouch_pin : uint8_t {
@@ -21,14 +19,27 @@ enum class curveType : uint8_t {
 typedef uint8_t midi_channel;
 typedef uint8_t midi_note;
 typedef uint8_t midi_threshold;
+typedef uint16_t qtouch_threshold;
 typedef uint8_t midi_sensitivityM;
 typedef uint8_t midi_sensitivityL;
 typedef uint8_t midi_debounceTime;
 typedef uint8_t midi_roundOff;
 
+struct pad_note {
+  qtouch_threshold qtouchThreshold1;
+  midi_note note1;
+  qtouch_threshold qtouchThreshold2;
+  midi_note note2;
+  qtouch_threshold qtouchThreshold3;
+  midi_note note3;
+  qtouch_threshold qtouchThreshold4;
+  midi_note note4;
+};
+
 struct PadSettings {
   midi_channel channel;
   midi_note note;
+  pad_note padNote;
   trigType trig_mode;
   curveType velocity_curve;
   curveType aftertouch_curve;

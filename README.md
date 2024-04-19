@@ -14,9 +14,11 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 ### Introduction
 <a id="Introduction"></a>
 
-Cet appareil est un hexapad doté de différents capteurs capacitifs sous des surfaces tactiles texturées qui, lorsqu'ils sont déclenchés, envoient du son via une communication midi. 
+Cet appareil est un hexapad doté de différents capteurs capacitifs qui, lorsqu'ils sont en contract avec , envoient des signaux ou commandes MIDI à l'aide d'un câble USB vers un ordinateur.
+Le MIDI est est un protocole de communication et un format de fichier dédiés à la musique utilisés pour la communication entre instruments électroniques, contrôleurs, séquenceurs, et logiciels de musique.
  
 Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé avec l'IDE Arduino. Il dispose de 7 entrées capacitives Qtouch qui servent à déclencher des notes de musique, d'un capteur de vibrations piézoélectriques et d'un capteur de proximité infrarouge pour modifier les sons. 
+ 
 
 ![Seeeduino broche](https://github.com/patricecolet/hexapad/blob/stage/images/broche_xiao.png?raw=true)
 
@@ -93,6 +95,8 @@ Les doubles rebonds persistaient toujours donc nous avons implanter un seuil gli
 
 ##### Capteur capacitif Qtouch
 <a id="Qtouch"></a>
+
+Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il va perturbe le champ électrique du pad, ce qui est détecté par l'entrée QTouch. Cela permet au microcontroller de déterminer la surface du toucher et va intéragir avec du son plus ou moins déformer. On va nommé cette deformation l'AfterTouch.
 
 ##### Message Midi
 <a id="Midi"></a>

@@ -61,11 +61,8 @@ int midiMessage::AfterTouchNote(PadSettings pad, uint8_t afterTouch, int channel
   else if (afterTouch >= pad.padNote.qtouchThreshold2*pourcentage && afterTouch < pad.padNote.qtouchThreshold3*pourcentage){
     note = pad.padNote.note2;
   }
-  else if (afterTouch >= pad.padNote.qtouchThreshold3*pourcentage && afterTouch < pad.padNote.qtouchThreshold4*pourcentage){
+  else if (afterTouch >= pad.padNote.qtouchThreshold3*pourcentage){
     note = pad.padNote.note3;
-  }
-  else if (afterTouch >= pad.padNote.qtouchThreshold4*pourcentage){
-    note = pad.padNote.note4;
   }
   noteState[channel] = note;
   return note;

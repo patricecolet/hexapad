@@ -32,8 +32,6 @@ struct pad_note {
   midi_note note2;
   qtouch_threshold qtouchThreshold3;
   midi_note note3;
-  qtouch_threshold qtouchThreshold4;
-  midi_note note4;
 };
 
 struct PadSettings {

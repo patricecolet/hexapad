@@ -5,27 +5,34 @@ desc:HEXAPAD EDITOR
 
 // allocate array memory
 function alloc(sz) ( (this.top+=sz)-sz; );
+
 gfx_clear=(0);
+// variable to disable mouse left click capture inside @gfx
 mouse_click = 0;
-//gfx_showmenu("str");
+
+// default tab display
+menu.button = "PADS";
+
+// sysex header
 sysex_buf = 100000;
 sysex_buf[0] = $xf0;
-sysex_buf[1] = $x48;// H
-sysex_buf[2] = $x45;// E
-sysex_buf[3] = $x58;// X
-sysex_buf[4] = $x41;// A
-sysex_buf[5] = $x50;// P
-sysex_buf[6] = $x41;// A
-sysex_buf[7] = $x44;// D
-sysex_buf[8] = $x00;// 0
-sysex_buf[9] = $x01;// Set command
-sysex_buf[10] = $x01;// version 1
-sysex_buf[11] = $x00;// revision 0
+sysex_buf[1] = $x48;  // H
+sysex_buf[2] = $x45;  // E
+sysex_buf[3] = $x58;  // X
+sysex_buf[4] = $x41;  // A
+sysex_buf[5] = $x50;  // P
+sysex_buf[6] = $x41;  // A
+sysex_buf[7] = $x44;  // D
+sysex_buf[8] = $x00;  // 0
+sysex_buf[9] = $x01;  // Set command
+sysex_buf[10] = $x01; // version 1
+sysex_buf[11] = $x00; // revision 0
 
 sysex_header_size = 12;
 sysex_size = sysex_header_size;
 
-PAD_SETTINGS =  alloc(49);
+// arrays initialized with default settings
+PAD_SETTINGS = alloc(49);
 i = 0;j = 0;
 loop(7,
   (i == 1) ? j = 2;
@@ -34,20 +41,80 @@ loop(7,
   (i == 4) ? j = 7;
   (i == 5) ? j = 9;
   (i == 6) ? j = 11;
-  PAD_SETTINGS[0 + (i * 7)] = 0;
-  PAD_SETTINGS[1 + (i * 7)] = 60 + j;
-  PAD_SETTINGS[2 + (i * 7)] = 1;
-  PAD_SETTINGS[3 + (i * 7)] = 0;
-  PAD_SETTINGS[4 + (i * 7)] = 0;
-  PAD_SETTINGS[5 + (i * 7)] = 0;
-  PAD_SETTINGS[6 + (i * 7)] = 0;
+  PAD_SETTINGS[0 + (i * 7)] = 0;      // channel
+  PAD_SETTINGS[1 + (i * 7)] = 60 + j; // note
+  PAD_SETTINGS[2 + (i * 7)] = 1;      // trig mode
+  PAD_SETTINGS[3 + (i * 7)] = 0;      // vel curve
+  PAD_SETTINGS[4 + (i * 7)] = 0;      // qtouch curve
+  PAD_SETTINGS[5 + (i * 7)] = 1;      // enable piezo
+  PAD_SETTINGS[6 + (i * 7)] = 1;      // enable qtouch
   i += 1;
 );
 
+GLOBAL_SETTINGS = alloc(7);
+GLOBAL_SETTINGS[0] = 0;  // channel
+GLOBAL_SETTINGS[1] = 60; // note
+GLOBAL_SETTINGS[2] = 1;  // trig mode
+GLOBAL_SETTINGS[3] = 0;  // vel curve
+GLOBAL_SETTINGS[4] = 0;  // qtouch curve
+GLOBAL_SETTINGS[5] = 1;  // enable piezo
+GLOBAL_SETTINGS[6] = 1;  // enable qtouch
 
+LIDAR_SETTINGS = alloc(15);
+LIDAR_SETTINGS[0] = 0;  // channel
+LIDAR_SETTINGS[1] = 36; // note
+LIDAR_SETTINGS[2] = 0;  // mode
+LIDAR_SETTINGS[3] = 0;  // curve
+LIDAR_SETTINGS[4] = 1;  // enable
+LIDAR_SETTINGS[5] = 50; // low threshold lsb
+LIDAR_SETTINGS[6] = 0;  // low threshold msb
+LIDAR_SETTINGS[7] = 0;  // high threshold lsb 
+LIDAR_SETTINGS[8] = 5;  // high threshold msb
+LIDAR_SETTINGS[9] = 10; // controller lsb 
+LIDAR_SETTINGS[10] = 11;// controller msb
+LIDAR_SETTINGS[11] = 0; // scale lsb 
+LIDAR_SETTINGS[12] = 0; // scale msb
+LIDAR_SETTINGS[13] = 60;// scale range low
+LIDAR_SETTINGS[14] = 72;// scale range high
+
+
+ADVANCED_SETTINGS = alloc(7);
+ADVANCED_SETTINGS[0] = 40; // piezo threshold lsb
+ADVANCED_SETTINGS[1] = 0;  // piezo threshold msb
+ADVANCED_SETTINGS[2] = 127;  // piezo max level lsb
+ADVANCED_SETTINGS[3] = 7;  // piezo max level msb
+ADVANCED_SETTINGS[4] = 40;  // piezo debounce time msb
+ADVANCED_SETTINGS[5] = 0;  // piezo debounce time lsb
+ADVANCED_SETTINGS[6] = 15;  // qtouch roundoff
+
+// arrays containing litteral setting
+on.off = alloc(2);
+on.off[0] = "off";
+on.off[1] = "on";
+
+curve.type = alloc(4);
+curve.type[0] = "linear";
+curve.type[1] = "parabola";
+curve.type[2] = "hyperbola";
+curve.type[3] = "sigmoid";
+
+range.type = alloc(4);
+range.type[0] = "range";
+range.type[1] = "note";
+range.type[2] = "button";
+range.type[3] = "scale";
+
+trig.type = alloc(3);
+trig.type[0] = "percussion";
+trig.type[1] = "keyboard";
+trig.type[2] = "button";
+
+// resize hexapad coordinates
 pad.scale = 5;
+// translate hexapad
 pad.y.offset = 300;
 pad.x.offset = 200;
+// default selected pad
 current_pad = 7;
 //one pad coordinates
 PAD_X = alloc(4);
@@ -61,7 +128,7 @@ PAD_Y[2] = 758/pad.scale;
 PAD_X[3] = 180/pad.scale;
 PAD_Y[3] = 293/pad.scale;
 
-//central pad
+//central pad coordinates
 HEXAGONE_X = alloc(6);
 HEXAGONE_Y = alloc(6);
 HEXAGONE_X[0] = -163/pad.scale;
@@ -145,14 +212,15 @@ while (PadMidiNote_current != PadMidiNote) (
   PadMidiNote_current = PadMidiNote;
 );
 
-@gfx 400 500
+@gfx 400 450
 // detect mouse click inside rectangle
 function mouse_in(xpos,ypos,w,h) (
   mouse_x>=xpos && mouse_x <= xpos+w && 
     mouse_y>=ypos && mouse_y <= ypos+h;
 );
 
-// detect mouse click (textx testy) inside polygone coordinates (nvert,array_x array_y,offeset)
+// detect mouse click (textx testy)
+// inside polygon coordinates (nvert,array_x array_y,offeset)
 function test_pad(nvert, array_x, array_y, testx, testy,offset) (
   i = offset;
   c = 0;
@@ -182,56 +250,145 @@ function test_pad(nvert, array_x, array_y, testx, testy,offset) (
   test_pad(4,TRAPEZE_X,TRAPEZE_Y, mouse_x, mouse_y, 20) ? 6 : current_pad;
 );
 
-// draw hexapad
-gfx_r = 1;
-gfx_g = 0;
-gfx_g = 1;
-draw_all_pads(current_pad);
-
 //draw pad settings buttons
 
-function drawButton(xpos,ypos,width,height,length,array.offset,name,displayOffset)(
-  setting.id = (current_pad - 1) * 7 + array.offset;
-  setting = PAD_SETTINGS[setting.id];
-  gfx_r = 0.6;
-  gfx_g = 0.1;
-  gfx_b = 0.6;
-  gfx_rect(xpos,ypos,width,height,0);
-  gfx_r = 1;
-  gfx_g = 0.5;
-  gfx_b = 1;
+function drawButton(xpos,ypos,w,mod,array,array.offset,name) (
+// button height
+  h = 15;
+// navigate in PAD_SETTINGS array following selected pad
+  menu.button == "PADS" ? (setting.id = (current_pad - 1) * 7 + array.offset)
+  : setting.id = array.offset;
+// first array item is midi channel except for ADVANCED_SETTINGS array
+// real midi channel 1 is 0, channel 2 is 1, etc...
+  menu.button != "ADVANCED" ?
+    (array.offset == 0 ? displayOffset = 1 : displayOffset = 0);
+// some settings in LIDAR and ADVANCED tab needs two bytes,
+// both are displayed as a number
+// and then we apply a modulo for clipping to max number
+  (menu.button == "LIDAR" && (array.offset == 5 || array.offset == 7 )) 
+  || (menu.button == "ADVANCED" && (array.offset == 0 || array.offset == 2 
+    || array.offset == 4))
+  ? (setting = (array[setting.id] + (array[setting.id + 1] << 7))%mod)
+  : setting = array[setting.id]%mod;
+  gfx_set(0.6,0.1,0.6);
+  gfx_rect(xpos,ypos,w,h,0);
+  gfx_set(1,0.5,1);
   gfx_x = xpos + 2;
   gfx_y = ypos + 3;
   gfx_drawstr(name);
   gfx_r = 0.5;
-  gfx_drawnumber(setting + displayOffset, 0);
-  
+  test.curve = curve.type[setting];
+  (menu.button == "PADS" || menu.button == "GLOBAL") ? (
+    array.offset == 2 ? gfx_drawstr(trig.type[setting]) :
+    (array.offset == 3 ||array.offset == 4)
+    ? gfx_drawstr(curve.type[setting]) :
+   (array.offset == 5 ||array.offset == 6) 
+   ? gfx_drawstr(on.off[setting]) :
+    gfx_drawnumber(setting + displayOffset, 0)
+  );
+  menu.button == "LIDAR" ? (
+    array.offset == 2 ? gfx_drawstr(range.type[setting]) :
+    array.offset == 3 ? gfx_drawstr(curve.type[setting]) :
+    array.offset == 4 ? gfx_drawstr(on.off[setting]) :
+    (array.offset == 5 || array.offset == 7 ) ? (
+      sprintf(string,"%imm",setting);
+      gfx_drawstr(string)
+    ) : gfx_drawnumber(setting + displayOffset, 0)
+  );
+  menu.button == "ADVANCED" ? gfx_drawnumber(setting, 0);
   (mouse_cap & 1) ? ( 
-    mouse_in(xpos,ypos,width,height) ? (
+    mouse_in(xpos,ypos,w,h) ? (
       mouse_click == 0 ? (
         setting += 1;
-        setting = setting % length;
-        sysex_buf[sysex_size] = $x01;
-        sysex_buf[sysex_size + 1] = current_pad;
+        setting = setting % mod;
+        sysex_buf[sysex_size] = current_pad;
+        sysex_buf[sysex_size + 1] = array.offset + 1;
         sysex_buf[sysex_size + 2] = setting;
         sysex_buf[sysex_size + 3] = $xf7;
         sysex_size += 4;
         send_sysex = 1;
         mouse_click = 1;
-        PAD_SETTINGS[setting.id] = setting;
+        array[setting.id] = setting;
       );
       mouse_value = mouse_y - mouse_cap_start;
     );
   ): mouse_click = 0;
 );
 
-//xpos,ypos,width,height,modulo,array offset,name,displayOffset
-drawButton(10,10,85,15,16,0,"channel:",1);
-drawButton(100,10,70,15,127,1,"note:",0);
-drawButton(175,10,60,15,3,2,"trig:",0);
-drawButton(240,10,95,15,3,3,"vel.curve:",0);
-drawButton(10,30,110,15,3,4,"touch.curve:",0);
-drawButton(125,30,100,15,2,5,"piezo.off:",0);
-drawButton(230,30,100,15,2,6,"touch.off:",0);
+function drawMenuButton(name,xpos,ypos,width) (
+  (mouse_cap & 1) ? ( 
+    mouse_in(xpos,ypos,width,25)
+    ? menu.button = name );
+  menu.button == name ? (
+    button.fill = 1;
+    button.title.b = 0;
+  ) : (
+    button.fill = 0;
+    button.title.b = 0.6;
+  );
+  gfx_set(0.6,0.1,0.6);
+  gfx_rect(xpos,ypos,width,25, button.fill);
+  gfx_measurestr(name,str_w,str_h);
+  test_str_w = str_w;
+  gfx_x = xpos + (width - str_w) / 2;
+  gfx_y = ypos + 10;
+  gfx_set(0.1,0.1,button.title.b);
+  gfx_drawstr(name,"center");
+);
+
+drawMenuButton("PADS",1,1,80);
+drawMenuButton("GLOBAL",80,1,100);
+drawMenuButton("LIDAR",179,1,90);
+drawMenuButton("ADVANCED",268,1,120);
+  
+  
+//xpos,ypos,width,modulo,array,arrayOffset,name,displayOffset
+menu.button == "PADS" ? (
+  drawButton(10,40,80,2,PAD_SETTINGS,5,"piezo:");
+  drawButton(200,40,90,2,PAD_SETTINGS,6,"qtouch:");
+  drawButton(10,60,85,16,PAD_SETTINGS,0,"channel:");
+  drawButton(200,60,70,127,PAD_SETTINGS,1,"note:");
+  drawButton(10,80,170,3,PAD_SETTINGS,2,"trig.mode:");
+  drawButton(10,100,160,4,PAD_SETTINGS,3,"vel.curve:");
+  drawButton(200,100,180,4,PAD_SETTINGS,4,"touch.curve:");
+  
+// draw hexapad
+  gfx_r = 1;
+  gfx_g = 0;
+  gfx_g = 1;
+  draw_all_pads(current_pad);
+);
+
+menu.button == "GLOBAL" ? (
+  drawButton(10,40,80,2,GLOBAL_SETTINGS,5,"piezo:");
+  drawButton(200,40,90,2,GLOBAL_SETTINGS,6,"qtouch:");
+  drawButton(10,60,85,16,GLOBAL_SETTINGS,0,"channel:");
+  drawButton(200,60,70,128,GLOBAL_SETTINGS,1,"note:");
+  drawButton(10,80,170,4,GLOBAL_SETTINGS,2,"trig.mode:");
+  drawButton(10,100,160,4,GLOBAL_SETTINGS,3,"vel.curve:");
+  drawButton(200,100,180,4,GLOBAL_SETTINGS,4,"touch.curve:");
+);
+
+menu.button == "LIDAR" ? (
+  drawButton(10,40,85,2,LIDAR_SETTINGS,4,"enable:");
+  drawButton(100,40,95,4,LIDAR_SETTINGS,2,"mode:");
+  drawButton(200,40,125,4,LIDAR_SETTINGS,3,"curve:");
+  drawButton(10,60,180,1024,LIDAR_SETTINGS,5,"threshold.low:");
+  drawButton(200,60,180,2048,LIDAR_SETTINGS,7,"threshold.high:");
+  drawButton(10,80,85,16,LIDAR_SETTINGS,0,"channel:");
+  drawButton(200,80,70,128,LIDAR_SETTINGS,1,"note:");
+  drawButton(10,100,150,4,LIDAR_SETTINGS,9,"controller.lsb:");
+  drawButton(200,100,150,4,LIDAR_SETTINGS,10,"controller.msb:");
+  drawButton(10,120,100,128,LIDAR_SETTINGS,11,"scale:");
+  drawButton(10,140,180,128,LIDAR_SETTINGS,13,"scale.range.low:");
+  drawButton(200,140,180,128,LIDAR_SETTINGS,14,"scale.range.high:");
+);
+
+menu.button == "ADVANCED" ? (
+  drawButton(10,40,200,200,ADVANCED_SETTINGS,0,"piezo.threshold:");
+  drawButton(10,60,200,1024,ADVANCED_SETTINGS,2,"piezo.max.level:");
+  drawButton(10,80,200,1024,ADVANCED_SETTINGS,4,"piezo.debounce.time:");
+  drawButton(10,100,200,128,ADVANCED_SETTINGS,6,"qtouch.roundoff:");
+);
 
 

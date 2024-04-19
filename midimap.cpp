@@ -9,8 +9,7 @@ extern PadSettings padSettings[7] =
       .note2 = 72,
       .qtouchThreshold3 = 38,
       .note3 = 82,
-      .qtouchThreshold4 = 50,
-      .note4 = 92, },
+      },
     .trig_mode = trigType::keyboard, .velocity_curve = curveType::linear, .aftertouch_curve = curveType::linear, .piezo = 1, .qtouch = 1},
   PadSettings{ .channel = 0,
     .padNote = {
@@ -20,8 +19,7 @@ extern PadSettings padSettings[7] =
       .note2 = 74,
       .qtouchThreshold3 = 38,
       .note3 = 84,
-      .qtouchThreshold4 = 50,
-      .note4 = 94, },
+      },
     .trig_mode = trigType::keyboard, .velocity_curve = curveType::linear, .aftertouch_curve = curveType::linear, .piezo = 1, .qtouch = 1},
   PadSettings{ .channel = 0,
       .padNote = {
@@ -31,8 +29,7 @@ extern PadSettings padSettings[7] =
       .note2 = 75,
       .qtouchThreshold3 = 38,
       .note3 = 85,
-      .qtouchThreshold4 = 50,
-      .note4 = 95, },
+      },
     .trig_mode = trigType::keyboard, .velocity_curve = curveType::linear, .aftertouch_curve = curveType::linear, .piezo = 1, .qtouch = 1},
   PadSettings{ .channel = 0,
       .padNote = {
@@ -42,8 +39,7 @@ extern PadSettings padSettings[7] =
       .note2 = 77,
       .qtouchThreshold3 = 38,
       .note3 = 87,
-      .qtouchThreshold4 = 50,
-      .note4 = 97, },
+      },
     .trig_mode = trigType::keyboard, .velocity_curve = curveType::linear, .aftertouch_curve = curveType::linear, .piezo = 1, .qtouch = 1},
   PadSettings{ .channel = 0,
       .padNote = {
@@ -53,8 +49,7 @@ extern PadSettings padSettings[7] =
       .note2 = 79,
       .qtouchThreshold3 = 38,
       .note3 = 89,
-      .qtouchThreshold4 = 50,
-      .note4 = 99, },
+      },
     .trig_mode = trigType::keyboard, .velocity_curve = curveType::linear, .aftertouch_curve = curveType::linear, .piezo = 1, .qtouch = 1},
   PadSettings{ .channel = 0,   
   .padNote = {
@@ -64,8 +59,7 @@ extern PadSettings padSettings[7] =
       .note2 = 70,
       .qtouchThreshold3 = 38,
       .note3 = 80,
-      .qtouchThreshold4 = 50,
-      .note4 = 90, }, 
+      }, 
   .trig_mode = trigType::keyboard, .velocity_curve = curveType::linear, .aftertouch_curve = curveType::linear, .piezo = 1, .qtouch = 1},
   PadSettings{ .channel = 0,
       .padNote = {
@@ -75,8 +69,7 @@ extern PadSettings padSettings[7] =
       .note2 = 81,
       .qtouchThreshold3 = 38,
       .note3 = 91,
-      .qtouchThreshold4 = 50,
-      .note4 = 101, },
+      },
   .trig_mode = trigType::keyboard, .velocity_curve = curveType::linear, .aftertouch_curve = curveType::linear, .piezo = 1, .qtouch = 1}
 };
 

@@ -76,7 +76,7 @@ void qTouchUpdate() {
     if (padSettings[i].trig_mode == trigType::keyboard) {  // Pad en mode Keyboard
       if (tableauQtouch[i].noteState) {
         if (tableauQtouch[i].state == qtouch_state::off) {  // Pad off
-          MidiMessage.sendNoteOff(padSettings[i]);          // Envoie NoteOff
+          MidiMessage.sendNoteOff(padSettings[i], tableauQtouch[i].afterTouch, i);          // Envoie NoteOff
           tableauQtouch[i].noteState = 0;                   // Etat Off
           if (DEBUG == 1)
             Serial.print("Keyboard Off \n \n");
@@ -100,7 +100,7 @@ void hexapadSendNote(int velo) {
   for (int i = 0; i < 7; i++) {
     if (padSettings[i].trig_mode == trigType::keyboard) {     // Mode Keyboard
       if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
-        MidiMessage.sendNoteOn(padSettings[i], velo);         // Envoie velocité
+        MidiMessage.sendNoteOn(padSettings[i], velo, tableauQtouch[i].afterTouch, i);         // Envoie velocité
         tableauQtouch[i].state = qtouch_state::played;        // Statue jouer
         tableauQtouch[i].noteState = 1;
         if (DEBUG == 1)
@@ -111,13 +111,13 @@ void hexapadSendNote(int velo) {
       if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
         if (DEBUG == 1)
           Serial.print("Percussion On \n");
-        MidiMessage.sendNoteOn(padSettings[i], velo);  // Envoie Note On et Velocité
-        MidiMessage.sendNoteOff(padSettings[i]);       // Envoie Note Off
+        MidiMessage.sendNoteOn(padSettings[i], velo, tableauQtouch[i].afterTouch, i);  // Envoie Note On et Velocité
+        MidiMessage.sendNoteOff(padSettings[i], tableauQtouch[i].afterTouch, i);       // Envoie Note Off
       }
     } else if (padSettings[i].trig_mode == trigType::button) {  // Mode Button
       if (tableauQtouch[i].state == qtouch_state::touched) {    // Pad touché
         if (buttonState[i] != false) {                          // Pad joue
-          MidiMessage.sendNoteOff(padSettings[i]);              // Envoie Note Off
+          MidiMessage.sendNoteOff(padSettings[i], tableauQtouch[i].afterTouch, i);              // Envoie Note Off
           tableauQtouch[i].noteState = 0;
           if (DEBUG == 1) {
             Serial.print("Button Off \n");
@@ -125,7 +125,7 @@ void hexapadSendNote(int velo) {
           }
         }
         if (buttonState[i] == false) {                   // Pad ne joue pas
-          MidiMessage.sendNoteOn(padSettings[i], velo);  // Envoie Note On
+          MidiMessage.sendNoteOn(padSettings[i], velo, tableauQtouch[i].afterTouch, i);  // Envoie Note On
           tableauQtouch[i].noteState = 1;
           if (DEBUG == 1) {
             Serial.print("Button On \n");

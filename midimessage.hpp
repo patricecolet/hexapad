@@ -6,9 +6,10 @@ class midiMessage {
     void begin();
     void update();
     void sendNote(PadSettings,uint8_t); // Déclaration de la fonction SendNote
-    void sendNoteOn(PadSettings,uint8_t); // Déclaration de la fonction SendNoteOn
-    void sendNoteOff(PadSettings pad); // Déclaration de la fonction SendNoteOff
+    void sendNoteOn(PadSettings,uint8_t, uint8_t, int); // Déclaration de la fonction SendNoteOn
+    void sendNoteOff(PadSettings pad, uint8_t, int); // Déclaration de la fonction SendNoteOff
     void sendAfterTouch(PadSettings pad, uint8_t); // Déclaration de la fonction SendAfterTouch
+    int AfterTouchNote(PadSettings, uint8_t, int);
     void midiInMessages();
   private:
     static void OnMidiSysEx(byte*, unsigned);

@@ -14,9 +14,7 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 ### Introduction
 <a id="Introduction"></a>
 
-Nous travaillons sur un projet destiné aux enfants et aux malvoyants. Cet appareil est un pad doté de différents capteurs capacitifs sous des surfaces tactiles texturées qui, lorsqu'ils sont déclenchés, envoient du son via une communication midi. 
- 
-Il peut être utilisé comme instrument de musique ou outil pédagogique pour les enfants. 
+Cet appareil est un hexapad doté de différents capteurs capacitifs sous des surfaces tactiles texturées qui, lorsqu'ils sont déclenchés, envoient du son via une communication midi. 
  
 Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé avec l'IDE Arduino. Il dispose de 7 entrées capacitives Qtouch qui servent à déclencher des notes de musique, d'un capteur de vibrations piézoélectriques et d'un capteur de proximité infrarouge pour modifier les sons. 
 
@@ -25,14 +23,14 @@ Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé 
 ### Description
 <a id="Description"></a>
 
-Nous disposons de 7 broches pour nos capteurs capacitifs. Il nous faut maintenant trouver une forme compacte pouvant être divisée en 7 parties, toutes de même taille.
+Nous disposons de 7 broches pour nos capteurs capacitifs qui doivent etre répartie avec la meme surface.
 
-Nous avons opté pour une forme hexagonale qui serait divisée en 6 parties, avec un hexagone plus petit au centre.
+L'idée serait donc une forme hexagonale qui serait divisée en 6 parties, avec un hexagone plus petit au centre.
 
 ![hexagone prototype](https://github.com/patricecolet/hexapad/blob/stage/images/hexagone1.png?raw=true)
 
 
-Nous devons maintenant commencer à trouver les bonnes dimensions. Nous voulions que notre hexagone fasse 15,5 cm de haut et que chaque pièce soit espacée de 2 mm pour éviter les perturbations. Grâce au logiciel Geogebra, nous avons réussi à résoudre ce problème et à trouver les dimensions parfaites.
+L'hexagone devra faire 15,5 cm de haut et chaque trapèse doit etre espacé de 2 mm pour éviter les perturbations. C'est a l'aide du logiciel Geogebra que nous avons réussi a trouver les dimensions idéale.
 
 ![hexagone final](https://github.com/patricecolet/hexapad/blob/stage/images/hexagone2.png?raw=true)
 
@@ -40,7 +38,7 @@ Nous devons maintenant commencer à trouver les bonnes dimensions. Nous voulions
 ### SCHEMATIQUE 
 <a id="SCHEMATIQUE"></a>
 
-Nous devons maintenant élaborer une carte électronique pour accueillir nos capteurs capacitifs, le microcontrôleur, le capteur de vibration et le capteur de distance.
+Voici l'élaborer de la carte électronique qui accueillera nos capteurs capacitifs, le microcontrôleur, le capteur de vibration et le capteur de distance.
 
 Conformément aux recommandations de la documentation technique, nous avons mis en place des résistances de Pull Up  sur chaque broche du capteur de distance (VL53l0X) et nous avons mis des condensateurs de découplage sur AVDD et AVDDVCSEL.
 
@@ -53,11 +51,11 @@ Nous avons également installé des boutons poussoir pour réinitialiser le micr
 ### PCB 
 <a id="PCB"></a>
 
-Pour la partie PCB, nous voulions que tous les composants soient tous groupés pour que la carte ne soit pas trop grande.
+Pour la partie PCB, les composants devaient etre tous groupés pour que la carte ne soit pas trop grande.
 
-Nous avons fait des tests préalables pour savoir si la longueur des fils/pistes pouvait avoir une influence sur la sensibilité des capteurs. En réalité, plus les pistes sont étendues, plus la variation du signal est faible. C'est pour cette raison que nous devons nous assurer que les pistes soient les moins longues possibles.
+Des tests ont étés réalisé aux préalables pour savoir si la longueur des fils/pistes pouvait avoir une influence sur la sensibilité des capteurs. En réalité, plus les pistes sont étendues, plus la variation du signal est faible. C'est pour cette raison que nous devons nous assurer que les pistes soient les moins longues possibles.
 
-Pour éviter toute perturbation, nous avons placé tout autour de l'hexagone un plan de masse qui nous protègera des parasites.
+Pour éviter toute perturbation, l'hexagone sera recouvert d'un plan de masse qui nous protègera des parasites.
 
 ![Exemple plan de masse](https://github.com/patricecolet/hexapad/blob/stage/images/plan_de_masse_ex.png?raw=true)
 
@@ -69,8 +67,7 @@ De ce fait il y a moins de charges capacitives entre chaque capteur car elles so
 ### Firmware
 <a id="Firmware"></a>
 
-Nous allons maintenant attaquer la partie programmation de notre projet. C'est précisément à ce moment que nous rencontrons le plus de problèmes.
-Le programme est composé de 4 grandes parties que nous allons détailler ensemble.
+Le programme est composé de 4 grandes parties :
 
 #### [-Capteur de distance](#distance)
 #### [-Capteur Piezoelectrique](#Piezoelectrique)
@@ -87,7 +84,7 @@ Le capteur piézoélectrique est un capteur de vibration, il va donc nous permet
 
 ![Machine_Piezo](https://github.com/patricecolet/hexapad/blob/sysex/images/machine_piezo.png?raw=true)
 
-Néanmoins, nous étions constamment confrontés à la persistance des doubles rebonds. Cependant, nous ne pouvions pas augmenter la durée des rebonds, car cela rendrait notre système beaucoup plus lent. Nous avons donc eu l'idée d'implanter un seuil glissant qui varirait en fonction de la valeur peak du piézo.
+Les doubles rebonds persistaient toujours donc nous avons implanter un seuil glissant qui varirait en fonction de la valeur peak du piézo.
 
 ![Machine_Piezo2](https://github.com/patricecolet/hexapad/blob/stage/images/machine_piezo2.png?raw=true)
 

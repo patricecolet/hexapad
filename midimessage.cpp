@@ -7,12 +7,12 @@ const char* midiMessage::SysexHeader = "HEXAPAD0";
 void SendMidi(int, int, int);
 byte padSettingsBytes[sizeof(PadSettings) * 7 + 2];
 byte advancedSettingsBytes[sizeof(AdvancedSettings) + 2];
+int noteState[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
 midiMessage::midiMessage(){};
 
-void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
-
-  uint8_t velo = 0;
+void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity, uint8_t AfterTouch, int channel) {
+  uint8_t velo;
   if (pad.velocity_curve == curveType::linear) {  // Type de courbe linéaire
     velo = velocity;
   } else if (pad.velocity_curve == curveType::parabola) {  // Type de courbe parabolique
@@ -23,7 +23,7 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
     velo = round(127 / (1 + exp(-0.08 * (velocity - 65))));
   }
   if (DEBUG == 1) {
-    Serial.printf("Note on Note: %d \n", pad.note);
+    Serial.printf("Note on Note: %d \n", AfterTouchNote(pad, AfterTouch, channel));
     Serial.print("Velocity:");
     Serial.println(velocity);
 
@@ -32,26 +32,44 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity) {
       Serial.println(velo);
     }
   }
-
   //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
-  midiEventPacket_t event = { 0x09, 0x90 | pad.channel, pad.note, velo };
+  midiEventPacket_t event = { 0x09, 0x90 | pad.channel, AfterTouchNote(pad, AfterTouch, channel), velo };
   MidiUSB.sendMIDI(event);
 };
 
 
-void midiMessage::sendNoteOff(PadSettings pad) {
+void midiMessage::sendNoteOff(PadSettings pad, uint8_t AfterTouch, int channel) {
   if (DEBUG == 1)
-    Serial.printf("Note off Note: %d \n \n", pad.note);
-  midiEventPacket_t event = { 0x08, 0x80 | pad.channel, pad.note, 0 };
+    Serial.printf("Note off Note: %d \n \n", noteState[channel]);
+  midiEventPacket_t event = { 0x08, 0x80 | pad.channel, noteState[channel], 0 };
   MidiUSB.sendMIDI(event);
 };
 
 
-
-void midiMessage::sendAfterTouch(PadSettings pad, uint8_t afterTouch) {
-  midiEventPacket_t event = { 0x0A, 0xA0 | pad.channel, pad.note, afterTouch };
+void midiMessage::sendAfterTouch(PadSettings pad, uint8_t AfterTouch) {
+  midiEventPacket_t event = { 0x0A, 0xA0 | pad.channel, AfterTouchNote(pad, AfterTouch, 100), AfterTouch };
   MidiUSB.sendMIDI(event);
 };
+
+
+int midiMessage::AfterTouchNote(PadSettings pad, uint8_t afterTouch, int channel) {
+  float pourcentage = 127/100;
+  int note = 0;
+  if (afterTouch >= pad.padNote.qtouchThreshold1*pourcentage && afterTouch < pad.padNote.qtouchThreshold2*pourcentage){
+    note = pad.padNote.note1;
+  }
+  else if (afterTouch >= pad.padNote.qtouchThreshold2*pourcentage && afterTouch < pad.padNote.qtouchThreshold3*pourcentage){
+    note = pad.padNote.note2;
+  }
+  else if (afterTouch >= pad.padNote.qtouchThreshold3*pourcentage && afterTouch < pad.padNote.qtouchThreshold4*pourcentage){
+    note = pad.padNote.note3;
+  }
+  else if (afterTouch >= pad.padNote.qtouchThreshold4*pourcentage){
+    note = pad.padNote.note4;
+  }
+  noteState[channel] = note;
+  return note;
+}
 
 
 
@@ -114,7 +132,7 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
           Serial.printf("%d \n", padSettingsBytes[0]);
           for (int i = 2; i <= sizeof(padSettingsBytes); i++) {
             Serial.printf("%d, ", padSettingsBytes[i - 1]);                                              // Affichage du tableau PadSettings
-            if ((i - 1) % 7 == 0) {
+            if ((i - 1) % 27 == 0) {
               Serial.printf("\n");
             }
           }
@@ -158,7 +176,7 @@ void SendMidi(int midi_channel, int controller, int value) {
   if (controller == 1) {
     padSettings[midi_channel].channel = value;
   }
-  else if (controller == 2) padSettings[midi_channel].note = value;                                      // Paramétrage de la courbe de vélocité
+  else if (controller == 2) padSettings[midi_channel].padNote.note1 = value;                                      // Paramétrage de la courbe de vélocité
   else if (controller == 3) padSettings[midi_channel].trig_mode = static_cast<trigType>(value);          // Paramétrage du mode des pads
   else if (controller == 4) padSettings[midi_channel].velocity_curve = static_cast<curveType>(value);    // Paramétrage de la courbe de vélocité
   else if (controller == 5) padSettings[midi_channel].aftertouch_curve = static_cast<curveType>(value);  // Paramétrage de la courbe d'AfterTouch

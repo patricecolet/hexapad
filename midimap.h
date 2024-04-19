@@ -38,7 +38,6 @@ struct pad_note {
 
 struct PadSettings {
   midi_channel channel;
-  midi_note note;
   pad_note padNote;
   trigType trig_mode;
   curveType velocity_curve;

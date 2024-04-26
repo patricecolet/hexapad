@@ -33,7 +33,7 @@ void distancePB::sendMeasure() {
     //line.go(Value, 1000);
     testing = 1;
     if (playing == 1 && lidar.trig_mode == trigType::keyboard) {                 
-      midiMessage.sendNoteOnLidar(velocity());  // Application de l'AfterTouch
+      midiMessage.sendAfterTouchLidar(velocity());  // Application de l'AfterTouch
     }
     mesuring = 1;
   }

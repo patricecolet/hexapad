@@ -94,6 +94,10 @@ void midiMessage::sendNoteOnLidar(int velocity) {
   printf("Velocity lidar = %d\n", velocity);
 }
 
+void midiMessage::sendAfterTouchLidar(int AfterTouch) {
+  midiEventPacket_t event = { 0x0A, 0xA0 | lidar.channel, lidar.note, AfterTouch };
+  MidiUSB.sendMIDI(event);
+};
 
 void midiMessage::sendNoteOffLidar() {
   midiEventPacket_t event = { 0x0D, 0xD0 | lidar.channel, lidar.note, 0 };

@@ -12,6 +12,7 @@ class midiMessage {
     int AfterTouchNote(PadSettings, uint8_t, int);
     void sendControllerLidar(int);
     void sendNoteOnLidar(int);
+    void sendAfterTouchLidar(int);
     void sendNoteOffLidar();
     void midiInMessages();
   private:

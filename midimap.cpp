@@ -75,5 +75,17 @@ extern PadSettings padSettings[7] =
 
 extern AdvancedSettings advancedSettings =
 {
-  AdvancedSettings{ .threshold = 40, .sensitivityM = 31, .sensitivityL = 31, .debounceTime = 45, .roundOff = 15}
+  AdvancedSettings{ .thresholdL = 40, .thresholdM = 0, .sensitivityL = 127, .sensitivityM = 7, .debounceTimeL = 40, .debounceTimeM = 0, .roundOff = 15}
 };
+
+
+extern Lidar lidar =
+{
+  Lidar{ .channel = 0, .note = 36 , .trig_mode = trigType::keyboard, .curve = curveType::linear, .sensor = 1, .lowThresholdL = 50, .lowThresholdM = 0, .highThresholdL = 116, .highThresholdM = 3, .controllerL = 10, .controllerM = 11}
+};
+
+
+
+
+
+

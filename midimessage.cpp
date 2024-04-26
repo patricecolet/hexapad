@@ -68,6 +68,37 @@ int midiMessage::AfterTouchNote(PadSettings pad, uint8_t afterTouch, int channel
   return note;
 }
 
+void midiMessage::sendControllerLidar(int ControllerValue) {
+//  uint16_t filteredValue = filter.addSample(ControllerValue);
+    byte lowValue = ControllerValue & 0x7F;
+    byte highValue = ControllerValue >> 7;
+    midiEventPacket_t event_lsb = {0x0B, 0xB0 |  lidar.channel, lidar.controllerL, lowValue};
+    MidiUSB.sendMIDI(event_lsb);
+    midiEventPacket_t event_msb = {0x0B, 0xB0 |  lidar.channel, lidar.controllerM, highValue};
+    MidiUSB.sendMIDI(event_msb);
+}
+
+void midiMessage::sendNoteOnLidar(int velocity) {
+  uint8_t velo;
+  if (lidar.curve == curveType::linear) {  // Type de courbe linéaire
+    velo = velocity;
+  } else if (lidar.curve == curveType::parabola) {  // Type de courbe parabolique
+    velo = (127 * velocity * velocity) / (127 * 127);
+  } else if (lidar.curve == curveType::hyperbola) {  // Type de courbe hyoerbolique
+    velo = round(127 * (1 - exp(-1.5 * velocity / 40)));
+  } else if (lidar.curve == curveType::sigmoid) {  // Type de courbe sigmoide
+    velo = round(127 / (1 + exp(-0.08 * (velocity - 65))));
+  }
+  midiEventPacket_t event = { 0x0C, 0xC0 | lidar.channel, lidar.note, velo };
+  MidiUSB.sendMIDI(event);
+  printf("Velocity lidar = %d\n", velocity);
+}
+
+
+void midiMessage::sendNoteOffLidar() {
+  midiEventPacket_t event = { 0x0D, 0xD0 | lidar.channel, lidar.note, 0 };
+  MidiUSB.sendMIDI(event);
+}
 
 
 void midiMessage::begin() {
@@ -152,11 +183,14 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
             Serial.printf("%d, ", advancedSettingsBytes[i - 1]);                                         // Affichage du tableau AdvancedSettings
           }
         }
-      } else if (controllerSysex == 1 && commandeSysex == 1) advancedSettings.threshold = valueSysex;    // Paramétrage du seuil
-      else if (controllerSysex == 2 && commandeSysex == 1) advancedSettings.sensitivityM = valueSysex;   // Paramétrage de la sensitivity
+      } 
+      else if (controllerSysex == 1 && commandeSysex == 1) advancedSettings.thresholdL = valueSysex;    // Paramétrage du seuil
+      else if (controllerSysex == 2 && commandeSysex == 1) advancedSettings.thresholdM = valueSysex;    // Paramétrage du seuil
       else if (controllerSysex == 3 && commandeSysex == 1) advancedSettings.sensitivityL = valueSysex;   // Paramétrage de la sensitivity
-      else if (controllerSysex == 4 && commandeSysex == 1) advancedSettings.debounceTime = valueSysex;   // Paramétrage de la periode des doubles rebons
-      else if (controllerSysex == 5 && commandeSysex == 1) advancedSettings.roundOff = valueSysex;       // Paramétrage du roundOff
+      else if (controllerSysex == 4 && commandeSysex == 1) advancedSettings.sensitivityM = valueSysex;   // Paramétrage de la sensitivity
+      else if (controllerSysex == 5 && commandeSysex == 1) advancedSettings.debounceTimeL = valueSysex;   // Paramétrage de la periode des doubles rebons
+      else if (controllerSysex == 6 && commandeSysex == 1) advancedSettings.debounceTimeM = valueSysex;   // Paramétrage de la periode des doubles rebons
+      else if (controllerSysex == 7 && commandeSysex == 1) advancedSettings.roundOff = valueSysex;       // Paramétrage du roundOff
     }
 
     if (channelSysex == 16 && controllerSysex < 8 && commandeSysex == 1) {

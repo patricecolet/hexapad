@@ -1,24 +1,22 @@
 #pragma once
 #include "Adafruit_VL53L0X.h"
-// #include "MIDIUSB.h"
+#include "MIDIUSB.h"
 // #include "MovingAverage.h"
 //#include <Ramp.h> 
-#define HIGHEST_RANGE_MM 400
-#define LOWEST_RANGE_MM 50
-#define CONTROLER_LSB 46
-#define CONTROLER_MSB 14
 
 class distancePB{
   public:
     distancePB();
     bool begin();
     void update();
-    // void sendController();
     void sendMeasure();
     void restart();
+    int velocity() ;
+    void lidarNote();
     uint16_t ControllerValue;
-    bool testing;
+    bool testing, playing, mesuring,lidarButton = 0;
     uint8_t RangeStatus;
+    int HighestRange, LowestRange, HighestRangeL, LowestRangeL, HighestRangeM, LowestRangeM;
   private:
     Adafruit_VL53L0X distance;
     VL53L0X_RangingMeasurementData_t measure;

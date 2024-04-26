@@ -30,7 +30,7 @@ struct piezoState
   T fallingThreshold;
   piezoState()
   {
-    fallingThreshold = advancedSettings.threshold;
+    fallingThreshold = 40;
     state = UNDERTHRESHOLD; // Initialisation de l'état initial
     prevstate = UNDERTHRESHOLD; // Initialisation de la valeur précédente
     peak = 0;
@@ -49,7 +49,7 @@ class piezo {
 //    bool sendNote = 0;
     double velocity;
     int level;
-    int MSB, LSB, sensitivity;
+    int sensitivityMSB, sensitivityLSB, sensitivity, thresholdMSB, thresholdLSB, threshold, debounceTimeMSB, debounceTimeLSB, debounceTime;
     
   private:
     MIDIAddress _address;

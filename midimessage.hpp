@@ -10,6 +10,9 @@ class midiMessage {
     void sendNoteOff(PadSettings pad, uint8_t, int); // Déclaration de la fonction SendNoteOff
     void sendAfterTouch(PadSettings pad, uint8_t); // Déclaration de la fonction SendAfterTouch
     int AfterTouchNote(PadSettings, uint8_t, int);
+    void sendControllerLidar(int);
+    void sendNoteOnLidar(int);
+    void sendNoteOffLidar();
     void midiInMessages();
   private:
     static void OnMidiSysEx(byte*, unsigned);

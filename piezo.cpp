@@ -6,9 +6,15 @@ piezo::piezo(pin_t pin, MIDIAddress address) {
 };
 
 void piezo::update() {
-  MSB = (advancedSettings.sensitivityM << 5) | 31;
-  LSB = (advancedSettings.sensitivityL) | 992;
-  sensitivity = MSB & LSB;
+  sensitivityMSB = (advancedSettings.sensitivityM << 7) | 127;
+  sensitivityLSB = (advancedSettings.sensitivityL) | 896;
+  sensitivity = sensitivityMSB & sensitivityLSB;
+  thresholdMSB = (advancedSettings.thresholdM << 7) | 127;
+  thresholdLSB = (advancedSettings.thresholdL) | 896;
+  threshold = thresholdMSB & thresholdLSB;
+  debounceTimeMSB = (advancedSettings.debounceTimeM << 7) | 127;
+  debounceTimeLSB = (advancedSettings.debounceTimeL) | 896;
+  debounceTime = debounceTimeMSB & debounceTimeLSB;
   piezoRead = analogRead(_pin);  // reading piezo value
   if (DEBUG == 3) {
     Serial.println(piezoRead);
@@ -18,7 +24,7 @@ void piezo::update() {
     case UNDERTHRESHOLD:
       if (piezoRead > Piezo.fallingThreshold && piezoRead > prevpiezoRead)
         Piezo.state = SIGNAL;
-      if (Piezo.fallingThreshold > advancedSettings.threshold) {
+      if (Piezo.fallingThreshold > threshold) {
         Piezo.fallingThreshold = Piezo.fallingThreshold - 1;
       }
       break;
@@ -50,7 +56,7 @@ void piezo::update() {
       Piezo.state = FALLING;  // a midi should have been sent in previous cycle
       break;
     case FALLING:
-      if (piezoRead < Piezo.fallingThreshold && (millis() - piezoTimer) > advancedSettings.debounceTime) {
+      if (piezoRead < Piezo.fallingThreshold && (millis() - piezoTimer) > debounceTime) {
         Piezo.fallingThreshold = Piezo.peak / 3;
         Piezo.state = UNDERTHRESHOLD;
 
@@ -104,9 +110,10 @@ void piezo::update() {
 
 
 void piezo::updateNote() {
-  velocity = ((127 * piezoRead) / (sensitivity - advancedSettings.threshold)) + (127 - ((127 * sensitivity) / (sensitivity - advancedSettings.threshold)));
+  velocity = ((127 * piezoRead) / (sensitivity - threshold)) + (127 - ((127 * sensitivity) / (sensitivity - threshold)));
   // velocity = 127 * piezoRead /(sensitivity - advancedSettings.threshold);
   if (velocity > 127) velocity = 127;
   if (velocity < 1) velocity = 1;
+  // Serial.printf("Threshold = %d \nSensitivity = %d \nDebounceTime = %d \n", threshold, sensitivity, debounceTime);
   // if (velocity > Piezo.peak) Piezo.peak = velocity;
 }

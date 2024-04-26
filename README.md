@@ -14,7 +14,11 @@ MIDI USB hexagonal interface made of 7 pads with velocity, aftertouch, and and a
 ### Introduction
 <a id="Introduction"></a>
 
+<<<<<<< HEAD
 Cet appareil est un hexapad doté de différents capteurs capacitifs qui, lorsqu'ils sont en contract avec des doigts, envoient des signaux ou commandes MIDI à l'aide d'un câble USB vers un ordinateur.
+=======
+Cet appareil est un hexapad doté de différents capteurs capacitifs qui, lorsqu'ils sont en contract avec des doigts, envoient des signaux ou commandes MIDI à l'aide d'un câble USB vers un ordinateur. 
+>>>>>>> be7a071 (commencement implémentation du capteur de distance dans midimessage)
 Le MIDI est est un protocole de communication et un format de fichier dédiés à la musique utilisés pour la communication entre instruments électroniques, contrôleurs, séquenceurs, et logiciels de musique.
  
 Le microcontrôleur utilisé est un Seeed Studio XIAO SAMD21 qui est programmé avec l'IDE Arduino. Il dispose de 7 entrées capacitives Qtouch qui servent à déclencher des notes de musique, d'un capteur de vibrations piézoélectriques et d'un capteur de proximité infrarouge pour modifier les sons. 

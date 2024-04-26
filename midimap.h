@@ -16,14 +16,28 @@ enum class curveType : uint8_t {
   linear = 0, parabola = 1, hyperbola = 2, sigmoid = 3 // Forme de la vélocité
 };
 
+
 typedef uint8_t midi_channel;
 typedef uint8_t midi_note;
-typedef uint8_t midi_threshold;
 typedef uint16_t qtouch_threshold;
+
+typedef uint8_t midi_thresholdM;
+typedef uint8_t midi_thresholdL;
 typedef uint8_t midi_sensitivityM;
 typedef uint8_t midi_sensitivityL;
-typedef uint8_t midi_debounceTime;
+typedef uint8_t midi_debounceTimeM;
+typedef uint8_t midi_debounceTimeL;
 typedef uint8_t midi_roundOff;
+
+typedef uint8_t  midi_sensorL;
+typedef uint8_t  midi_lowThresholdL;
+typedef uint8_t  midi_lowThresholdM;
+typedef uint8_t  midi_highThresholdL;
+typedef uint8_t  midi_highThresholdM;
+typedef uint8_t  midi_chanelL;
+typedef uint8_t  midi_noteL;
+typedef uint8_t  midi_controllerL;
+typedef uint8_t  midi_controllerM;
 
 struct pad_note {
   qtouch_threshold qtouchThreshold1;
@@ -45,15 +59,32 @@ struct PadSettings {
   };
 
 struct AdvancedSettings {
-  midi_threshold threshold;
-  midi_sensitivityM sensitivityM;
+  midi_thresholdL thresholdL;
+  midi_thresholdM thresholdM;
   midi_sensitivityL sensitivityL;
-  midi_debounceTime debounceTime;
+  midi_sensitivityM sensitivityM;
+  midi_debounceTimeL debounceTimeL;
+  midi_debounceTimeM debounceTimeM;
   midi_roundOff roundOff;
+};
+
+struct Lidar {
+  midi_chanelL channel;
+  midi_noteL note;
+  trigType trig_mode;
+  curveType curve;
+  midi_sensorL sensor;
+  midi_lowThresholdL lowThresholdL;
+  midi_lowThresholdM lowThresholdM;
+  midi_highThresholdL highThresholdL;
+  midi_highThresholdM highThresholdM;
+  midi_controllerL controllerL;
+  midi_controllerM controllerM;
 };
   
 extern PadSettings padSettings[7];
 extern AdvancedSettings advancedSettings;
+extern Lidar lidar;
 
 
 /*

@@ -148,7 +148,8 @@ void TimerCallback0() {
         if (DEBUG == 2) {
           Serial.printf("Available Piezo %d \n\n", Piezo.velocity);
         }
-      } else {
+      } 
+      else {
         VL53LOX_State = digitalRead(VL53LOX_InterruptPin);
         if (VL53LOX_State == LOW) {
           if (Distance.RangeStatus != 4) Distance.sendMeasure();

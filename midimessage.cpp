@@ -89,9 +89,9 @@ void midiMessage::sendNoteOnLidar(int velocity) {
   } else if (lidar.curve == curveType::sigmoid) {  // Type de courbe sigmoide
     velo = round(127 / (1 + exp(-0.08 * (velocity - 65))));
   }
-  midiEventPacket_t event = { 0x0C, 0xC0 | lidar.channel, lidar.note, velo };
+  midiEventPacket_t event = { 0x09, 0x90 | lidar.channel, lidar.note, velo };
   MidiUSB.sendMIDI(event);
-  printf("Velocity lidar = %d\n", velocity);
+  Serial.printf("Velocity lidar = %d\n", velo);
 }
 
 void midiMessage::sendAfterTouchLidar(int AfterTouch) {
@@ -100,7 +100,7 @@ void midiMessage::sendAfterTouchLidar(int AfterTouch) {
 };
 
 void midiMessage::sendNoteOffLidar() {
-  midiEventPacket_t event = { 0x0D, 0xD0 | lidar.channel, lidar.note, 0 };
+  midiEventPacket_t event = { 0x08, 0x80 | lidar.channel, lidar.note, 0 };
   MidiUSB.sendMIDI(event);
 }
 

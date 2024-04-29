@@ -16,6 +16,7 @@ class distancePB{
     uint16_t ControllerValue;
     bool testing, playing, mesuring,lidarButton = 0;
     uint8_t RangeStatus;
+    float test;
     int HighestRange, LowestRange, HighestRangeL, LowestRangeL, HighestRangeM, LowestRangeM;
   private:
     Adafruit_VL53L0X distance;

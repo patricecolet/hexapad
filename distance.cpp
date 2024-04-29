@@ -5,7 +5,7 @@
 distancePB::distancePB() {
   Adafruit_VL53L0X distance = Adafruit_VL53L0X();
 };
-midiMessage midiMessage;
+midiMessage MidiMessageLidar;
 
 void distancePB::sendMeasure() {
   VL53L0X_RangingMeasurementData_t measure;
@@ -21,7 +21,7 @@ void distancePB::sendMeasure() {
   //    Serial.print("Reading a measurement... ");
   distance.getRangingMeasurement(&measure, false);              // pass in 'true' to get debug data printout!
   if (measure.RangeStatus != 4) {                               // phase failures have incorrect data
-    double test = measure.RangeMilliMeter;
+    test = measure.RangeMilliMeter;
     if (test < LowestRange) test = LowestRange;
     if (test > HighestRange) test = HighestRange;
     if (DEBUG == 2) {
@@ -32,42 +32,47 @@ void distancePB::sendMeasure() {
     if (Value < 0) Value = 0;
     //line.go(Value, 1000);
     testing = 1;
-    if (playing == 1 && lidar.trig_mode == trigType::keyboard) {                 
-      midiMessage.sendAfterTouchLidar(velocity());  // Application de l'AfterTouch
-    }
     mesuring = 1;
   }
   else {
     if (mesuring != 0){
       lidarButton = !lidarButton;
+      if (lidar.trig_mode == trigType::keyboard) {
+        MidiMessageLidar.sendNoteOffLidar();
+      }
     }
     mesuring = 0;
   }
-  
   ControllerValue = Value;
-  
   if (ControllerValue < 16384 || ControllerValue == 0) {
     ControllerValue = 16383;
     //Serial.println(ControllerValue);
     //ControllerValue = filter.addSample(Value);
   }
-  midiMessage.sendControllerLidar(ControllerValue);
+  MidiMessageLidar.sendControllerLidar(ControllerValue);
   lidarNote();
   distance.clearInterruptMask(false);
 }
 
 void distancePB::lidarNote() {
   if (lidar.trig_mode == trigType::keyboard && playing == 0 && mesuring == 1){
-    midiMessage.sendNoteOnLidar(velocity());
+    MidiMessageLidar.sendNoteOnLidar(velocity());
     playing = 1;
+  }
+  if (playing == 1 && lidar.trig_mode == trigType::keyboard && mesuring == 1) {                 
+    MidiMessageLidar.sendAfterTouchLidar(velocity());  // Application de l'AfterTouch
+  }
+  if (playing == 1 && lidar.trig_mode == trigType::keyboard && mesuring == 0) {                 
+    MidiMessageLidar.sendNoteOffLidar();
+    playing = 0;
   }
   if (lidar.trig_mode == trigType::button && mesuring == 1){
     if (lidarButton == 0 && playing == 0){
-      midiMessage.sendNoteOnLidar(velocity());
+      MidiMessageLidar.sendNoteOnLidar(velocity());
       playing = 1;
     }
     else if (lidarButton == 1 && playing == 1){
-      midiMessage.sendNoteOffLidar();
+      MidiMessageLidar.sendNoteOffLidar();
       playing = 0;
     }
   }
@@ -99,7 +104,7 @@ bool distancePB::begin() {
 };
 
 int distancePB::velocity() {
-  int velocity = ((127 * ControllerValue) / (HighestRange - LowestRange)) + (127 - ((127 * HighestRange) / (HighestRange - LowestRange)));
+  int velocity = ((127 * test) / (HighestRange - LowestRange)) + (127 - ((127 * HighestRange) / (HighestRange - LowestRange)));
   return velocity;
 }
 

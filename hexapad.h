@@ -13,6 +13,10 @@ long distanceTimer;
 volatile byte VL53LOX_State = LOW;
 
 bool buttonState[7] = { false, false, false, false, false, false, false };  // Déclaration des pads off lors du mode button
+int noteState[7] = { 0, 0, 0, 0, 0, 0, 0 };
+
+int Velocity_curve(PadSettings, int);
+int AfterTouchNote(PadSettings, int, int);
 
 // initialize Qtouch pins
 NoteQtouch tableauQtouch[] = {
@@ -66,9 +70,11 @@ void qTouchCalibrate() {
 
 // This method is trigged at each loop() cycle.
 void qTouchUpdate() {
+  int note;
   for (int i = 0; i < 7; i++) {
-    if (tableauQtouch[i].state == qtouch_state::played) {                       // Pad en train de jouer
-      MidiMessage.sendAfterTouch(padSettings[i], tableauQtouch[i].afterTouch);  // Application de l'AfterTouch
+    if (tableauQtouch[i].state == qtouch_state::played) {   
+      note = AfterTouchNote(padSettings[i], tableauQtouch[i].afterTouch, i);                    // Pad en train de jouer
+      MidiMessage.sendAfterTouch(padSettings[i], tableauQtouch[i].afterTouch, note);  // Application de l'AfterTouch
     }
     tableauQtouch[i].update(padSettings[i]);  // Mise a jour de l'état des pads
 
@@ -76,7 +82,7 @@ void qTouchUpdate() {
     if (padSettings[i].trig_mode == trigType::keyboard) {  // Pad en mode Keyboard
       if (tableauQtouch[i].noteState) {
         if (tableauQtouch[i].state == qtouch_state::off) {  // Pad off
-          MidiMessage.sendNoteOff(padSettings[i], tableauQtouch[i].afterTouch, i);          // Envoie NoteOff
+          MidiMessage.sendNoteOff(padSettings[i], noteState[i]);         // Envoie NoteOff
           tableauQtouch[i].noteState = 0;                   // Etat Off
           if (DEBUG == 1)
             Serial.print("Keyboard Off \n \n");
@@ -97,10 +103,13 @@ void TC3_Handler() {
 }
 
 void hexapadSendNote(int velo) {
+  int velocity, note;
   for (int i = 0; i < 7; i++) {
     if (padSettings[i].trig_mode == trigType::keyboard) {     // Mode Keyboard
       if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
-        MidiMessage.sendNoteOn(padSettings[i], velo, tableauQtouch[i].afterTouch, i);         // Envoie velocité
+        velocity = Velocity_curve(padSettings[i], velo);
+        note = AfterTouchNote(padSettings[i], tableauQtouch[i].afterTouch, i);
+        MidiMessage.sendNoteOn(padSettings[i], velocity, note);         // Envoie velocité
         tableauQtouch[i].state = qtouch_state::played;        // Statue jouer
         tableauQtouch[i].noteState = 1;
         if (DEBUG == 1)
@@ -111,13 +120,17 @@ void hexapadSendNote(int velo) {
       if (tableauQtouch[i].state == qtouch_state::touched) {  // Pad touché
         if (DEBUG == 1)
           Serial.print("Percussion On \n");
-        MidiMessage.sendNoteOn(padSettings[i], velo, tableauQtouch[i].afterTouch, i);  // Envoie Note On et Velocité
-        MidiMessage.sendNoteOff(padSettings[i], tableauQtouch[i].afterTouch, i);       // Envoie Note Off
+        velocity = Velocity_curve(padSettings[i], velo);
+        note = AfterTouchNote(padSettings[i], tableauQtouch[i].afterTouch, i);
+        MidiMessage.sendNoteOn(padSettings[i], velocity, note);   // Envoie Note On et Velocité
+        MidiMessage.sendNoteOff(padSettings[i], noteState[i]);       // Envoie Note Off
       }
     } else if (padSettings[i].trig_mode == trigType::button) {  // Mode Button
       if (tableauQtouch[i].state == qtouch_state::touched) {    // Pad touché
         if (buttonState[i] != false) {                          // Pad joue
-          MidiMessage.sendNoteOff(padSettings[i], tableauQtouch[i].afterTouch, i);              // Envoie Note Off
+          velocity = Velocity_curve(padSettings[i], velo);
+          note = AfterTouchNote(padSettings[i], tableauQtouch[i].afterTouch, i);
+          MidiMessage.sendNoteOff(padSettings[i], noteState[i]);              // Envoie Note Off
           tableauQtouch[i].noteState = 0;
           if (DEBUG == 1) {
             Serial.print("Button Off \n");
@@ -125,7 +138,9 @@ void hexapadSendNote(int velo) {
           }
         }
         if (buttonState[i] == false) {                   // Pad ne joue pas
-          MidiMessage.sendNoteOn(padSettings[i], velo, tableauQtouch[i].afterTouch, i);  // Envoie Note On
+          velocity = Velocity_curve(padSettings[i], velo);
+          note = AfterTouchNote(padSettings[i], tableauQtouch[i].afterTouch, i);
+          MidiMessage.sendNoteOn(padSettings[i], velocity, note);   // Envoie Note On
           tableauQtouch[i].noteState = 1;
           if (DEBUG == 1) {
             Serial.print("Button On \n");
@@ -137,6 +152,38 @@ void hexapadSendNote(int velo) {
     }
   }
 }
+
+int Velocity_curve(PadSettings pad, int velocity){
+  uint8_t velo;
+  if (pad.velocity_curve == curveType::linear) {  // Type de courbe linéaire
+    velo = velocity;
+  } else if (pad.velocity_curve == curveType::parabola) {  // Type de courbe parabolique
+    velo = (127 * velocity * velocity) / (127 * 127);
+  } else if (pad.velocity_curve == curveType::hyperbola) {  // Type de courbe hyoerbolique
+    velo = round(127 * (1 - exp(-1.5 * velocity / 40)));
+  } else if (pad.velocity_curve == curveType::sigmoid) {  // Type de courbe sigmoide
+    velo = round(127 / (1 + exp(-0.08 * (velocity - 65))));
+  }
+  return velo;
+}
+
+int AfterTouchNote(PadSettings pad, int afterTouch, int channel) {
+  float pourcentage = 127/100;
+  int note = 0;
+  if (afterTouch >= pad.padNote.qtouchThreshold1*pourcentage && afterTouch < pad.padNote.qtouchThreshold2*pourcentage){
+    note = pad.padNote.note1;
+  }
+  else if (afterTouch >= pad.padNote.qtouchThreshold2*pourcentage && afterTouch < pad.padNote.qtouchThreshold3*pourcentage){
+    note = pad.padNote.note2;
+  }
+  else if (afterTouch >= pad.padNote.qtouchThreshold3*pourcentage){
+    note = pad.padNote.note3;
+  }
+  noteState[channel] = note;
+  return note;
+}
+
+
 
 // Methods called in timer's callback are prioritized
 void TimerCallback0() {

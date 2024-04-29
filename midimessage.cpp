@@ -1,72 +1,44 @@
 #include "midimessage.hpp"
-#include "USB-MIDI.h"
-#include <string>
+
 USBMIDI_CREATE_DEFAULT_INSTANCE();
 
 const char* midiMessage::SysexHeader = "HEXAPAD0";
 void SendMidi(int, int, int);
 byte padSettingsBytes[sizeof(PadSettings) * 7 + 2];
 byte advancedSettingsBytes[sizeof(AdvancedSettings) + 2];
-int noteState[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
 midiMessage::midiMessage(){};
 
-void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity, uint8_t AfterTouch, int channel) {
-  uint8_t velo;
-  if (pad.velocity_curve == curveType::linear) {  // Type de courbe linéaire
-    velo = velocity;
-  } else if (pad.velocity_curve == curveType::parabola) {  // Type de courbe parabolique
-    velo = (127 * velocity * velocity) / (127 * 127);
-  } else if (pad.velocity_curve == curveType::hyperbola) {  // Type de courbe hyoerbolique
-    velo = round(127 * (1 - exp(-1.5 * velocity / 40)));
-  } else if (pad.velocity_curve == curveType::sigmoid) {  // Type de courbe sigmoide
-    velo = round(127 / (1 + exp(-0.08 * (velocity - 65))));
-  }
+void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity, uint8_t note) {
+  //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
+  midiEventPacket_t event = { 0x09, 0x90 | pad.channel, note, velocity };
+  MidiUSB.sendMIDI(event);
   if (DEBUG == 1) {
-    Serial.printf("Note on Note: %d \n", AfterTouchNote(pad, AfterTouch, channel));
+    Serial.printf("Note on Note: %d \n", note);
     Serial.print("Velocity:");
     Serial.println(velocity);
 
     if (pad.velocity_curve != curveType::linear) {
       Serial.print("Velocity curve:");
-      Serial.println(velo);
+      Serial.println(velocity);
     }
   }
-  //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
-  midiEventPacket_t event = { 0x09, 0x90 | pad.channel, AfterTouchNote(pad, AfterTouch, channel), velo };
-  MidiUSB.sendMIDI(event);
 };
 
 
-void midiMessage::sendNoteOff(PadSettings pad, uint8_t AfterTouch, int channel) {
+void midiMessage::sendNoteOff(PadSettings pad, uint8_t note) {
   if (DEBUG == 1)
-    Serial.printf("Note off Note: %d \n \n", noteState[channel]);
-  midiEventPacket_t event = { 0x08, 0x80 | pad.channel, noteState[channel], 0 };
+    Serial.printf("Note off Note: %d \n \n", note);
+  midiEventPacket_t event = { 0x08, 0x80 | pad.channel, note, 0 };
   MidiUSB.sendMIDI(event);
 };
 
 
-void midiMessage::sendAfterTouch(PadSettings pad, uint8_t AfterTouch) {
-  midiEventPacket_t event = { 0x0A, 0xA0 | pad.channel, AfterTouchNote(pad, AfterTouch, 100), AfterTouch };
+void midiMessage::sendAfterTouch(PadSettings pad, uint8_t AfterTouch, uint8_t note) {
+  midiEventPacket_t event = { 0x0A, 0xA0 | pad.channel, note , AfterTouch };
   MidiUSB.sendMIDI(event);
 };
 
-
-int midiMessage::AfterTouchNote(PadSettings pad, uint8_t afterTouch, int channel) {
-  float pourcentage = 127/100;
-  int note = 0;
-  if (afterTouch >= pad.padNote.qtouchThreshold1*pourcentage && afterTouch < pad.padNote.qtouchThreshold2*pourcentage){
-    note = pad.padNote.note1;
-  }
-  else if (afterTouch >= pad.padNote.qtouchThreshold2*pourcentage && afterTouch < pad.padNote.qtouchThreshold3*pourcentage){
-    note = pad.padNote.note2;
-  }
-  else if (afterTouch >= pad.padNote.qtouchThreshold3*pourcentage){
-    note = pad.padNote.note3;
-  }
-  noteState[channel] = note;
-  return note;
-}
 
 void midiMessage::sendControllerLidar(int ControllerValue) {
 //  uint16_t filteredValue = filter.addSample(ControllerValue);
@@ -97,7 +69,7 @@ void midiMessage::sendNoteOnLidar(int velocity) {
 void midiMessage::sendAfterTouchLidar(int AfterTouch) {
   midiEventPacket_t event = { 0x0A, 0xA0 | lidar.channel, lidar.note, AfterTouch };
   MidiUSB.sendMIDI(event);
-};
+}
 
 void midiMessage::sendNoteOffLidar() {
   midiEventPacket_t event = { 0x08, 0x80 | lidar.channel, lidar.note, 0 };
@@ -135,6 +107,9 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
         Serial.printf("\nERREUR \n");
         status = 0;
       }
+    }
+    for (uint16_t i = 0; i <= length; i++) {
+      Serial.printf("%c", data[i]);
     }
   }
   if (status != 0) {

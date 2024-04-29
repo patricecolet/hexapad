@@ -111,9 +111,6 @@ void piezo::update() {
 
 void piezo::updateNote() {
   velocity = ((127 * piezoRead) / (sensitivity - threshold)) + (127 - ((127 * sensitivity) / (sensitivity - threshold)));
-  // velocity = 127 * piezoRead /(sensitivity - advancedSettings.threshold);
   if (velocity > 127) velocity = 127;
   if (velocity < 1) velocity = 1;
-  // Serial.printf("Threshold = %d \nSensitivity = %d \nDebounceTime = %d \n", threshold, sensitivity, debounceTime);
-  // if (velocity > Piezo.peak) Piezo.peak = velocity;
 }

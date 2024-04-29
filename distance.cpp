@@ -49,8 +49,10 @@ void distancePB::sendMeasure() {
     //Serial.println(ControllerValue);
     //ControllerValue = filter.addSample(Value);
   }
-  MidiMessageLidar.sendControllerLidar(ControllerValue);
-  lidarNote();
+  if (lidar.sensor == 1){
+    MidiMessageLidar.sendControllerLidar(ControllerValue);
+    lidarNote();
+  }
   distance.clearInterruptMask(false);
 }
 

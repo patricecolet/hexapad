@@ -1,4 +1,5 @@
 #include "midimap.h"
+#include "USB-MIDI.h"
 
 class midiMessage {    
   public:
@@ -6,10 +7,9 @@ class midiMessage {
     void begin();
     void update();
     void sendNote(PadSettings,uint8_t); // Déclaration de la fonction SendNote
-    void sendNoteOn(PadSettings,uint8_t, uint8_t, int); // Déclaration de la fonction SendNoteOn
-    void sendNoteOff(PadSettings pad, uint8_t, int); // Déclaration de la fonction SendNoteOff
-    void sendAfterTouch(PadSettings pad, uint8_t); // Déclaration de la fonction SendAfterTouch
-    int AfterTouchNote(PadSettings, uint8_t, int);
+    void sendNoteOn(PadSettings,uint8_t, uint8_t); // Déclaration de la fonction SendNoteOn
+    void sendNoteOff(PadSettings pad, uint8_t); // Déclaration de la fonction SendNoteOff
+    void sendAfterTouch(PadSettings pad, uint8_t, uint8_t); // Déclaration de la fonction SendAfterTouch
     void sendControllerLidar(int);
     void sendNoteOnLidar(int);
     void sendAfterTouchLidar(int);

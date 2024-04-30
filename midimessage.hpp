@@ -1,9 +1,15 @@
+#pragma once
+
 #include "midimap.h"
 #include "USB-MIDI.h"
+
+
 
 class midiMessage {    
   public:
     midiMessage();
+//    virtual ~midiMessage();
+    void init(const byte &cam);
     void begin();
     void update();
     void sendNote(PadSettings,uint8_t); // Déclaration de la fonction SendNote
@@ -19,5 +25,5 @@ class midiMessage {
     static void OnMidiSysEx(byte*, unsigned);
     // byte SysexHeader[13] = {48,45,58,41,50,41,44,30,53,45,54,31,30};
     // byte SysexHeader[13] = 'H','E','X','A','P','A','D','0','S','E','T','1','0'
-    static const char *SysexHeader;
+
 };

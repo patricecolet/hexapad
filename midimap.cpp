@@ -84,7 +84,7 @@ extern Lidar lidar =
   Lidar{ .channel = 0, .note = 36 , .trig_mode = trigType::keyboard, .curve = curveType::linear, .sensor = 1, .lowThresholdL = 50, .lowThresholdM = 0, .highThresholdL = 116, .highThresholdM = 3, .controllerL = 10, .controllerM = 11}
 };
 
-
+byte sysexPacket[100];
 
 
 

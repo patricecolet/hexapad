@@ -1,10 +1,12 @@
 #pragma once
+
+#include "midimap.h"             // Types definitions
 #include "distance.hpp"          // VL53L0X methods
 #include "qtouch.hpp"            // QTouch methods
 #include "piezo.hpp"             // Piezo disk methods
 #include "Adafruit_ZeroTimer.h"  // Optimize analogRead for piezo
-#include "midimap.h"             // Types definitions
 #include "midimessage.hpp"       // function definitions for sending midi
+#include "sysex.hpp"
 
 // initialize VL53L0X objects
 distancePB Distance;
@@ -43,7 +45,7 @@ NoteQtouch tableauQtouch[] = {
     padSettings[6] }
 };
 midiMessage MidiMessage;
-
+sysex Sysex;
 
 // initialize piezo pin
 piezo Piezo{

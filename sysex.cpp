@@ -1,8 +1,14 @@
 #include "sysex.hpp"
 #include "midimessage.hpp"
 
-sysex::sysex(){};
 
-void sysex::sysexID(){
+sysex::sysex(){
+  sysexID = "HEXAPAD0";
+};
+
+void sysex::update(){
+
+};
+void sysex::parseID(char id){
 
 };

@@ -19,5 +19,6 @@ void setup() {
 void loop() {
   qTouchUpdate();
   MidiMessage.update();
+  Sysex.update();
   // MidiMessage.midiInMessages();
 }

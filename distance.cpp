@@ -11,11 +11,11 @@ void distancePB::sendMeasure() {
   VL53L0X_RangingMeasurementData_t measure;
   RangeStatus = measure.RangeStatus;
   uint16_t Value = 0;
-  HighestRangeM = (lidar.highThresholdM << 7) | 127;
-  HighestRangeL = (lidar.highThresholdL) | 896;
+  HighestRangeMSB = (lidar.highThresholdMSB << 7) | 127;
+  HighestRangeLSB = (lidar.highThresholdLSB) | 896;
   HighestRange = HighestRangeM & HighestRangeL;
-  LowestRangeM = (lidar.lowThresholdM << 7) | 127;
-  LowestRangeL = (lidar.lowThresholdL) | 896;
+  LowestRangeMSB = (lidar.lowThresholdMSB << 7) | 127;
+  LowestRangeLSB = (lidar.lowThresholdLSB) | 896;
   LowestRange = LowestRangeM & LowestRangeL;
 
   //    Serial.print("Reading a measurement... ");

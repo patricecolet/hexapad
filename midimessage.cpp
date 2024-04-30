@@ -2,12 +2,13 @@
 
 USBMIDI_CREATE_DEFAULT_INSTANCE();
 
-const char* midiMessage::SysexHeader = "HEXAPAD0";
+//const char* midiMessage::SysexHeader = "HEXAPAD0";
 void SendMidi(int, int, int);
 byte padSettingsBytes[sizeof(PadSettings) * 7 + 2];
 byte advancedSettingsBytes[sizeof(AdvancedSettings) + 2];
 
-midiMessage::midiMessage(){};
+midiMessage::midiMessage(){
+};
 
 void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity, uint8_t note) {
   //midiEventPacket_t event = {0x09, 0x90 | _address.channel, _address.address, velocity};
@@ -56,7 +57,7 @@ void midiMessage::sendNoteOnLidar(int velocity) {
     velo = velocity;
   } else if (lidar.curve == curveType::parabola) {  // Type de courbe parabolique
     velo = (127 * velocity * velocity) / (127 * 127);
-  } else if (lidar.curve == curveType::hyperbola) {  // Type de courbe hyoerbolique
+  } else if (lidar.curve == curveType::hyperbola) {  // Type de courbe hyperbolique
     velo = round(127 * (1 - exp(-1.5 * velocity / 40)));
   } else if (lidar.curve == curveType::sigmoid) {  // Type de courbe sigmoide
     velo = round(127 / (1 + exp(-0.08 * (velocity - 65))));
@@ -88,11 +89,18 @@ void midiMessage::begin() {
 void midiMessage::update() {
   // Listen to incoming notes
   MIDI.read();
+//  Serial.print(sysexPacket[0])
 }
 
 
-
-void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
+void midiMessage::OnMidiSysEx(byte * data, unsigned length) {
+  memcpy(sysexPacket,data,length*sizeof(byte));
+//  if (length <= 100)
+  //sysexPacket = (byte *) malloc(length);
+//  for (byte i = 0; i <= 100; i++ ) sysexPacket[i] = i);
+//  sysexPacket = *data;
+}
+/*
   int commandeSysex, versionSysex, revisionSysex, channelSysex, controllerSysex, valueSysex;
   bool status = 1;
   if (DEBUG == 1) {

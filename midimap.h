@@ -44,7 +44,7 @@ enum class advancedParam : const byte {
   piezoSensitivityMSB = 4,
   piezoDebounceTimeLSB = 5,
   piezoDebounceTimeMSB = 6,
-  piezoRoundOff = 7
+  qtouchRoundOff = 7
 };
 
 

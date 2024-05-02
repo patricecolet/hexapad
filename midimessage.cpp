@@ -1,12 +1,8 @@
 #include "midimessage.hpp"
 #include "sysex.hpp"
 sysex SysEx;
-USBMIDI_CREATE_DEFAULT_INSTANCE();
 
-//const char* midiMessage::SysexHeader = "HEXAPAD0";
-void SendMidi(int, int, int);
-// byte padSettingsBytes[sizeof(PadSettings) * 7 + 2];
-// byte advancedSettingsBytes[sizeof(AdvancedSettings) + 2];
+USBMIDI_CREATE_DEFAULT_INSTANCE();
 
 //constructeur de la classe midiMessage
 midiMessage::midiMessage(){
@@ -35,8 +31,6 @@ void midiMessage::sendAfterTouch(midi_channel channel, midi_byte AfterTouch, mid
 
 void midiMessage::sendController(midi_channel channel, midi_byte controllerNumber, midi_byte ControllerValue) {
 //  uint16_t filteredValue = filter.addSample(ControllerValue);
-    byte lowValue = ControllerValue & 0x7F;
-    byte highValue = ControllerValue >> 7;
     midiEventPacket_t event = {0x0B, 0xB0 |  channel, controllerNumber, ControllerValue};
     MidiUSB.sendMIDI(event);
 }

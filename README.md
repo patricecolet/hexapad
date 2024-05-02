@@ -120,63 +120,43 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 * Canal 5 -> Pad 5
 * Canal 6 -> Pad 6
 * Canal 7 -> Pad 7
+* Canal 8 -> Lidar
+* Canal 9 -> Advanced Settings
 
-|MIDI controller| Description|
+|STRUCTURE MESSAGE SYSEX| Description|
 |---|---|
-| Controleur 0 | Buffer | (Envoie PadSettings en sysex)
-| Controleur 1 | MIDI channel | (midi channel 1 value is 0, midi channel 2 value is 1 ...)
-| Controleur 2 | MIDI note |
-| Controleur 3 | Trig mode (percu,key,button) |
-| Controleur 4 | Velocity curve |
-| Controleur 5 | Aftertouch curve |
-| Controleur 6 | Disable piezo (> 0 = disable)| 
-| Controleur 7 | Disable QTouch (MIDI note is QT1) |
+|F0|Début du message Sysex|
+|H|Identifiant|
+|E|Identifiant|
+|X|Identifiant|
+|A|Identifiant|
+|P|Identifiant|
+|A|Identifiant|
+|0|Fin Identifiant|
+|1(SET) ou 2(GET)|Commande|
+|1|Version|
+|0|Révision|
+|XX|Channel|
+|XX|Numéro de paramètre|
+|XX|Value|
+|F7|Fin du message Sysex|
 
-* Canal 14 -> Advanced Settings
-
-|MIDI controller| Description|
+|NUMERO DE PARAMETRE|PADSETTINGS|
 |---|---|
-| Controleur 0 | Buffer | (Envoie AdvancedSettings en sysex)
-| Controleur 1 | Piezo Threshold
-| Controleur 2 | Piezo Sensibility MSB
-| Controleur 3 | Piezo Sensibility LSB
-| Controleur 4 | Piezo Debounce Time
-| Controleur 5 | Qtouch roundOff
-
-* Canal 15 -> réglages capteur distance
-
-|MIDI controller| Description|
-|---|---|
-| Controleur 1 | MIDI channel
-| Controleur 2 | MIDI note (mode single note or button or first scale note, modulate velocity)
-| Controleur 3 | Trig mode (range CTL, single note, button, note scale)
-| Controleur 4 | Curve
-| Controleur 5 | Disable sensor (> 0 = disable)
-| Controleur 6 | LOW threshold(mm) LSB
-| Controleur 7 | LOW threshold(mm) MSB
-| Controleur 8 | HIGH threshold(mm) LSB
-| Controleur 9 | HIGH threshold(mm) MSB
-| Controleur 10 | MIDI controller LSB
-| Controleur 11 | MIDI controller MSB
-| Controleur 12 | Scale LSB
-| Controleur 13 | Scale MSB
-| Controleur 14 | Scale octaves
-
-* Canal 16 -> réglages globaux
-
-|MIDI controller| Description|
-|---|---|
-| Controleur 1 | MIDI channel (all)
-| Controleur 2 | Enable global
-| Controleur 3 | Trig mode
-| Controleur 4 | Velocity curve
-| Controleur 5 | Aftertouch curve
-| Controleur 6 | Disable piezo (> 0 = disable)
-| Controleur 7 | Disable all QTouch (MIDI note is QT1, > 0 = disable)
-| Controleur 8 | enable send all note off when all qtouch are sensing (default 0)
-| Controleur 9 | piezo threshold (ms, default = 20)
-| Controleur 10 | piezo debounce (ms, default = 50)
-
-
+|1|Channel|
+|2|Note 1|
+|3|Seuil 1|
+|4|Identifiant|
+|5|Identifiant|
+|6|Identifiant|
+|7|Identifiant|
+|8|Fin Identifiant|
+|9(SET) ou 2(GET)|Commande|
+|1|Version|
+|0|Révision|
+|XX|Channel|
+|XX|Numéro de paramètre|
+|XX|Value|
+|F7|Fin du message Sysex|
 
 #TODO

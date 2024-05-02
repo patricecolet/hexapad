@@ -29,7 +29,7 @@ void midiMessage::sendNoteOn(PadSettings pad, uint8_t velocity, uint8_t note) {
 void midiMessage::sendNoteOff(PadSettings pad, uint8_t note) {
   if (DEBUG == 1)
     Serial.printf("Note off Note: %d \n \n", note);
-  midiEventPacket_t event = { 0x08, 0x80 | pad.channel, note, 0 };
+  midiEventPacket_t event = { 0x08, 0x80 | pad.channel, note, 0 }; // Channel, Note et Velocité
   MidiUSB.sendMIDI(event);
 };
 
@@ -100,7 +100,7 @@ void midiMessage::OnMidiSysEx(byte* data, unsigned length) {
     Serial.print(length);
     Serial.print(F(" bytes) \n"));
     for (uint16_t i = 1; i <= 8; i++) {
-      if (status == 1 && (char)data[i] == SysexHeader[i - 1]) {
+      if (status == 1 && (char)data[i] == SysexHeader[i - 1]) { // Verification de l'identifiant
         Serial.printf("%c", data[i]);
       }
       if ((char)data[i] != SysexHeader[i - 1]) {

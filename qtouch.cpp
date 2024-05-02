@@ -49,6 +49,22 @@ void NoteQtouch::update(PadSettings pad) {
     }
 };
 
+int NoteQtouch::AfterTouchNote(PadSettings pad, int afterTouch ,int i) {
+  float pourcentage = 127/100;
+  int note = 0;
+  if (afterTouch >= pad.padNote.qtouchThreshold1*pourcentage && afterTouch < pad.padNote.qtouchThreshold2*pourcentage){
+    note = pad.padNote.note1;
+  }
+  else if (afterTouch >= pad.padNote.qtouchThreshold2*pourcentage && afterTouch < pad.padNote.qtouchThreshold3*pourcentage){
+    note = pad.padNote.note2;
+  }
+  else if (afterTouch >= pad.padNote.qtouchThreshold3*pourcentage){
+    note = pad.padNote.note3;
+  }
+  return note;
+}
+
+
 int NoteQtouch::getTouch() {
   int qt_measure = qt.measure();
   int range = 1014 - qt_floor + advancedSettings.roundOff; // Calcul seuil

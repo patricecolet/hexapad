@@ -22,7 +22,7 @@ class NoteQtouch {
     void update(PadSettings);// Déclaration de la fonction de l'état des pads
     void begin();
     void calibrate(); // Déclaration de la fonction de calibration
-    
+    int AfterTouchNote(PadSettings,int,int);
     int getTouch();
     qtouch_state state;
     bool noteState = 0; // Déclaration de l'état des notes

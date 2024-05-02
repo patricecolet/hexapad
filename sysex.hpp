@@ -8,7 +8,7 @@ class sysex {
     sysex();
     static void parse(byte*,unsigned); // Déclaration de la fonction SendNote
   private:
-    static bool ID(byte*); // Déclaration de la fonction SendNoteOn
+    static bool checkID(byte*); // Déclaration de la fonction SendNoteOn
     static void set(byte*); // Déclaration de la fonction SendNoteOn
     static void pad(byte, byte*); // Déclaration de la fonction SendNoteOn
     static void lidar(byte*); // Déclaration de la fonction SendNoteOn

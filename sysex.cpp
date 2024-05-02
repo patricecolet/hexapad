@@ -14,13 +14,13 @@ void sysex::parse(byte * data, unsigned length){
   for (int i = 0; i < length; i++) Serial.println(data[i]);
 
   if ((data[0] == 240) && (data[length - 1] == 247) && length > 2) { // check sysex packet
-    if(ID(data) == 1) {                                         // check sysex ID (should be "HEXAPAD0")
+    if(checkID(data) == 1) {                                         // check sysex ID (should be "HEXAPAD0")
       if (data[9] == (byte)sysexCommand::set) set(data);             // command 'set'
     }
     else Serial.println("wrong sysex ID");
   }
 }
-bool sysex::ID (byte * data) {
+bool sysex::checkID (byte * data) {
   bool status = 1;
   for (int i = 0; i < 8; i++) if(data[i+1] != SysexID[i]) status ==  0;
   return status;
@@ -103,6 +103,6 @@ void sysex::advanced(byte * data) {
 
 // sysex command to set parameter
 void sysex::dump() {
-  
+
 }
 

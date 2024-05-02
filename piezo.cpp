@@ -1,19 +1,18 @@
 #include "piezo.hpp"
 #include "midimap.h"
-piezo::piezo(pin_t pin, MIDIAddress address) {
-  _address = address;
+piezo::piezo(pin_t pin) {
   _pin = pin;
 };
 
 void piezo::update() {
-  sensitivityMSB = (advancedSettings.sensitivityM << 7) | 127;
-  sensitivityLSB = (advancedSettings.sensitivityL) | 896;
+  sensitivityMSB = (advancedSettings.piezoSensitivityMSB << 7) | 127;
+  sensitivityLSB = (advancedSettings.piezoSensitivityLSB) | 896;
   sensitivity = sensitivityMSB & sensitivityLSB;
-  thresholdMSB = (advancedSettings.thresholdM << 7) | 127;
-  thresholdLSB = (advancedSettings.thresholdL) | 896;
+  thresholdMSB = (advancedSettings.piezoThresholdMSB << 7) | 127;
+  thresholdLSB = (advancedSettings.piezoThresholdLSB) | 896;
   threshold = thresholdMSB & thresholdLSB;
-  debounceTimeMSB = (advancedSettings.debounceTimeM << 7) | 127;
-  debounceTimeLSB = (advancedSettings.debounceTimeL) | 896;
+  debounceTimeMSB = (advancedSettings.piezoDebounceTimeMSB << 7) | 127;
+  debounceTimeLSB = (advancedSettings.piezoDebounceTimeLSB) | 896;
   debounceTime = debounceTimeMSB & debounceTimeLSB;
   piezoRead = analogRead(_pin);  // reading piezo value
   if (DEBUG == 3) {

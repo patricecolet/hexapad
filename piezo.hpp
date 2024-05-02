@@ -1,8 +1,5 @@
 #pragma once
 
-//#define PLOT 0 //plot piezo reading
-// #include "MIDIUSB.h"
-// #include "MovingAverage.h"
 #include "midimap.h"
 
 #define UNDERTHRESHOLD 0
@@ -39,11 +36,7 @@ struct piezoState
 
 class piezo {
   public:
-    struct MIDIAddress {
-      uint8_t address : 7;
-      uint8_t channel : 4;
-    };
-    piezo(pin_t, MIDIAddress);
+    piezo(pin_t);
     void update();
     int state;
 //    bool sendNote = 0;
@@ -52,7 +45,6 @@ class piezo {
     int sensitivityMSB, sensitivityLSB, sensitivity, thresholdMSB, thresholdLSB, threshold, debounceTimeMSB, debounceTimeLSB, debounceTime;
     
   private:
-    MIDIAddress _address;
     pin_t _pin;
     unsigned long piezoTimer;
     int prevpiezoRead;

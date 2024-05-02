@@ -8,10 +8,11 @@ void setup() {
   delay(1000);   
   qTouchCalibrate();
   pinMode(VL53LOX_InterruptPin, INPUT_PULLUP);
-  if (!Distance.begin()) {
+/*  if (!Distance.begin()) {
     Serial.println(F("Failed to boot VL53L0X"));
     delay(100);
   }
+  */
   timerPBegin();
   MidiMessage.begin();
 }
@@ -19,6 +20,5 @@ void setup() {
 void loop() {
   qTouchUpdate();
   MidiMessage.update();
-  Sysex.update();
   // MidiMessage.midiInMessages();
 }

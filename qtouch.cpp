@@ -27,7 +27,7 @@ void NoteQtouch::update(PadSettings pad) {
   // velocity = 127 * (qt_measure - qt_floor + advancedSettings.roundOff) / range;
   int range = 1014 - qt_floor;
   velocity = 127 * (qt_measure - qt_floor) / range; // Calcul vélocité
-  if((qt_measure > qt_floor + advancedSettings.roundOff) && qt_memory == 0) { // Si la valeur est suppérieur au seuil
+  if((qt_measure > qt_floor + advancedSettings.piezoRoundOff) && qt_memory == 0) { // Si la valeur est suppérieur au seuil
     qt_memory = qt_measure; // Memorisation de la mesure
 //    sendNoteOn(velocity);
 //    Serial.print("Note On"); Serial.println(_pin);
@@ -35,7 +35,7 @@ void NoteQtouch::update(PadSettings pad) {
     if (state == qtouch_state::off && state != qtouch_state::played) state = qtouch_state::touched;
   };
 //  if((qt_measure < (qt_floor + advancedSettings.roundOff)) && qt_memory != 0) qt_memory = 0;
-  if((qt_measure < (qt_floor + advancedSettings.roundOff)) && qt_memory != 0) {  // Si la valeur est inférieur au seuil
+  if((qt_measure < (qt_floor + advancedSettings.piezoRoundOff)) && qt_memory != 0) {  // Si la valeur est inférieur au seuil
     qt_memory = 0; // Aucune mémorisation
 //    sendNoteOff();
     state = qtouch_state::off; // Statue du pad off
@@ -51,8 +51,8 @@ void NoteQtouch::update(PadSettings pad) {
 
 int NoteQtouch::getTouch() {
   int qt_measure = qt.measure();
-  int range = 1014 - qt_floor + advancedSettings.roundOff; // Calcul seuil
-  velocity = 127 * (qt_measure - qt_floor + advancedSettings.roundOff) / range;
+  int range = 1014 - qt_floor + advancedSettings.piezoRoundOff; // Calcul seuil
+  velocity = 127 * (qt_measure - qt_floor + advancedSettings.piezoRoundOff) / range;
   Serial.printf("Velocity Qtouch %d \n", velocity);
   return velocity; // Renvoie de la vélocité
 };

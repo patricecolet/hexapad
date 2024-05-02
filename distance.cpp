@@ -1,22 +1,21 @@
 #include "distance.hpp"
-#include "midimap.h"
-#include "midimessage.hpp"  // function definitions for sending midi
+
+midiMessage MidiMessageLidar;
 
 distancePB::distancePB() {
   Adafruit_VL53L0X distance = Adafruit_VL53L0X();
 };
-midiMessage MidiMessageLidar;
 
 void distancePB::sendMeasure() {
   VL53L0X_RangingMeasurementData_t measure;
   RangeStatus = measure.RangeStatus;
   uint16_t Value = 0;
-  HighestRangeMSB = (lidar.highThresholdMSB << 7) | 127;
-  HighestRangeLSB = (lidar.highThresholdLSB) | 896;
-  HighestRange = HighestRangeM & HighestRangeL;
-  LowestRangeMSB = (lidar.lowThresholdMSB << 7) | 127;
-  LowestRangeLSB = (lidar.lowThresholdLSB) | 896;
-  LowestRange = LowestRangeM & LowestRangeL;
+  HighestRangeMSB = (Lidar.highThresholdMSB << 7) | 127;
+  HighestRangeLSB = Lidar.highThresholdLSB | 896;
+  HighestRange = HighestRangeMSB & HighestRangeLSB;
+  LowestRangeMSB = (Lidar.lowThresholdMSB << 7) | 127;
+  LowestRangeLSB = (Lidar.lowThresholdLSB) | 896;
+  LowestRange = LowestRangeMSB & LowestRangeLSB;
 
   //    Serial.print("Reading a measurement... ");
   distance.getRangingMeasurement(&measure, false);              // pass in 'true' to get debug data printout!
@@ -37,8 +36,8 @@ void distancePB::sendMeasure() {
   else {
     if (mesuring != 0){
       lidarButton = !lidarButton;
-      if (lidar.trig_mode == trigType::keyboard) {
-        MidiMessageLidar.sendNoteOffLidar();
+      if (Lidar.trig_mode == trigType::keyboard) {
+        MidiMessageLidar.sendNoteOff(Lidar.channel,Lidar.note);
       }
     }
     mesuring = 0;
@@ -46,50 +45,48 @@ void distancePB::sendMeasure() {
   ControllerValue = Value;
   if (ControllerValue < 16384 || ControllerValue == 0) {
     ControllerValue = 16383;
-    //Serial.println(ControllerValue);
-    //ControllerValue = filter.addSample(Value);
   }
-  if (lidar.sensor == 1){
-    MidiMessageLidar.sendControllerLidar(ControllerValue);
+  if (Lidar.enable == 1){
+    byte lowValue = ControllerValue & 0x7F;
+    byte highValue = ControllerValue >> 7;
+    MidiMessageLidar.sendController(Lidar.channel,Lidar.controllerLSB, lowValue);
+    MidiMessageLidar.sendController(Lidar.channel,Lidar.controllerMSB, highValue);
     lidarNote();
   }
   distance.clearInterruptMask(false);
 }
 
 void distancePB::lidarNote() {
-  if (lidar.trig_mode == trigType::keyboard && playing == 0 && mesuring == 1){
-    MidiMessageLidar.sendNoteOnLidar(velocity());
+  if (Lidar.trig_mode == trigType::keyboard && playing == 0 && mesuring == 1){
+    distancePB::sendNoteOn(velocity());
     playing = 1;
   }
-  if (playing == 1 && lidar.trig_mode == trigType::keyboard && mesuring == 1) {                 
-    MidiMessageLidar.sendAfterTouchLidar(velocity());  // Application de l'AfterTouch
+  if (playing == 1 && Lidar.trig_mode == trigType::keyboard && mesuring == 1) {                 
+    MidiMessageLidar.sendAfterTouch(Lidar.channel,velocity(),Lidar.note);  // Application de l'AfterTouch
   }
-  if (playing == 1 && lidar.trig_mode == trigType::keyboard && mesuring == 0) {                 
-    MidiMessageLidar.sendNoteOffLidar();
+  if (playing == 1 && Lidar.trig_mode == trigType::keyboard && mesuring == 0) {                 
+    MidiMessageLidar.sendNoteOff(Lidar.channel,Lidar.note);
     playing = 0;
   }
-  if (lidar.trig_mode == trigType::button && mesuring == 1){
+  if (Lidar.trig_mode == trigType::button && mesuring == 1){
     if (lidarButton == 0 && playing == 0){
-      MidiMessageLidar.sendNoteOnLidar(velocity());
+      distancePB::sendNoteOn(velocity());
       playing = 1;
     }
     else if (lidarButton == 1 && playing == 1){
-      MidiMessageLidar.sendNoteOffLidar();
+      MidiMessageLidar.sendNoteOff(Lidar.channel,Lidar.note);
       playing = 0;
     }
   }
 }
 
 bool distancePB::begin() {
-
   Serial.println("VL53L0X begin");
   if (!distance.begin()) {
     Serial.println("begin failed");
     return 0;
   } else {
     Serial.println("begin succeed");
-
-
     distance.setGpioConfig(VL53L0X_DEVICEMODE_CONTINUOUS_RANGING,
                            VL53L0X_GPIOFUNCTIONALITY_NEW_MEASURE_READY,
                            VL53L0X_INTERRUPTPOLARITY_LOW);
@@ -104,6 +101,20 @@ bool distancePB::begin() {
     return 1;
   }
 };
+void distancePB::sendNoteOn(midi_byte velocity) {
+  uint8_t velo;
+  if (Lidar.curve == curveType::linear) {  // Type de courbe linéaire
+    velo = velocity;
+  } else if (Lidar.curve == curveType::parabola) {  // Type de courbe parabolique
+    velo = (127 * velocity * velocity) / (127 * 127);
+  } else if (Lidar.curve == curveType::hyperbola) {  // Type de courbe hyperbolique
+    velo = round(127 * (1 - exp(-1.5 * velocity / 40)));
+  } else if (Lidar.curve == curveType::sigmoid) {  // Type de courbe sigmoide
+    velo = round(127 / (1 + exp(-0.08 * (velocity - 65))));
+  }
+  MidiMessageLidar.sendNoteOn(Lidar.channel, velocity, Lidar.note);
+  if(DEBUG == 1) Serial.printf("Velocity lidar = %d\n", velo);
+}
 
 int distancePB::velocity() {
   int velocity = ((127 * test) / (HighestRange - LowestRange)) + (127 - ((127 * HighestRange) / (HighestRange - LowestRange)));

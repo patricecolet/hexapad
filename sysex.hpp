@@ -1,14 +1,17 @@
+#pragma once
 #include "midimap.h"
+#include "midimessage.hpp"
 
 
 class sysex {    
   public:
     sysex();
-    void update();
-    void parseID(char); // Déclaration de la fonction SendNote
-    void set(PadSettings); // Déclaration de la fonction SendNoteOn
-    void dump(PadSettings); // Déclaration de la fonction SendNoteOff
-    void parseMethod();
+    static void parse(byte*,unsigned); // Déclaration de la fonction SendNote
   private:
-    const char* sysexID;
+    static bool ID(byte*); // Déclaration de la fonction SendNoteOn
+    static void set(byte*); // Déclaration de la fonction SendNoteOn
+    static void pad(byte, byte*); // Déclaration de la fonction SendNoteOn
+    static void lidar(byte*); // Déclaration de la fonction SendNoteOn
+    static void advanced(byte*); // Déclaration de la fonction SendNoteOn
+    static void dump(); // Déclaration de la fonction SendNoteOff
 };

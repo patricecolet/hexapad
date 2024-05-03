@@ -152,11 +152,11 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |5|Seuil 2|
 |6|Note 3|
 |7|Seuil 3|
-|8|Trig Mode|
-|9|Vélocity Curve|
-|10|AfterTouch Curve|
-|11|Piezo|
-|12|QTouch|
+|8|Trig Mode(0 = Percussion,1 = Keyboard, 2 = Button)|
+|9|Vélocity Curve(0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
+|10|AfterTouch Curve(0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
+|11|Piezo(1 = Activate, 0 = Disable)|
+|12|QTouch(1 = Activate, 0 = Disable)|
 
 #### EXEMPLE MODIFICATION DU TRIG MODE SUR LE PAD 6 DE PADSETTINGS
 |||||||||||||CHANNEL|PARAMETRE|VALUE||

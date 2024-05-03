@@ -144,7 +144,6 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 EXEMPLE MODIFICATION DU PARAMETRE 8 SUR LE PAD 6 DE PADSETTINGS
 
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |240|48|45|58|41|50|41|44|30|01|01|00|06|08|02|247|
 |F0|H|E|X|A|P|A|D|0|1|1|0|6|8|2|F7|
 

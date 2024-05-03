@@ -132,7 +132,8 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |41|A|Identifiant ASCII|
 |50|P|Identifiant ASCII|
 |41|A|Identifiant ASCII|
-|44|0|Fin Identifiant ASCII|
+|44|D|Identifiant ASCII|
+|30|0|Fin Identifiant ASCII|
 |01 ou 02|1(SET) ou 2(GET)|Commande|
 |01|1|Version|
 |00|0|Révision|
@@ -143,8 +144,8 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 EXEMPLE MODIFICATION DU PARAMETRE 8 SUR LE PAD 6 DE PADSETTINGS
 
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|240|48|45|58|41|50|41|44|01|01|00|06|08|02|247|
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|240|48|45|58|41|50|41|44|30|01|01|00|06|08|02|247|
 |F0|H|E|X|A|P|A|D|0|1|1|0|6|8|2|F7|
 
 ##### Channel de 1 à 7

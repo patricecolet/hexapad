@@ -1,4 +1,4 @@
-#include "sysex.hpp"
+  #include "sysex.hpp"
 
 midiMessage _MIDI;
 
@@ -20,6 +20,7 @@ void sysex::parse(byte * data, unsigned length){
     else Serial.println("wrong sysex ID");
   }
 }
+
 bool sysex::checkID (byte * data) {
   bool status = 1;
   for (int i = 0; i < 8; i++) if(data[i+1] != SysexID[i]) status ==  0;

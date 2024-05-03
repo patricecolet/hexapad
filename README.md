@@ -113,15 +113,15 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 ## MIDI implémentation
 <a id="implementation"></a>
 
-* Canal 1 -> Pad 1
-* Canal 2 -> Pad 2
-* Canal 3 -> Pad 3
-* Canal 4 -> Pad 4
-* Canal 5 -> Pad 5
-* Canal 6 -> Pad 6
-* Canal 7 -> Pad 7
-* Canal 8 -> Lidar
-* Canal 9 -> Advanced Settings
+* Destination 1 -> Pad 1
+* Destination 2 -> Pad 2
+* Destination 3 -> Pad 3
+* Destination 4 -> Pad 4
+* Destination 5 -> Pad 5
+* Destination 6 -> Pad 6
+* Destination 7 -> Pad 7
+* Destination 8 -> Lidar
+* Destination 9 -> Advanced Settings
 
 |STRUCTURE MESSAGE SYSEX|DECHIFFRAGE| Description|
 |:---:|:---:|:---:|
@@ -137,39 +137,39 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |01 ou 02|1(SET) ou 2(GET)|Commande|
 |01|1|Version|
 |00|0|Révision|
-|XX|XX|Channel|
+|XX|XX|Destination|
 |XX|XX|Numéro de paramètre|
-|XX|XX|Value|
+|XX|XX|Valeur|
 |F7|247|Fin du message Sysex|
 
-##### Channel de 1 à 7
+##### Destinataire de 1 à 7
 |NUMERO DE PARAMETRE|PADSETTINGS|
 |:---:|:---:|
-|1|Channel|
-|2|Note 1|
+|1|Canal MIDI|
+|2|Note MIDI 1|
 |3|Seuil 1|
-|4|Note 2|
+|4|Note MIDI 2|
 |5|Seuil 2|
-|6|Note 3|
+|6|Note MIDI 3|
 |7|Seuil 3|
-|8|Trig Mode(0 = Percussion,1 = Keyboard, 2 = Button)|
-|9|Vélocity Curve (0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
-|10|AfterTouch Curve (0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
+|8|Trig Mode (0 = Percussion, 1 = Keyboard ,2 = Button|
+|9|Velocity Curve (0 = Linéaire, 1 = Exponnentielle ,2 = Logarithmique, 3 = Sigmoid)|
+|10|AfterTouch Curve (0 = Linéaire, 1 = Exponnentielle ,2 = Logarithmique, 3 = Sigmoid)|
 |11|Piezo (1 = Activate, 0 = Disable)|
 |12|QTouch (1 = Activate, 0 = Disable)|
 
 #### EXEMPLE MODIFICATION DU TRIG MODE SUR LE PAD 6 DE PADSETTINGS
-|||||||||||||CHANNEL|PARAMETRE|VALUE||
+|||||||||||||DESTINATION|PARAMETRE|VALEUR||
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|06|08|02|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|6|8|2|247|
 
-##### Channel 8
+##### Destination 8
 |NUMERO DE PARAMETRE|LIDAR|
 |:---:|:---:|
-|1|Channel|
-|2|Note|
-|3|Curve (0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
+|1|Canal MIDI|
+|2|Note MIDI|
+|3|Courbe (0 = Linéaire, 1 = Exponnentielle ,2 = Logarithmique, 3 = Sigmoid)|
 |4|Low Threshold LSB|
 |5|Low Threshold MSB|
 |6|High Threshold LSB|
@@ -182,12 +182,12 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |13|Lidar (1 = Activate, 0 = Disable)|
 
 #### EXEMPLE MODIFICATION DU LOW THRESHOLD MSB SUR LE LIDAR
-|||||||||||||CHANNEL|PARAMETRE|VALUE||
+|||||||||||||DESTINATION|PARAMETRE|VALEUR||
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|08|05|7F|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|8|5|127|247|
 
-##### Channel 9
+##### Destination 9
 |NUMERO DE PARAMETRE|ADVANCED SETTINGS|
 |:---:|:---:|
 |1|Piezo Threshold LSB|
@@ -199,7 +199,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |7|QTouch RoundOff|
 
 #### EXEMPLE MODIFICATION DU ROUNDOFF DANS ADVANCED SETTINGS
-|||||||||||||CHANNEL|PARAMETRE|VALUE||
+|||||||||||||DESTINATION|PARAMETRE|VALEUR||
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|09|07|0F|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|9|7|15|247|

@@ -34,7 +34,7 @@ L'idée serait donc une forme hexagonale qui serait divisée en 6 parties, avec 
 
 L'hexagone devra faire 15,5 cm de haut et chaque trapèse doit etre espacé de 2 mm pour éviter les perturbations. C'est a l'aide du logiciel Geogebra que nous avons réussi a trouver les dimensions idéale.
 
-![hexagone final](https://github.com/patricecolet/hexapad/blob/stage/images/hexagone2.png?raw=true)
+![hexagone final](https://github.com/patricecolet/hexapad/blob/stage-refactoring/images/hexagone2.png?raw=true)
 
 
 ### SCHEMATIQUE 

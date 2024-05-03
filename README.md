@@ -153,10 +153,10 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |6|Note 3|
 |7|Seuil 3|
 |8|Trig Mode(0 = Percussion,1 = Keyboard, 2 = Button)|
-|9|Vélocity Curve(0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
-|10|AfterTouch Curve(0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
-|11|Piezo(1 = Activate, 0 = Disable)|
-|12|QTouch(1 = Activate, 0 = Disable)|
+|9|Vélocity Curve (0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
+|10|AfterTouch Curve (0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
+|11|Piezo (1 = Activate, 0 = Disable)|
+|12|QTouch (1 = Activate, 0 = Disable)|
 
 #### EXEMPLE MODIFICATION DU TRIG MODE SUR LE PAD 6 DE PADSETTINGS
 |||||||||||||CHANNEL|PARAMETRE|VALUE||
@@ -169,7 +169,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |---|---|
 |1|Channel|
 |2|Note|
-|3|Curve|
+|3|Curve (0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
 |4|Low Threshold LSB|
 |5|Low Threshold MSB|
 |6|High Threshold LSB|
@@ -179,7 +179,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |10|Scale|
 |11|Scale Low Range|
 |12|Scale High Range|
-|13|Lidar|
+|13|Lidar (1 = Activate, 0 = Disable)|
 
 #### EXEMPLE MODIFICATION DU LOW THRESHOLD MSB SUR LE LIDAR
 |||||||||||||CHANNEL|PARAMETRE|VALUE||

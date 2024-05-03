@@ -1,7 +1,7 @@
 #pragma once
 #include <Arduino.h>
 
-#define DEBUG 1
+#define DEBUG 0
 
 enum class qtouch_pin : const uint8_t {
   QT1 = A0, QT2 = A1, QT3 = A6, QT4 = A8, QT5 = A7, QT6 = A9, QT7 = A10
@@ -79,7 +79,7 @@ struct AdvancedSettings {
   midi_byte piezoSensitivityMSB;
   midi_byte piezoDebounceTimeLSB;
   midi_byte piezoDebounceTimeMSB;
-  midi_byte piezoRoundOff;
+  midi_byte qtouchRoundOff;
 };
 
 struct LIDAR {

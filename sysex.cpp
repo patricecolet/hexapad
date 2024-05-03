@@ -97,7 +97,7 @@ void sysex::advanced(byte * data) {
     case (byte)advancedParam::piezoSensitivityMSB : advancedSettings.piezoSensitivityMSB = value;break;
     case (byte)advancedParam::piezoDebounceTimeLSB : advancedSettings.piezoDebounceTimeLSB = value;break;
     case (byte)advancedParam::piezoDebounceTimeMSB : advancedSettings.piezoDebounceTimeMSB = value;break;
-    case (byte)advancedParam::piezoRoundOff : advancedSettings.piezoRoundOff = value;break;
+    case (byte)advancedParam::qtouchRoundOff : advancedSettings.qtouchRoundOff = value;break;
     default: break;
   }   
 }

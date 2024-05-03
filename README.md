@@ -125,7 +125,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 |STRUCTURE MESSAGE SYSEX|DECHIFFRAGE| Description|
 |---|---|---|
-|240|F0|Début du message Sysex|
+|F0|240|Début du message Sysex|
 |48|H|Identifiant ASCII|
 |45|E|Identifiant ASCII|
 |58|X|Identifiant ASCII|
@@ -140,7 +140,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |XX|XX|Channel|
 |XX|XX|Numéro de paramètre|
 |XX|XX|Value|
-|247|F7|Fin du message Sysex|
+|F7|247|Fin du message Sysex|
 
 ##### Channel de 1 à 7
 |NUMERO DE PARAMETRE|PADSETTINGS|
@@ -159,10 +159,10 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |12|QTouch|
 
 #### EXEMPLE MODIFICATION DU TRIG MODE SUR LE PAD 6 DE PADSETTINGS
-|||||||||||||||||
+|||||||||||||CHANNEL|PARAMETRE|VALUE||
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|240|48|45|58|41|50|41|44|30|01|01|00|06|08|02|247|
-|F0|H|E|X|A|P|A|D|0|1|1|0|6|8|2|F7|
+|F0|48|45|58|41|50|41|44|30|01|01|00|06|08|02|F7|
+|240|H|E|X|A|P|A|D|0|1|1|0|6|8|2|247|
 
 ##### Channel 8
 |NUMERO DE PARAMETRE|LIDAR|
@@ -182,10 +182,10 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |13|Lidar|
 
 #### EXEMPLE MODIFICATION DU LOW THRESHOLD MSB SUR LE LIDAR
-|||||||||||||||||
+|||||||||||||CHANNEL|PARAMETRE|VALUE||
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|240|48|45|58|41|50|41|44|30|01|01|00|08|05|7F|247|
-|F0|H|E|X|A|P|A|D|0|1|1|0|8|5|127|F7|
+|F0|48|45|58|41|50|41|44|30|01|01|00|08|05|7F|F7|
+|240|H|E|X|A|P|A|D|0|1|1|0|8|5|127|247|
 
 ##### Channel 9
 |NUMERO DE PARAMETRE|ADVANCED SETTINGS|
@@ -199,9 +199,9 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |7|QTouch RoundOff|
 
 #### EXEMPLE MODIFICATION DU ROUNDOFF DANS ADVANCED SETTINGS
-|||||||||||||||||
+|||||||||||||CHANNEL|PARAMETRE|VALUE||
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|240|48|45|58|41|50|41|44|30|01|01|00|09|07|0F|247|
-|F0|H|E|X|A|P|A|D|0|1|1|0|9|7|15|F7|
+|F0|48|45|58|41|50|41|44|30|01|01|00|09|07|0F|F7|
+|240|H|E|X|A|P|A|D|0|1|1|0|9|7|15|247|
 
 #TODO

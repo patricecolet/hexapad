@@ -142,12 +142,6 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 |XX|XX|Value|
 |247|F7|Fin du message Sysex|
 
-EXEMPLE MODIFICATION DU PARAMETRE 8 SUR LE PAD 6 DE PADSETTINGS
-|||||||||||||||||
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-|240|48|45|58|41|50|41|44|30|01|01|00|06|08|02|247|
-|F0|H|E|X|A|P|A|D|0|1|1|0|6|8|2|F7|
-
 ##### Channel de 1 à 7
 |NUMERO DE PARAMETRE|PADSETTINGS|
 |---|---|
@@ -163,6 +157,12 @@ EXEMPLE MODIFICATION DU PARAMETRE 8 SUR LE PAD 6 DE PADSETTINGS
 |10|AfterTouch Curve|
 |11|Piezo|
 |12|QTouch|
+
+#### EXEMPLE MODIFICATION DU TRIG MODE SUR LE PAD 6 DE PADSETTINGS
+|||||||||||||||||
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|240|48|45|58|41|50|41|44|30|01|01|00|06|08|02|247|
+|F0|H|E|X|A|P|A|D|0|1|1|0|6|8|2|F7|
 
 ##### Channel 8
 |NUMERO DE PARAMETRE|LIDAR|
@@ -181,6 +181,12 @@ EXEMPLE MODIFICATION DU PARAMETRE 8 SUR LE PAD 6 DE PADSETTINGS
 |12|Scale High Range|
 |13|Lidar|
 
+#### EXEMPLE MODIFICATION DU LOW THRESHOLD MSB SUR LE LIDAR
+|||||||||||||||||
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|240|48|45|58|41|50|41|44|30|01|01|00|08|05|7F|247|
+|F0|H|E|X|A|P|A|D|0|1|1|0|8|5|127|F7|
+
 ##### Channel 9
 |NUMERO DE PARAMETRE|ADVANCED SETTINGS|
 |---|---|
@@ -191,5 +197,11 @@ EXEMPLE MODIFICATION DU PARAMETRE 8 SUR LE PAD 6 DE PADSETTINGS
 |5|Debounce Time LSB|
 |6|Debounce Time MSB|
 |7|QTouch RoundOff|
+
+#### EXEMPLE MODIFICATION DU ROUNDOFF DANS ADVANCED SETTINGS
+|||||||||||||||||
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|240|48|45|58|41|50|41|44|30|01|01|00|09|07|0F|247|
+|F0|H|E|X|A|P|A|D|0|1|1|0|9|7|15|F7|
 
 #TODO

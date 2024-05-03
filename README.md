@@ -124,7 +124,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 * Canal 9 -> Advanced Settings
 
 |STRUCTURE MESSAGE SYSEX|DECHIFFRAGE| Description|
-|---|---|---|
+|:---:|:---:|:---:|
 |F0|240|Début du message Sysex|
 |48|H|Identifiant ASCII|
 |45|E|Identifiant ASCII|
@@ -144,7 +144,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 ##### Channel de 1 à 7
 |NUMERO DE PARAMETRE|PADSETTINGS|
-|---|---|
+|:---:|:---:|
 |1|Channel|
 |2|Note 1|
 |3|Seuil 1|
@@ -160,13 +160,13 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 #### EXEMPLE MODIFICATION DU TRIG MODE SUR LE PAD 6 DE PADSETTINGS
 |||||||||||||CHANNEL|PARAMETRE|VALUE||
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---::|---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|06|08|02|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|6|8|2|247|
 
 ##### Channel 8
 |NUMERO DE PARAMETRE|LIDAR|
-|---|---|
+|:---:|:---:|
 |1|Channel|
 |2|Note|
 |3|Curve (0 = Linear, 1 = Parabola ,2 = Hyperbola, 3 = Sigmoid)|
@@ -183,13 +183,13 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 #### EXEMPLE MODIFICATION DU LOW THRESHOLD MSB SUR LE LIDAR
 |||||||||||||CHANNEL|PARAMETRE|VALUE||
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---::|---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|08|05|7F|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|8|5|127|247|
 
 ##### Channel 9
 |NUMERO DE PARAMETRE|ADVANCED SETTINGS|
-|---|---|
+|:---:|:---:|
 |1|Piezo Threshold LSB|
 |2|Piezo Threshold MSB|
 |3|Piezo Sensitivity LSB|
@@ -200,7 +200,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 #### EXEMPLE MODIFICATION DU ROUNDOFF DANS ADVANCED SETTINGS
 |||||||||||||CHANNEL|PARAMETRE|VALUE||
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---::|---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|09|07|0F|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|9|7|15|247|
 

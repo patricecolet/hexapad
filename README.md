@@ -123,40 +123,66 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 * Canal 8 -> Lidar
 * Canal 9 -> Advanced Settings
 
-|STRUCTURE MESSAGE SYSEX| Description|
-|---|---|
-|F0|Début du message Sysex|
-|H|Identifiant|
-|E|Identifiant|
-|X|Identifiant|
-|A|Identifiant|
-|P|Identifiant|
-|A|Identifiant|
-|0|Fin Identifiant|
-|1(SET) ou 2(GET)|Commande|
-|1|Version|
-|0|Révision|
-|XX|Channel|
-|XX|Numéro de paramètre|
-|XX|Value|
-|F7|Fin du message Sysex|
+|STRUCTURE MESSAGE SYSEX|DECHIFFRAGE| Description|
+|---|---|---|
+|240|F0|Début du message Sysex|
+|48|H|Identifiant ASCII|
+|45|E|Identifiant ASCII|
+|58|X|Identifiant ASCII|
+|41|A|Identifiant ASCII|
+|50|P|Identifiant ASCII|
+|41|A|Identifiant ASCII|
+|44|0|Fin Identifiant ASCII|
+|01 ou 02|1(SET) ou 2(GET)|Commande|
+|01|1|Version|
+|00|0|Révision|
+|XX|XX|Channel|
+|XX|XX|Numéro de paramètre|
+|XX|XX|Value|
+|247|F7|Fin du message Sysex|
 
+##### Channel de 1 à 7
 |NUMERO DE PARAMETRE|PADSETTINGS|
 |---|---|
 |1|Channel|
 |2|Note 1|
 |3|Seuil 1|
-|4|Identifiant|
-|5|Identifiant|
-|6|Identifiant|
-|7|Identifiant|
-|8|Fin Identifiant|
-|9(SET) ou 2(GET)|Commande|
-|1|Version|
-|0|Révision|
-|XX|Channel|
-|XX|Numéro de paramètre|
-|XX|Value|
-|F7|Fin du message Sysex|
+|4|Note 2|
+|5|Seuil 2|
+|6|Note 3|
+|7|Seuil 3|
+|8|Trig Mode|
+|9|Vélocity Curve|
+|10|AfterTouch Curve|
+|11|Piezo|
+|12|QTouch|
+
+##### Channel 8
+|NUMERO DE PARAMETRE|LIDAR|
+|---|---|
+|1|Channel|
+|2|Note|
+|3|Curve|
+|4|Low Threshold LSB|
+|5|Low Threshold MSB|
+|6|High Threshold LSB|
+|7|High Threshold MSB|
+|8|Controller LSB|
+|9|Controller MSB|
+|10|Scale|
+|11|Scale Low Range|
+|12|Scale High Range|
+|13|Lidar|
+
+##### Channel 9
+|NUMERO DE PARAMETRE|ADVANCED SETTINGS|
+|---|---|
+|1|Piezo Threshold LSB|
+|2|Piezo Threshold MSB|
+|3|Piezo Sensitivity LSB|
+|4|Piezo Sensitivity MSB|
+|5|Debounce Time LSB|
+|6|Debounce Time MSB|
+|7|QTouch RoundOff|
 
 #TODO

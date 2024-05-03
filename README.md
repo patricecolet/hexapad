@@ -160,7 +160,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 #### EXEMPLE MODIFICATION DU TRIG MODE SUR LE PAD 6 DE PADSETTINGS
 |||||||||||||CHANNEL|PARAMETRE|VALUE||
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---::|---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|06|08|02|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|6|8|2|247|
 
@@ -183,7 +183,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 #### EXEMPLE MODIFICATION DU LOW THRESHOLD MSB SUR LE LIDAR
 |||||||||||||CHANNEL|PARAMETRE|VALUE||
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---::|---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|08|05|7F|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|8|5|127|247|
 
@@ -200,7 +200,7 @@ Les hexapad se déclanche lorsqu'un doigt s'approche d'un capteur capacitif, il 
 
 #### EXEMPLE MODIFICATION DU ROUNDOFF DANS ADVANCED SETTINGS
 |||||||||||||CHANNEL|PARAMETRE|VALUE||
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---::|---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |F0|48|45|58|41|50|41|44|30|01|01|00|09|07|0F|F7|
 |240|H|E|X|A|P|A|D|0|1|1|0|9|7|15|247|
 

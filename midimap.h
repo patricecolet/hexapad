@@ -79,7 +79,7 @@ struct AdvancedSettings {
   midi_byte piezoSensitivityMSB;
   midi_byte piezoDebounceTimeLSB;
   midi_byte piezoDebounceTimeMSB;
-  midi_byte piezoRoundOff;
+  midi_byte qtouchRoundOff;
 };
 
 struct LIDAR {

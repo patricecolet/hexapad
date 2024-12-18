@@ -146,7 +146,7 @@ extern AdvancedSettings advancedSettings =
   .piezoSensitivityMSB = 7,
   .piezoDebounceTimeLSB = 40,
   .piezoDebounceTimeMSB = 0,
-  .piezoRoundOff = 15}
+  .qtouchRoundOff = 15}
 };
 
 

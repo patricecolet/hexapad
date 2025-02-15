@@ -1,0 +1,18 @@
+#N canvas 94 117 450 300 12;
+#X obj 59 23 notein;
+#X obj 59 47 pack;
+#X obj 59 71 print;
+#X msg 235 48 device @in Seeed\ XIAO\ M0;
+#X obj 237 20 loadbang;
+#X obj 231 89 mediasettings/midisettings;
+#X obj 185 224 pack;
+#X obj 185 248 print;
+#X obj 185 200 polytouchin;
+#X connect 0 0 1 0;
+#X connect 0 1 1 1;
+#X connect 1 0 2 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 6 0 7 0;
+#X connect 8 0 6 0;
+#X connect 8 1 6 1;

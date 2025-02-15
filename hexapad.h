@@ -75,7 +75,7 @@ void qTouchUpdate() {
       note = AfterTouchNote(padSettings[i], tableauQtouch[i].afterTouch, i);                   // Pad en train de jouer
       MidiMessage.sendAfterTouch(padSettings[i].channel, tableauQtouch[i].afterTouch, note);  // Application de l'AfterTouch
     }
-    tableauQtouch[i].update(padSettings[i]);  // Mise a jour de l'état des pads
+    tableauQtouch[i].update(padSettings[i]);  // Mise a jour de l'état des pads dans le tableau
 
     // On Qtouch keyboard mode, we need to send a MIDI note off when the pad is released
     if (padSettings[i].trig_mode == trigType::keyboard) {  // Pad en mode Keyboard
@@ -109,7 +109,7 @@ void hexapadSendNote(midi_byte velo) {
         velocity = Velocity_curve(padSettings[i], velo);
         note = AfterTouchNote(padSettings[i], tableauQtouch[i].afterTouch, i);
         MidiMessage.sendNoteOn(padSettings[i].channel, velocity, note);         // Envoie velocité
-        tableauQtouch[i].state = qtouch_state::played;        // Statue jouer
+        tableauQtouch[i].state = qtouch_state::played;        // état joué
         tableauQtouch[i].noteState = 1;
         if (DEBUG == 1)
           Serial.print("Keyboard On \n");
@@ -168,16 +168,7 @@ midi_byte Velocity_curve(PadSettings pad, midi_byte velocity){
 
 midi_note AfterTouchNote(PadSettings pad, midi_byte afterTouch, midi_byte channel) {
   float pourcentage = 127/100;
-  midi_note note = 0;
-  if (afterTouch >= pad.padNote1.qtouchThreshold*pourcentage && afterTouch < pad.padNote2.qtouchThreshold*pourcentage){
-    note = pad.padNote1.note;
-  }
-  else if (afterTouch >= pad.padNote2.qtouchThreshold*pourcentage && afterTouch < pad.padNote3.qtouchThreshold*pourcentage){
-    note = pad.padNote2.note;
-  }
-  else if (afterTouch >= pad.padNote3.qtouchThreshold*pourcentage){
-    note = pad.padNote3.note;
-  }
+  midi_note note = pad.note;
   noteState[channel] = note;
   return note;
 }
@@ -203,7 +194,7 @@ void TimerCallback0() {
       }
     }
     if (padSettings[i].piezo == 0) {                 // Piezo désactivé
-      hexapadSendNote(tableauQtouch[i].afterTouch);  // Envoie MIDI note avec Qtouch pad
+      hexapadSendNote(127);  // Envoie MIDI note avec Qtouch pad
       if (DEBUG == 2)
         Serial.print("Disable Piezo \n\n");
     }

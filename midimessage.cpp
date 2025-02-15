@@ -48,6 +48,7 @@ void midiMessage::update() {
   MIDI.read();
 //  Serial.print(sysexPacket[0])
 }
-void midiMessage::sysexSend(byte * data) {
-  MIDI.sendSysEx(sizeof(data), data, true);
+void midiMessage::sysexSend(byte * data, int length) {
+//  Serial.printf("sysex send length: %i\n",length);
+  MIDI.sendSysEx(length, data, true);
 }

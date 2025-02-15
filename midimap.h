@@ -13,17 +13,21 @@ enum class curveType : const uint8_t {
   linear = 0, parabola = 1, hyperbola = 2, sigmoid = 3 // Types de courbes
 };
 enum class hexapad : const uint8_t {
-  pad1 = 1, pad2 = 2, pad3 = 3, pad4 = 4, pad5 = 5, pad6 = 6, pad7 = 7, lidar = 8, advanced = 9
+  pad1 = 0, pad2 = 1, pad3 = 2, pad4 = 3, pad5 = 4, pad6 = 5, pad7 = 6, lidar = 7, advanced = 8
 };
 enum class sysexCommand : const uint8_t {
   set = 1, get = 2, calibrate = 3
 };
+enum class sysexParam : const uint8_t {
+  pad = 1, lidar = 2, advanced = 3
+};
 enum class padParam : const uint8_t {
   channel = 1,
-  note1 = 2, qtouchThreshold1 = 3,
-  note2 = 4, qtouchThreshold2 = 5,
-  note3 = 6, qtouchThreshold3 = 7,
-  trig_mode = 8, velocity_curve = 9, aftertouch_curve = 10, piezo = 11, qtouch = 12
+  note = 2,
+  trig_mode = 3, velocity_curve = 4,
+  aftertouch_curve = 5, piezo = 6,
+  qtouch = 7, qtouch_onset = 8,
+  qtouch_offset = 9, qtouch_ceiling = 10
 };
 enum class lidarParam : const uint8_t {
   channel = 1,
@@ -51,6 +55,7 @@ enum class advancedParam : const byte {
 typedef uint8_t midi_channel;
 typedef uint8_t midi_note;
 typedef uint16_t qtouch_threshold;
+typedef long qtouch_timer;
 
 typedef uint8_t midi_byte;
 
@@ -62,14 +67,17 @@ struct pad_note {
 
 struct PadSettings {
   midi_channel channel;
-  pad_note padNote1;
-  pad_note padNote2;
-  pad_note padNote3;
+  midi_note note;
   trigType trig_mode;
   curveType velocity_curve;
   curveType aftertouch_curve;
   bool piezo;
   bool qtouch;
+  uint16_t qtouch_floor;
+  uint16_t qtouch_debounce;
+  uint16_t qtouch_onset;
+  uint16_t qtouch_offset;
+  uint16_t qtouch_ceiling;
   };
 
 struct AdvancedSettings {

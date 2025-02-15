@@ -7,7 +7,7 @@
 #include "Adafruit_FreeTouch.h"
 // #include "MIDIUSB.h"
 #include "midimap.h"
-
+#include "MovingAverage.h"
 
 
 enum class qtouch_state : uint8_t {
@@ -43,4 +43,5 @@ class NoteQtouch {
     qtouch_pin _pin;
     int qt_floor, qt_memory;
     PadSettings _pad;
+    double filteredOutput;
 };

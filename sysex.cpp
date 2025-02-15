@@ -14,8 +14,10 @@ void sysex::parse(byte * data, unsigned length){
   for (int i = 0; i < length; i++) Serial.println(data[i]);
 
   if ((data[0] == 240) && (data[length - 1] == 247) && length > 2) { // check sysex packet
-    if(checkID(data) == 1) {                                         // check sysex ID (should be "HEXAPAD0")
-      if (data[9] == (byte)sysexCommand::set) set(data);             // command 'set'
+    if(checkID(data) == 1) {                                         // check sysex ID (should be "HEXAPAD1")
+      if (data[9] == (byte)sysexCommand::set) set(data);             // command 'set' = 0x1
+      if (data[9] == (byte)sysexCommand::get) dump(data);             // command 'get' = 0x2
+      if (data[9] == (byte)sysexCommand::calibrate) calibrate();     // command 'calibrate' = 0x3
     }
     else Serial.println("wrong sysex ID");
   }
@@ -26,6 +28,9 @@ bool sysex::checkID (byte * data) {
   return status;
 }
 
+void sysex::calibrate() {
+  
+}
 // sysex command to set parameter
 void sysex::set(byte * data) {
   if((data[10] == 1) && (data[11] == 0)) {                            // version 1 & revision 0 of set command
@@ -50,19 +55,18 @@ void sysex::set(byte * data) {
 void sysex::pad(byte pad, byte * data) {
   byte param = data[13];
   byte value = data[14];
+  byte value2 = data[15];
   switch (param) {
     case (byte)padParam::channel : padSettings[pad].channel = value;break;
-    case (byte)padParam::note1 : padSettings[pad].padNote1.note = value;break;
-    case (byte)padParam::qtouchThreshold1 : padSettings[pad].padNote1.qtouchThreshold = value;break;
-    case (byte)padParam::note2 : padSettings[pad].padNote2.note = value;break;
-    case (byte)padParam::qtouchThreshold2 : padSettings[pad].padNote2.qtouchThreshold = value;break;
-    case (byte)padParam::note3 : padSettings[pad].padNote3.note = value;break;
-    case (byte)padParam::qtouchThreshold3 : padSettings[pad].padNote3.qtouchThreshold = value;break;
+    case (byte)padParam::note : padSettings[pad].note = value;break;
     case (byte)padParam::trig_mode : padSettings[pad].trig_mode = (trigType)value;break;
     case (byte)padParam::velocity_curve : padSettings[pad].velocity_curve = (curveType)value;break;
     case (byte)padParam::aftertouch_curve : padSettings[pad].aftertouch_curve = (curveType)value;break;
     case (byte)padParam::piezo : padSettings[pad].piezo = value;break;
     case (byte)padParam::qtouch : padSettings[pad].qtouch = value;break;
+    case (byte)padParam::qtouch_onset : padSettings[pad].qtouch_onset = (value2 << 7) | value;break;
+    case (byte)padParam::qtouch_offset : padSettings[pad].qtouch_offset = (value2 << 7) | value;break;
+    case (byte)padParam::qtouch_ceiling : padSettings[pad].qtouch_ceiling = (value2 << 7) | value;break;
     default: break;
   }
 }
@@ -102,7 +106,31 @@ void sysex::advanced(byte * data) {
 }
 
 // sysex command to set parameter
-void sysex::dump() {
+void sysex::dump(byte * data) {
 
+  if((data[10] == 1) && (data[11] == 0)) {  // version 1 & revision 0 of get command
+    for (int i=0; i<7; i++) {
+      int length = 25;
+      byte message [length] = {};
+      for (int i=0; i<9; i++) message[i]=data[i];
+      message[9]=(byte)sysexParam::pad;         
+      message[10]=i;
+      message[11]=padSettings[i].channel;
+      message[12]=padSettings[i].note;
+      message[13]=(byte)padSettings[i].trig_mode;
+      message[14]=(byte)padSettings[i].velocity_curve;
+      message[15]=(byte)padSettings[i].aftertouch_curve;
+      message[16]=padSettings[i].piezo;
+      message[17]=padSettings[i].qtouch;
+      message[18]=(padSettings[i].qtouch_onset >> 7) & 0x7F;
+      message[19]=padSettings[i].qtouch_onset & 0x7F;
+      message[20]=(padSettings[i].qtouch_offset >> 7) & 0x7F;
+      message[21]=padSettings[i].qtouch_offset & 0x7F;
+      message[22]=(padSettings[i].qtouch_ceiling >> 7) & 0x7F;
+      message[23]=padSettings[i].qtouch_ceiling & 0x7F;
+      message[24]=0xF7;
+      _MIDI.sysexSend(message, length);
+    }           
+  }
 }
 

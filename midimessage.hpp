@@ -16,7 +16,7 @@ class midiMessage {
     void sendNoteOff(midi_channel, midi_note); // Déclaration de la fonction SendNoteOff
     void sendAfterTouch(midi_channel, midi_byte, midi_note); // Déclaration de la fonction SendAfterTouch
     void sendController(midi_channel, midi_byte, midi_byte);
-    void sysexSend(byte *);
+    void sysexSend(byte *, int);
   private:
     static void OnMidiSysEx(byte*, unsigned);
     //void midiInMessages();

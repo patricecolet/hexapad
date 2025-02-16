@@ -7,7 +7,7 @@
 #include "Adafruit_ZeroTimer.h"  // Optimize analogRead for piezo
 #include "midimessage.hpp"       // function definitions for sending midi
 #include "sysex.hpp"
-
+#include <vector>
 
 // initialize VL53L0X objects
 distancePB Distance;
@@ -61,6 +61,7 @@ void qTouchBegin() {
 
 // Calibrate Qtouch pins
 void qTouchCalibrate() {
+  Serial.printf("tableau qtouch size: %i\n", sizeof(tableauQtouch)/7);
   for (byte i = 0; i < 7; i++) {
     tableauQtouch[i].calibrate();  // Calibration des pad
   }

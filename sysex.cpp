@@ -64,9 +64,9 @@ void sysex::pad(byte pad, byte * data) {
     case (byte)padParam::aftertouch_curve : padSettings[pad].aftertouch_curve = (curveType)value;break;
     case (byte)padParam::piezo : padSettings[pad].piezo = value;break;
     case (byte)padParam::qtouch : padSettings[pad].qtouch = value;break;
-    case (byte)padParam::qtouch_onset : padSettings[pad].qtouch_onset = (value2 << 7) | value;break;
-    case (byte)padParam::qtouch_offset : padSettings[pad].qtouch_offset = (value2 << 7) | value;break;
-    case (byte)padParam::qtouch_ceiling : padSettings[pad].qtouch_ceiling = (value2 << 7) | value;break;
+    case (byte)padParam::qtouch_onset : padSettings[pad].qtouch_onset = (value << 7) | value2;break;
+    case (byte)padParam::qtouch_offset : padSettings[pad].qtouch_offset = (value << 7) | value2;break;
+    case (byte)padParam::qtouch_ceiling : padSettings[pad].qtouch_ceiling = (value << 7) | value2;break;
     default: break;
   }
 }

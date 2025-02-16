@@ -2,11 +2,12 @@
 
 void setup() {
   Serial.begin(9600);
-  Serial.println(F("HEXAPAD SETUP"));
-  delay(1000);
+  delay(2000); 
+  Serial.println("HEXAPAD SETUP");
   qTouchBegin();
   delay(1000);   
   qTouchCalibrate();
+  delay(1000);  
   pinMode(VL53LOX_InterruptPin, INPUT_PULLUP);
 /*  if (!Distance.begin()) {
     Serial.println(F("Failed to boot VL53L0X"));
@@ -15,6 +16,7 @@ void setup() {
   */
   timerPBegin();
   MidiMessage.begin();
+
 }
 
 void loop() {
